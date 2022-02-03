@@ -11,7 +11,7 @@ CC=gcc
 CFLAGS= -I$(INC) -I.. -I/libft
 
 NAME= mlx-test
-SRC = main.c
+SRC = main.c text.c math.c vectors.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 
@@ -19,7 +19,7 @@ all	:$(NAME)
 
 $(NAME)	:$(OBJ)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJ) $(LIB) -L.. -lmlx -lbsd -L$(INCLIB) -lXext -lX11 -lm $(CFLAGS)
+	$(CC) -o $(NAME) $(OBJ) -L.. -lmlx -lbsd -L$(INCLIB) -lXext -lX11 -lm $(LIB) $(CFLAGS)
 
 clean	:
 	rm -f $(NAME) $(OBJ) *~ core *.core

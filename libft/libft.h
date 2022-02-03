@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:57:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/01/05 17:31:01 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:49:46 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char			*ft_strjoin(const char *s1, const char *s2);
 int				ft_isdigit(int c);
 char			*ft_itoa(int n);
 int				ft_isprint(int c);
+int				ft_isspace(int c);
 int				ft_isalpha(int c);
 int				ft_atoi(const char *str);
 int				ft_tolower(int c);

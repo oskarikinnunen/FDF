@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 17:57:56 by okinnune          #+#    #+#              #
-#    Updated: 2022/01/05 17:54:19 by okinnune         ###   ########.fr        #
+#    Updated: 2022/02/03 11:50:28 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,18 +24,24 @@ SRCS= ft_abs.c ft_atoi.c ft_bzero.c ft_digitcount.c ft_isalnum.c ft_isalpha.c \
 	ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlen.c ft_strmap.c \
 	ft_strmapi.c ft_strncat.c ft_strncmp.c ft_strncpy.c ft_strnequ.c \
 	ft_strnew.c ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c \
-	ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c
+	ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c ft_isspace.c
 FLAGS= -Wall -Wextra -Werror -c
+TEST= $(addprefix src/,$(SRCS))
 OBJS= $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(SRCS)
-	gcc $(FLAGS) $(SRCS) $(HEADER)
+$(NAME): $(TEST)
+	echo $(TEST)
+	gcc $(FLAGS) $(HEADER) $(TEST) -I.
 	ar rcs $(NAME) $(OBJS)
+
+ac: all clean
 
 clean:
 	rm -f $(OBJS)
+	rm -f *h.gch
+
 fclean:
 	rm -f $(OBJS)
 	rm -f $(NAME)
