@@ -11,7 +11,7 @@ CC=gcc
 CFLAGS= -I$(INC) -I.. -I/libft
 
 NAME= mlx-test
-SRC = main.c text.c math.c vectors.c
+SRC = main.c text.c math.c vectors.c commands.c drawing.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 

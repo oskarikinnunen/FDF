@@ -1,0 +1,147 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   drawing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
+/*   Updated: 2022/02/10 15:15:37 by okinnune         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fdf.h"
+
+int	color(char r, char g, char b)
+{
+	int	c;
+	int	i;
+
+	c = 0;
+	i = 0;
+	while (i < 8)
+	{
+		c ^= (((1 << i & r) != 0)) << i + 16;
+		c ^= (((1 << i & g) != 0)) << i + 8;
+		c ^= (((1 << i & b) != 0)) << i;
+		i++;
+	}
+	return (c);
+}
+
+void	debug_matrix(float m[3][3], t_mlx_i i)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (y < 3)
+	{
+		while (x < 3)
+		{
+			drawstr(i, "[", (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
+			drawstr(i, ft_ftoa(m[x][y], 3), 10 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
+			drawstr(i, "]", 80 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
+			x++;
+		}
+		y++;
+		x = 0;
+	}
+}
+
+void	drawline(t_v3 p1, t_v3 p2, t_mlx_i i)
+{
+	t_v3	diff;
+	t_v3	add;
+	int		error;
+
+	diff.x = ft_abs(p1.x - p2.x);
+	diff.y = -ft_abs(p1.y - p2.y);
+	add.x = 1 - ((p1.x > p2.x) * 2);
+	add.y = 1 - ((p1.y > p2.y) * 2);
+	error = diff.x + diff.y;
+	while (1)
+	{
+		mlx_pixel_put(i.mlx, i.win, p1.x, p1.y, color(255, 120, 120));
+		if ((int)p1.x == (int)p2.x && (int)p1.y == (int)p2.y)
+			break ;
+		if (error * 2 >= diff.y)
+		{
+			error += (p1.x != p2.x) * diff.y;
+			p1.x += (p1.x != p2.x) * add.x;
+		}
+		if (error * 2 <= diff.x)
+		{
+			error += (p1.y != p2.y) * diff.x;
+			p1.y += (p1.y != p2.y) * add.y;
+		}
+	}
+}
+
+//Points is always basically a t_v3[4]
+void	drawlinefill(t_v3 *points, t_mlx_i i, int c)
+{
+	float	xdiff;
+	float	lerp;
+	float	height;
+	t_v3	origin;
+	t_v3	target;
+
+	//origin = points[0];
+	origin.z = points[0].z;
+	target.z = points[3].z;
+	height = (points[0].z + points[1].z + points[2].z + points[3].z) / 4.0f;
+	lerp = 0.0f;
+	while (lerp < 1.0f/*origin.x - points[2].x > 2.5f && origin.y - points[2].y > 2.5*/)
+	{
+		origin.x = (points[0].x * (1 - lerp)) + (points[2].x * lerp);
+		origin.y = (points[0].y * (1 - lerp)) + (points[2].y * lerp);
+		target.x = (points[1].x * (1 - lerp)) + (points[3].x * lerp);
+		target.y = (points[1].y * (1 - lerp)) + (points[3].y * lerp);
+		lerp += 0.05f;
+		drawlinec(origin, target, i, color((char)(height * 5), 255, 122));
+	}
+	//xdiff = p1.x - p2.x;
+	//draw vertical line with xdiff
+}
+
+
+void	drawlinec(t_v3 p1, t_v3 p2, t_mlx_i i, int c)
+{
+	t_v3	diff;
+	t_v3	add;
+	t_v3	local;
+	int		error;
+
+	//p1.x = max(0, p1.x);
+	//p1.y = max(0, p1.y);
+	local.x = (int)p1.x;
+	local.y = (int)p1.y;
+	local.z = (int)p1.z;
+	diff.x = ft_abs(local.x - (int)p2.x);
+	diff.y = -ft_abs(local.y - (int)p2.y);
+	add.x = 1 - ((local.x > (int)p2.x) * 2);
+	add.y = 1 - ((local.y > (int)p2.y) * 2);
+	
+	error = diff.x + diff.y;
+	while (1)
+	{
+		mlx_pixel_put(i.mlx, i.win, (int)local.x, (int)local.y, c);
+		//printf("drawpixel %f, %f. error %i addx %f addy %f diffx %f diffy %f\n", local.x, local.y, error, add.x, add.y, diff.x, diff.y);
+		if (((int)local.x == (int)p2.x && (int)local.y == (int)p2.y))
+			break ;
+		//if (local.x)
+		//	break ;
+		if (error * 2 >= (int)diff.y)
+		{
+			error += (int)(((int)local.x != (int)p2.x) * (int)diff.y);
+			local.x += (int)(((int)local.x != (int)p2.x) * add.x);
+		}
+		if (error * 2 <= (int)diff.x)
+		{
+			error += (int)(((int)local.y != (int)p2.y) * diff.x);
+			local.y += (int)(((int)local.y != (int)p2.y) * add.y);
+		}
+	}
+}

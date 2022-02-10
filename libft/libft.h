@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:57:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/03 11:49:46 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/07 14:29:25 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char			*ft_strsub(const char *s, unsigned int start, size_t len);
 char			*ft_strjoin(const char *s1, const char *s2);
 int				ft_isdigit(int c);
 char			*ft_itoa(int n);
+char			*ft_ftoa(float f, int dec);
 int				ft_isprint(int c);
 int				ft_isspace(int c);
 int				ft_isalpha(int c);
