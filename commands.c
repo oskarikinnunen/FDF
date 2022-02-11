@@ -6,19 +6,19 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/10 13:03:50 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/11 16:03:23 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 
-float m[3][3] =
+/*float m[3][3] =
 {
 	{1,	0, 0},
 	{0, 0.903, -0.4281},
 	{0, 0.4281, 0.903}
-};
+};*/
 
 float m2[3][3] =
 {
@@ -36,10 +36,10 @@ float m3[3][3] =
 
 float mr[3][3] =
 {
-	{1,	0, 0},
-	{0.3, 1, 0.3/*0.81, 0.57*/},
-	{0, -0.57, -0.81}
-};
+	{1,	-0.6, 0},
+	{0, 1, -1.2/*0.81, 0.57*/},
+	{0, 0.0, 2.0}
+}; /* original 3,3 value -0.81f */
 
 float mr2[3][3] =
 {
@@ -73,7 +73,7 @@ float scale[3][3] =
 {
 	{22, 0, 0},
 	{0, 22, 0},
-	{0, 0, -3}
+	{0, 0, 3}
 };
 
 void	c_readcommands(t_mlx_i *i)
@@ -85,13 +85,18 @@ void	c_readcommands(t_mlx_i *i)
 	if (command == NULL)
 		command = ft_strnew(100);
 	mlx_clear_window(i->mlx, i->win);
+
+	//#if __APPLE__
+	
+	//#endif
+	
 	if (ft_isalnum(i->key) || ft_isspace(i->key))
 	{
 		str[0] = ft_toupper(i->key);
 		str[1] = '\0';
 
 		command = ft_strncat(command, str, 100);
-		printf("c string = %s\n", command);
+		//printf("c string = %s\n", command);
 	}
 	if (i->key == KEY_ENTER)
 	{
@@ -123,17 +128,6 @@ void	preprocess_points(t_v3list *points)
 	v3addx_list(600, points);
 }
 
-/*t_v3	*collect_edges(t_v3 *l)
-{
-	t_v3	edges[4];
-
-	edges[0] = l[0];
-	edges[1] = l[1];
-	edges[2] = l[19];
-	edges[3] = l[20];
-	return (edges);
-}*/
-
 void	draw_points(t_mlx_i i)
 {
 	t_v3list	lst;
@@ -160,10 +154,8 @@ void	draw_points(t_mlx_i i)
 		drawlinec(edges[0], edges[2], i, INT_MAX);
 		drawlinec(edges[2], edges[3], i, INT_MAX);
 		drawlinec(edges[1], edges[3], i, INT_MAX);
+		//if (cur % 10 == 0)
 		drawlinefill(edges, i, 1);
-		//drawlinec(lst.list[cur + 1], lst.list[cur + 20],  i, INT_MAX);
-		//drawlinec(lst.list[cur + 19], lst.list[cur + 20],  i, INT_MAX);
-		//drawlinec(p, lst.list[cur + 19], i, INT_MAX);
 		cur++;
 	}
 }
@@ -186,18 +178,18 @@ void	c_modmatrix(t_mlx_i *i)
 		drawstr(*i, ft_itoa(mpos[0] + 1), 10, 94);
 		drawstr(*i, ".", 20, 94);
 		drawstr(*i, ft_itoa(mpos[1] + 1), 30, 94);
-		w_x == 0.0f;
+		//w_x == 0.0f;
 		shift_mode -= (i->key == KEY_ENTER);
 	}
 	if (shift_mode == 0) {
 		if (w_x == 0.0f)
-		w_x = mr[mpos[0]][mpos[1]];
+			w_x = mr[mpos[1]][mpos[0]];
 		w_x += (float)(-(i->key == KEY_LEFT) + (i->key == KEY_RGHT)) * 0.1f;
-		mr[mpos[0]][mpos[1]] = w_x;
+		mr[mpos[1]][mpos[0]] = w_x;
 	}
 	debug_matrix(mr, *i);
 	draw_points(*i);
-	w_x = mr[mpos[0]][mpos[1]];
+	w_x = mr[mpos[1]][mpos[0]];
 }
 
 void	c_addbutton(t_mlx_i *i)
@@ -221,7 +213,7 @@ void	get_commands(t_mlx_i *i)
 	i->cmds = malloc(sizeof(t_command *) * 3);
 	i->cmds[0] = malloc(sizeof(t_command));
 	i->cmds[0]->str = "PROMPT";
-	i->cmds[0]->function = c_readcommands;
+	i->cmds[0]->function = c_modmatrix; //REPLACE WITH C_READCOMMANDS FOR "REAL" EXPERIENCE ;D
 	i->cmds[1] = malloc(sizeof(t_command));
 	i->cmds[1]->str = "ADDBUTTON";
 	i->cmds[1]->function = c_addbutton;

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/10 15:15:37 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/11 16:08:24 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	color(char r, char g, char b)
 	i = 0;
 	while (i < 8)
 	{
-		c ^= (((1 << i & r) != 0)) << i + 16;
-		c ^= (((1 << i & g) != 0)) << i + 8;
+		c ^= (((1 << i & r) != 0)) << (i + 16);
+		c ^= (((1 << i & g) != 0)) << (i + 8);
 		c ^= (((1 << i & b) != 0)) << i;
 		i++;
 	}
@@ -41,7 +41,7 @@ void	debug_matrix(float m[3][3], t_mlx_i i)
 		while (x < 3)
 		{
 			drawstr(i, "[", (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
-			drawstr(i, ft_ftoa(m[x][y], 3), 10 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
+			drawstr(i, ft_ftoa(m[y][x], 3), 10 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
 			drawstr(i, "]", 80 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
 			x++;
 		}
@@ -93,15 +93,17 @@ void	drawlinefill(t_v3 *points, t_mlx_i i, int c)
 	target.z = points[3].z;
 	height = (points[0].z + points[1].z + points[2].z + points[3].z) / 4.0f;
 	lerp = 0.0f;
-	while (lerp < 1.0f/*origin.x - points[2].x > 2.5f && origin.y - points[2].y > 2.5*/)
+	while (lerp <= 1.0f/*origin.x - points[2].x > 2.5f && origin.y - points[2].y > 2.5*/)
 	{
-		origin.x = (points[0].x * (1 - lerp)) + (points[2].x * lerp);
-		origin.y = (points[0].y * (1 - lerp)) + (points[2].y * lerp);
-		target.x = (points[1].x * (1 - lerp)) + (points[3].x * lerp);
-		target.y = (points[1].y * (1 - lerp)) + (points[3].y * lerp);
-		lerp += 0.05f;
-		drawlinec(origin, target, i, color((char)(height * 5), 255, 122));
+		origin.x = (int)((points[0].x * (1 - lerp)) + (points[2].x * lerp));
+		origin.y = (int)((points[0].y * (1 - lerp)) + (points[2].y * lerp));
+		target.x = (int)((points[1].x * (1 - lerp)) + (points[3].x * lerp));
+		target.y = (int)((points[1].y * (1 - lerp)) + (points[3].y * lerp));
+		lerp += 0.01f;
+		drawlinec(origin, target, i, color((char)((int)(height * 5)), 0, 0));
 	}
+	//if ()
+	//drawstr(i, ft_ftoa(height, 2), points[0].x, points[0].y);
 	//xdiff = p1.x - p2.x;
 	//draw vertical line with xdiff
 }

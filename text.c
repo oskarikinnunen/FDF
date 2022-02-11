@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 06:53:22 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/03 12:15:54 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/11 15:33:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ char	*fontchar(char font[1200], char c)
 	nlcount = 0;
 	if (ft_isalpha(c))
 	{
-		//printf("is alpha %c\n", c);
 		c = ft_toupper(c);
 		result = font;
-		while(nlcount < (c - 'A') * 6)
+		while (nlcount < (c - 'A') * 6)
 		{
 			result = ft_strchr(result+1, '\n');
 			nlcount++;
@@ -51,14 +50,8 @@ char	*fontchar(char font[1200], char c)
 		result = ft_strchr(font, c);
 		if (result == NULL)
 		{
-			//printf("assigning error char for %c\n", c);
 			result = ft_strchr(font, 'e');
-			//printf("assigned error char for %c\n", c);
-		} else
-		{
-			//printf("found nonalpha char %c in index %li\n", c, (result - font));
 		}
-		
 	}
 	return (result);
 }

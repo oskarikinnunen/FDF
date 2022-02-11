@@ -6,21 +6,24 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/10 12:52:39 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:05:19 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 # define FONTSIZE 2
+
+/* Maybe use enum for these? */
 # define KEY_LEFT 65361
 # define KEY_RGHT 65363
 # define KEY_DOWN 65364
 # define KEY_UP 65362
-
 # define KEY_TILDE 167
+# define KEY_TILDE_OSX 10
 # define KEY_ENTER 65293
 # define KEY_LEFTSHIFT 65505
+
 # define DEBUG_MW 50
 # include "libft/libft.h"
 # include <mlx.h>
@@ -80,5 +83,7 @@ void	drawlinec(t_v3 p1, t_v3 p2, t_mlx_i i, int c);
 void	drawline(t_v3 p1, t_v3 p2, t_mlx_i i);
 void	drawchar(t_mlx_i i, char c, int x, int y);
 void	debug_matrix(float m[3][3], t_mlx_i i);
+
+int		convert_cocoakc_to_ascii_global(int kc);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/10 14:35:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/11 17:01:42 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,20 @@ int	context_loop(void *p)
 	t_mlx_i	*i;
 
 	i = (t_mlx_i *)p;
-	if (i->key == 0)
+	if (i->key == -1)
 		return 0;
 	printf("KEYPRESS %i\n", i->key);
-	if (i->key == KEY_TILDE)
+	i->key = convert_cocoakc_to_ascii_global(i->key);
+	printf("Converted to ascii: %i\n", i->key);
+	if (i->key == KEY_TILDE || i->key == KEY_TILDE_OSX)
+	{
 		i->curcmd = i->cmds[0];
-	if (i->curcmd != NULL && i->key != 0)
+	}
+	if (i->curcmd != NULL && i->key != -1)
+	{
 		i->curcmd->function(i);
-	i->key = 0;
+	}
+	i->key = -1;
 }
 
 int	keystroke(int key, void *p)
@@ -100,22 +106,21 @@ int	main(int argc, char **argv)
 	t_mlx_i 	i;
 	void		*mlx;
 	void		*win;
+	void		*cmdimage;
+	void		*image;
 	
+	if (argc != 2)
+		return (-1);
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, WSZ, WSZ, "new_window");
 	i.mlx = mlx;
 	i.win = win;
 	i.curcmd = NULL;
+	//mlx_new_image(mlx, WSZ, WSZ / 2);
 	get_commands(&i);
-
-	if (argc != 2)
-		return (-1);
-
-	//int value = 69;
 	mlx_mouse_hook(win,mouse_win1,&i);
 	mlx_key_hook(win,keystroke,&i);
 	mlx_loop_hook(mlx, context_loop, &i);
-
 	mlx_loop(mlx);
 	return (0);
 }
