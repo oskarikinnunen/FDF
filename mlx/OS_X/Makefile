@@ -19,8 +19,6 @@ all: $(NAME)
 $(NAME): $(MODULE_OBJ) $(OBJ) $(C_OBJ)
 	swiftc $(INC) -o $(NAME) -emit-library $(OBJ) $(C_OBJ) -lz
 
-
-
 %.o: %.swift
 	swiftc $(INC) -parse-as-library -c $< -o $@
 

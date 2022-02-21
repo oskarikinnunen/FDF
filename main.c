@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 17:01:42 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:41:58 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <math.h>
 #include "fdf.h"
 #include "libft/libft.h"
-#define WSZ 1200
 //#include <mlx_int.h>
 
 void	v3set(int x, int y, int z, t_v3 *v)
@@ -46,13 +45,9 @@ int	context_loop(void *p)
 	i->key = convert_cocoakc_to_ascii_global(i->key);
 	printf("Converted to ascii: %i\n", i->key);
 	if (i->key == KEY_TILDE || i->key == KEY_TILDE_OSX)
-	{
 		i->curcmd = i->cmds[0];
-	}
 	if (i->curcmd != NULL && i->key != -1)
-	{
 		i->curcmd->function(i);
-	}
 	i->key = -1;
 }
 

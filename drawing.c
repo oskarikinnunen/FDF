@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 16:08:24 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/19 19:27:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,42 @@ void	drawlinefill(t_v3 *points, t_mlx_i i, int c)
 	//draw vertical line with xdiff
 }
 
+void	drawline_toimage(t_v3 p1, t_v3 p2, char *img, int c)
+{
+	t_v3	diff;
+	t_v3	add;
+	t_v3	local;
+	int		error;
+
+	//p1.x = max(0, p1.x);
+	//p1.y = max(0, p1.y);
+	local.x = (int)p1.x;
+	local.y = (int)p1.y;
+	local.z = (int)p1.z;
+	diff.x = ft_abs(local.x - (int)p2.x);
+	diff.y = -ft_abs(local.y - (int)p2.y);
+	add.x = 1 - ((local.x > (int)p2.x) * 2);
+	add.y = 1 - ((local.y > (int)p2.y) * 2);
+	
+	error = diff.x + diff.y;
+	while (1)
+	{
+		if (local.x < WSZ && local.y * WSZ < WSZ / 2) //TODO: Remove *32 multiplier to draw something, it's not right tho...
+			*(img + (int)local.x + (((int)local.y) * WSZ)) = INT_MAX;
+		if (((int)local.x == (int)p2.x && (int)local.y == (int)p2.y))
+			break ;
+		if (error * 2 >= (int)diff.y)
+		{
+			error += (int)(((int)local.x != (int)p2.x) * (int)diff.y);
+			local.x += (int)(((int)local.x != (int)p2.x) * add.x);
+		}
+		if (error * 2 <= (int)diff.x)
+		{
+			error += (int)(((int)local.y != (int)p2.y) * diff.x);
+			local.y += (int)(((int)local.y != (int)p2.y) * add.y);
+		}
+	}
+}
 
 void	drawlinec(t_v3 p1, t_v3 p2, t_mlx_i i, int c)
 {

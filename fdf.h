@@ -6,13 +6,14 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 17:05:19 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/18 16:42:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 # define FONTSIZE 2
+# define WSZ 1200
 
 /* Maybe use enum for these? */
 # define KEY_LEFT 65361
@@ -57,6 +58,13 @@ typedef struct s_mlx_info
 	struct s_command	*curcmd;
 }			t_mlx_i;
 
+typedef struct s_image_info
+{
+	int	bpp;
+	int	size_line;
+	int	endian;
+}			t_image_info;
+
 typedef struct s_command
 {
 	char	*str;
@@ -80,9 +88,13 @@ t_v3list	*read_input(char *filename);
 /* DRAWING */
 void	drawlinefill(t_v3 *points, t_mlx_i i, int c);
 void	drawlinec(t_v3 p1, t_v3 p2, t_mlx_i i, int c);
+void	drawline_toimage(t_v3 p1, t_v3 p2, char *img, int c);
 void	drawline(t_v3 p1, t_v3 p2, t_mlx_i i);
 void	drawchar(t_mlx_i i, char c, int x, int y);
 void	debug_matrix(float m[3][3], t_mlx_i i);
+int		color(char r, char g, char b);
+
+char	*ci_data_adder(t_mlx_i *i, void **imagereturn);
 
 int		convert_cocoakc_to_ascii_global(int kc);
 

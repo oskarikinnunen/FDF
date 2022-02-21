@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 16:03:23 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/18 19:38:58 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	draw_points(t_mlx_i i)
 	t_v3list	lst;
 	int			cur;
 	t_v3		edges[4];
+	void		*img;
 
 	lst = *(read_input("input"));
 	preprocess_points(&lst);
@@ -140,24 +141,22 @@ void	draw_points(t_mlx_i i)
 	while (cur + 20 < lst.length)
 	{
 		t_v3 *l = lst.list;
-		if ((cur + 1) % 19 == 0)
-		{
-			cur++;
-			continue ;
-		}
-		//edges = collect_edges(&(l[cur]));
+		
 		edges[0] = l[cur];
 		edges[1] = l[cur + 1];
 		edges[2] = l[cur + 19];
 		edges[3] = l[cur + 20];
-		drawlinec(edges[0], edges[1], i, INT_MAX);
-		drawlinec(edges[0], edges[2], i, INT_MAX);
-		drawlinec(edges[2], edges[3], i, INT_MAX);
-		drawlinec(edges[1], edges[3], i, INT_MAX);
-		//if (cur % 10 == 0)
-		drawlinefill(edges, i, 1);
 		cur++;
+		if ((cur + 1) % 19 == 0)
+			continue ;
+		//bzero the image first!
+		drawline_toimage(edges[0], edges[1], ci_data_adder(&i, &img), 1);
+		//drawlinec(edges[0], edges[1], i, INT_MAX);
+		//drawlinec(edges[0], edges[2], i, INT_MAX);
+		//drawlinec(edges[2], edges[3], i, INT_MAX);
+		//drawlinec(edges[1], edges[3], i, INT_MAX);
 	}
+	mlx_put_image_to_window(i.mlx, i.win, img, 0, 0);
 }
 
 void	c_modmatrix(t_mlx_i *i)
@@ -197,13 +196,13 @@ void	c_addbutton(t_mlx_i *i)
 	static int	w_x;
 	static int	w_y;
 
-	mlx_clear_window(i->mlx, i->win);
-	drawstr(*i, "USE ARROW KEYS TO RESIZE BUTTON", 10, 10);
+	//mlx_clear_window(i->mlx, i->win);
+	mlx_string_put(i->mlx, i->win, 10, 10, color(200,200,200), "Testing actual string function!");
 	//printf("KEY PUSHED %i\n", key);
 	w_x += -(i->key == KEY_LEFT) + (i->key == KEY_RGHT);
 	w_y += -(i->key == KEY_UP)	+ (i->key == KEY_DOWN);
-	drawstr(*i, ft_itoa(w_x), 10, 25);
-	drawstr(*i, ft_itoa(w_y), 10, 40);
+	//drawstr(*i, ft_itoa(w_x), 10, 25);
+	//drawstr(*i, ft_itoa(w_y), 10, 40);
 }
 
 void	get_commands(t_mlx_i *i)
@@ -213,7 +212,7 @@ void	get_commands(t_mlx_i *i)
 	i->cmds = malloc(sizeof(t_command *) * 3);
 	i->cmds[0] = malloc(sizeof(t_command));
 	i->cmds[0]->str = "PROMPT";
-	i->cmds[0]->function = c_modmatrix; //REPLACE WITH C_READCOMMANDS FOR "REAL" EXPERIENCE ;D
+	i->cmds[0]->function = c_readcommands; //REPLACE WITH C_READCOMMANDS FOR "REAL" EXPERIENCE ;D
 	i->cmds[1] = malloc(sizeof(t_command));
 	i->cmds[1]->str = "ADDBUTTON";
 	i->cmds[1]->function = c_addbutton;
