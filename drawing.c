@@ -6,11 +6,12 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/19 19:27:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/22 03:53:36 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <assert.h>
 
 int	color(char r, char g, char b)
 {
@@ -31,8 +32,9 @@ int	color(char r, char g, char b)
 
 void	debug_matrix(float m[3][3], t_mlx_i i)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	char	*str;
 
 	x = 0;
 	y = 0;
@@ -40,9 +42,11 @@ void	debug_matrix(float m[3][3], t_mlx_i i)
 	{
 		while (x < 3)
 		{
-			drawstr(i, "[", (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
-			drawstr(i, ft_ftoa(m[y][x], 3), 10 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
-			drawstr(i, "]", 80 + (x * FONTSIZE * DEBUG_MW), 25 + (y * FONTSIZE * 10));
+			str = ft_ftoa(m[y][x], 2);
+			mlx_string_put(i.mlx, i.win, 00 + ((x + 1) * DEBUG_MW), 25 + y * 10, INT_MAX, "[");
+			mlx_string_put(i.mlx, i.win, 10 + ((x + 1) * DEBUG_MW), 25 + y * 10, INT_MAX, str);
+			mlx_string_put(i.mlx, i.win, 50 + ((x + 1) * DEBUG_MW), 25 + y * 10, INT_MAX, "]");
+			free(str);
 			x++;
 		}
 		y++;

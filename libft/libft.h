@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:57:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/07 14:29:25 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/22 09:38:11 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void			*ft_memcpy(void *dst, const void *src,
 void			*ft_memccpy(void *dst, const void *src,
 					int c, size_t n);
 void			*ft_memmove(void *dst, const void *src, size_t len);
+char			*ft_memdup(const void *m, size_t n);
 int				ft_memcmp(const void *ptr1, const void*ptr2, size_t num);
 void			ft_memdel(void **ap);
 void			*ft_memalloc(size_t size);

@@ -6,11 +6,12 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/18 19:38:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/22 03:57:18 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "messages.h"
 
 
 /*float m[3][3] =
@@ -85,10 +86,6 @@ void	c_readcommands(t_mlx_i *i)
 	if (command == NULL)
 		command = ft_strnew(100);
 	mlx_clear_window(i->mlx, i->win);
-
-	//#if __APPLE__
-	
-	//#endif
 	
 	if (ft_isalnum(i->key) || ft_isspace(i->key))
 	{
@@ -116,7 +113,8 @@ void	c_readcommands(t_mlx_i *i)
 	if (i->key== 0xFF1B)
 		command[0] = '\0';
 	
-	drawstr(*i, command, 10, 10);
+	//drawstr(*i, command, 10, 10);
+	mlx_string_put(i->mlx, i->win, 10, 10, INT_MAX, command);
 }
 
 void	preprocess_points(t_v3list *points)
@@ -156,7 +154,7 @@ void	draw_points(t_mlx_i i)
 		//drawlinec(edges[2], edges[3], i, INT_MAX);
 		//drawlinec(edges[1], edges[3], i, INT_MAX);
 	}
-	mlx_put_image_to_window(i.mlx, i.win, img, 0, 0);
+	mlx_put_image_to_window(i.mlx, i.win, img, 0, WSZ / 2);
 }
 
 void	c_modmatrix(t_mlx_i *i)
@@ -167,16 +165,18 @@ void	c_modmatrix(t_mlx_i *i)
 	//static int	w_y;
 
 	mlx_clear_window(i->mlx, i->win);
-	drawstr(*i, "LEFT AND RIGHT ARROW KEYS = MODIFY VALUE, SHIFT = MODIFY MATRIX POSITION", 10, 10);
+	mlx_string_put(i->mlx, i->win, 10, 10, INT_MAX, MM_INFO1);
 	shift_mode += (i->key == KEY_LEFTSHIFT) * (shift_mode == 0);
 	if (shift_mode == 1)
 	{
 		mpos[0] += -(i->key == KEY_LEFT) + (i->key == KEY_RGHT);
 		mpos[1] += -(i->key == KEY_UP)	+ (i->key == KEY_DOWN);
-		drawstr(*i, "USE ARROW KEYS TO SELECT MATRIX POSITION TO EDIT", 10, 80);
-		drawstr(*i, ft_itoa(mpos[0] + 1), 10, 94);
-		drawstr(*i, ".", 20, 94);
-		drawstr(*i, ft_itoa(mpos[1] + 1), 30, 94);
+		mlx_string_put(i->mlx, i->win, 10, 80, INT_MAX, MM_INFO2);
+		mlx_string_put(i->mlx, i->win, 10, 94, INT_MAX, ft_itoa(mpos[0] + 1));
+		mlx_string_put(i->mlx, i->win, 30, 94, INT_MAX, ft_itoa(mpos[1] + 1));
+		//drawstr(*i, ft_itoa(mpos[0] + 1), 10, 94);
+		//drawstr(*i, ".", 20, 94);
+		//drawstr(*i, ft_itoa(mpos[1] + 1), 30, 94);
 		//w_x == 0.0f;
 		shift_mode -= (i->key == KEY_ENTER);
 	}
@@ -191,33 +191,16 @@ void	c_modmatrix(t_mlx_i *i)
 	w_x = mr[mpos[1]][mpos[0]];
 }
 
-void	c_addbutton(t_mlx_i *i)
-{
-	static int	w_x;
-	static int	w_y;
-
-	//mlx_clear_window(i->mlx, i->win);
-	mlx_string_put(i->mlx, i->win, 10, 10, color(200,200,200), "Testing actual string function!");
-	//printf("KEY PUSHED %i\n", key);
-	w_x += -(i->key == KEY_LEFT) + (i->key == KEY_RGHT);
-	w_y += -(i->key == KEY_UP)	+ (i->key == KEY_DOWN);
-	//drawstr(*i, ft_itoa(w_x), 10, 25);
-	//drawstr(*i, ft_itoa(w_y), 10, 40);
-}
-
 void	get_commands(t_mlx_i *i)
 {
 	//t_command	***cmds;
 
-	i->cmds = malloc(sizeof(t_command *) * 3);
+	i->cmds = malloc(sizeof(t_command *) * 2);
 	i->cmds[0] = malloc(sizeof(t_command));
 	i->cmds[0]->str = "PROMPT";
 	i->cmds[0]->function = c_readcommands; //REPLACE WITH C_READCOMMANDS FOR "REAL" EXPERIENCE ;D
 	i->cmds[1] = malloc(sizeof(t_command));
-	i->cmds[1]->str = "ADDBUTTON";
-	i->cmds[1]->function = c_addbutton;
-	i->cmds[2] = malloc(sizeof(t_command));
-	i->cmds[2]->str = "MODMATRIX";
-	i->cmds[2]->function = c_modmatrix;
-	i->cmds[3] = NULL;
+	i->cmds[1]->str = "MODMATRIX";
+	i->cmds[1]->function = c_modmatrix;
+	i->cmds[2] = NULL;
 }

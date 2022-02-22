@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/02/18 16:34:39 by okinnune         ###   ########.fr        #
+#    Updated: 2022/02/22 03:09:02 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ UNAME= $(shell uname)
 
 MLXLIB = libmlx.dylib
 ifeq ($(UNAME), Linux)
-MLXLIB = mlx/Linux/libmlx.a
+MLXLIB = mlx/Linux/libmlx.a -I/usr/include -lm -lX11 -lXext -I/mlx/Linux
 endif
 #LINUX : 
 
@@ -36,7 +36,7 @@ all	:$(NAME)
 
 $(NAME)	:$(OBJ)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJ) $(LIB) -I. $(MLXLIB) -I/usr/include -lm -lX11 -lXext -I/libft -I/mlx/Linux -g
+	$(CC) -o $(NAME) $(OBJ) $(LIB) -I. $(MLXLIB) -I/libft -g
 
 clean	:
 	make -C libft clean

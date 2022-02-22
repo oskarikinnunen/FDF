@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/18 16:42:02 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/22 03:49:36 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define KEY_ENTER 65293
 # define KEY_LEFTSHIFT 65505
 
-# define DEBUG_MW 50
+# define DEBUG_MW 60
 # include "libft/libft.h"
 # include <mlx.h>
 # include <math.h>
