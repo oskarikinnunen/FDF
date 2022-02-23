@@ -10,6 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
+
+#NOTES:
+#	For compiling fully from sources on Linux you need to install the following packages:
+#	libx11-dev && libxext-dev
+#
 INC=/usr/local/lib
 #HT=Linux
 #DOCP=do_cp
@@ -23,7 +28,7 @@ UNAME= $(shell uname)
 
 MLXLIB = libmlx.dylib
 ifeq ($(UNAME), Linux)
-MLXLIB = mlx/Linux/libmlx.a -I/usr/include -lm -lX11 -lXext -I/mlx/Linux
+MLXLIB = mlx/Linux/libmlx.a -I/usr/include -I/usr/lib/ -lm -lX11 -lXext -Imlx/Linux/
 endif
 #LINUX : 
 
@@ -36,7 +41,7 @@ all	:$(NAME)
 
 $(NAME)	:$(OBJ)
 	make -C libft
-	$(CC) -o $(NAME) $(OBJ) $(LIB) -I. $(MLXLIB) -I/libft -g
+	$(CC) -o $(NAME) $(OBJ) $(LIB) $(MLXLIB) -I. -I/libft -g
 
 clean	:
 	make -C libft clean

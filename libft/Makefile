@@ -37,7 +37,7 @@ V_OBJS= $(V_FILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(SRCS) $(OBJS) $(V_OBJS)
-	ar rc $(NAME) $(OBJS)
+	ar rc $(NAME) $(OBJS) $(V_OBJS)
 	ar rc $(V_NAME) $(V_OBJS)
 
 $(OBJS):
