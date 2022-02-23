@@ -21,7 +21,6 @@
 # define KEY_DOWN 65364
 # define KEY_UP 65362
 # define KEY_TILDE 167
-# define KEY_TILDE_OSX 10
 # define KEY_ENTER 65293
 # define KEY_LEFTSHIFT 65505
 
@@ -29,8 +28,13 @@
 # define X 0
 # define Y 1
 # define Z 2
+# define V3SIZE sizeof(float *) * 3
 # include "libft/libft.h"
-# include <mlx.h>
+# if defined(__APPLE__)
+#  include <mlx.h>
+# elif defined (__unix__)
+#  include "mlx/Linux/mlx.h"
+# endif
 # include <math.h>
 # include <limits.h>
 # include <fcntl.h>

@@ -16,7 +16,7 @@ float	*v3new(float x, float y, float z)
 {
 	float	*vf3;
 
-	vf3 = (float *)malloc(sizeof(float) * 3);
+	vf3 = (float *)malloc(sizeof(float *) * 3);
 	vf3[0] = x;
 	vf3[1] = y;
 	vf3[2] = z;

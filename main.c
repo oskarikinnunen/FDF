@@ -78,13 +78,15 @@ t_list	*read_input(char *filename)
 			}
 			continue;
 		}
-		v3 = v3new(crds[X], crds[Y], *buf - '0');
+		v3 = v3new(crds[X], crds[Y], (float)(*buf - '0'));
+		printf("v3 content x: %f y: %f z: %f \n", v3[0], v3[1], v3[2]);
 		if (vlist == NULL)
-			vlist = ft_lstnew(v3, sizeof(float *));
+			vlist = ft_lstnew(v3, sizeof(float *) * 3);
 		else
-			ft_lstapp(&vlist, ft_lstnew(v3, sizeof(float *)));
+			ft_lstapp(&vlist, ft_lstnew(v3, V3SIZE));
 		crds[X]++;
 		cur++;
+		printf("CUR vlist content %f \n", ((float *)vlist->content)[X]);
 		printf("CUR READINPUT %i \n", cur);
 	}
 	return (vlist);

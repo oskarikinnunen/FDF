@@ -134,11 +134,11 @@ void	draw_points(t_mlx_i i)
 	void		*img;
 
 	lst = read_input("input");
-	preprocess_points(&lst);
+	//preprocess_points(&lst);
 	cur = 0;
 	while (lst->next != NULL)
 	{
-		printf("X %i Y %i Z %i \n", ((float *)lst->content)[X], ((float *)lst->content)[Y], ((float *)lst->content)[Z]);
+		printf("X %f Y %f Z %f \n", ((float *)lst->content)[X], ((float *)lst->content)[Y], ((float *)lst->content)[Z]);
 		lst = lst->next;
 	}
 	/*while (cur + 20 < lst.length)
