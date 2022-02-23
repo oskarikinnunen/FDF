@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 14:03:46 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 15:29:47 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/23 06:50:09 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 }*/
 
 /* Norminette no likey, fix... */
-char	global_cocoa[33][2][6] = 
+char	global_cocoa[34][2][6] = 
 {
 	{"A", "0"},
 	{"B", "11"},
@@ -60,7 +60,8 @@ char	global_cocoa[33][2][6] =
 	{"65362", "126"}, //UP
 	{"65364", "125"}, //DOWN
 	{"65361", "123"}, //LEFT
-	{"65363", "124"} //RIGHT
+	{"65363", "124"}, //RIGHT
+	{"167", "10"} //TILDE
 };
 
 int	convert_cocoakc_to_ascii_global(int kc)
@@ -70,7 +71,7 @@ int	convert_cocoakc_to_ascii_global(int kc)
 
 	i = 0;
 	istr = ft_itoa(kc);
-	while (i < 33 && istr != NULL)
+	while (i < 34 && istr != NULL)
 	{
 		if (ft_strcmp(istr, global_cocoa[i][1]) == 0)
 		{
