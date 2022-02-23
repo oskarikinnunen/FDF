@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/22 03:57:18 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/23 05:41:12 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,15 +128,20 @@ void	preprocess_points(t_v3list *points)
 
 void	draw_points(t_mlx_i i)
 {
-	t_v3list	lst;
+	t_list		*lst;
 	int			cur;
 	t_v3		edges[4];
 	void		*img;
 
-	lst = *(read_input("input"));
+	lst = read_input("input");
 	preprocess_points(&lst);
 	cur = 0;
-	while (cur + 20 < lst.length)
+	while (lst->next != NULL)
+	{
+		printf("X %i Y %i Z %i \n", ((float *)lst->content)[X], ((float *)lst->content)[Y], ((float *)lst->content)[Z]);
+		lst = lst->next;
+	}
+	/*while (cur + 20 < lst.length)
 	{
 		t_v3 *l = lst.list;
 		
@@ -153,8 +158,8 @@ void	draw_points(t_mlx_i i)
 		//drawlinec(edges[0], edges[2], i, INT_MAX);
 		//drawlinec(edges[2], edges[3], i, INT_MAX);
 		//drawlinec(edges[1], edges[3], i, INT_MAX);
-	}
-	mlx_put_image_to_window(i.mlx, i.win, img, 0, WSZ / 2);
+	}*/
+	//mlx_put_image_to_window(i.mlx, i.win, img, 0, WSZ / 2);
 }
 
 void	c_modmatrix(t_mlx_i *i)

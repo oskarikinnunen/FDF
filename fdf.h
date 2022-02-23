@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/22 03:49:36 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/23 05:45:15 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define KEY_LEFTSHIFT 65505
 
 # define DEBUG_MW 60
+# define X 0
+# define Y 1
+# define Z 2
 # include "libft/libft.h"
 # include <mlx.h>
 # include <math.h>
@@ -71,7 +74,8 @@ typedef struct s_command
 	void	(*function)(t_mlx_i *i);
 }				t_command;
 
-void	v3mul(float matrix[3][3], t_v3 *v);
+float	*v3new(float x, float y, float z);
+void	v3mul(float matrix[3][3], float *v3);
 void	v3mul_list(float matrix[3][3], t_v3list *lst);
 void	v3addx_list(int x, t_v3list *lst);
 void	v3addy_list(int y, t_v3list *lst);
@@ -83,7 +87,7 @@ void		get_commands(t_mlx_i *i);
 void		c_readcommands(t_mlx_i *i);
 void		c_addbutton(t_mlx_i *i);
 
-t_v3list	*read_input(char *filename);
+t_list		*read_input(char *filename);
 
 /* DRAWING */
 void	drawlinefill(t_v3 *points, t_mlx_i i, int c);

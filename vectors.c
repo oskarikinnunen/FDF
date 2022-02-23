@@ -6,45 +6,40 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 12:47:59 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/03 12:57:48 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/23 05:09:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	v3mul(float matrix[3][3], t_v3 *v)
+float	*v3new(float x, float y, float z)
 {
-	float x;
-	float y;
-	float z;
+	float	*vf3;
 
-	x = (v->x * matrix[0][0]) + (v->y * matrix[0][1]) + (v->z * matrix[0][2]);
-	y = (v->x * matrix[1][0]) + (v->y * matrix[1][1]) + (v->z * matrix[1][2]);
-	z = (v->x * matrix[2][0]) + (v->y * matrix[2][1]) + (v->z * matrix[2][2]);
-
-	v->x = x;
-	v->y = y;
-	v->z = z;
+	vf3 = (float *)malloc(sizeof(float) * 3);
+	vf3[0] = x;
+	vf3[1] = y;
+	vf3[2] = z;
+	return (vf3);
 }
 
-t_v3	rotate_v3(t_v3 in, t_v3 angle)
+void	v3mul(float matrix[3][3], float *v3)
 {
-	t_v3	new;
-	int		x;
-	int		y;
+	float	t[3];
+	int		index;
 
-	//x = in.x;
-	//y = in.y;
-	x = in.x * (int)cos(angle.x) + in.y * (int)sin(angle.x);
-	y = in.x * -(int)sin(angle.x) + in.y * (int)cos(angle.x);
-
-	y = y * (int)cos(angle.y) - in.z * (int)sin(angle.y);
-	
-	new.x = x;
-	new.y = y;
-	//new.x += WSZ * 0.5;
-	//new.y += WSZ * 0.5;
-	return (new);
+	index = X;
+	while (index <= Z)
+	{
+		t[index] =
+			(v3[X] * matrix[index][0])
+			+ (v3[Y] * matrix[index][1])
+			+ (v3[Z] * matrix[index][2]);
+		index++;
+	}
+	v3[X] = t[X];
+	v3[Y] = t[Y];
+	v3[Z] = t[Z];
 }
 
 void	v3mul_list(float matrix[3][3], t_v3list *lst)

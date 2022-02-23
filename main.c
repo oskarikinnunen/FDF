@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/18 19:41:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/23 05:43:01 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 #include "fdf.h"
 #include "libft/libft.h"
 //#include <mlx_int.h>
-
-void	v3set(int x, int y, int z, t_v3 *v)
-{
-	v->x = x;
-	v->y = y;
-	v->z = z;
-}
 
 int	mouse_win1(int button, int x, int y, void *p)
 {
@@ -49,6 +42,7 @@ int	context_loop(void *p)
 	if (i->curcmd != NULL && i->key != -1)
 		i->curcmd->function(i);
 	i->key = -1;
+	return (1);
 }
 
 int	keystroke(int key, void *p)
@@ -59,21 +53,19 @@ int	keystroke(int key, void *p)
 	i->key = key;
 }
 
-t_v3list	*read_input(char *filename)
+t_list	*read_input(char *filename)
 {
 	int			res;
 	int			fd;
 	char		buf[1];
-	int			x;
-	int			y;
+	int			crds[2];
 	int			cur;
-	t_v3list	*resv;
+	t_list		*vlist;
+	float		*v3;
 
 	fd = open(filename, O_RDONLY);
-	resv = malloc(sizeof(t_v3list));
-	resv->list = malloc(sizeof(t_v3) * 1000);
-	x = 0;
-	y = 0;
+	ft_bzero(crds, sizeof(int) * 2);
+	vlist = NULL;
 	cur = 0;
 	while ((res = read(fd, buf, 1)) == 1)
 	{
@@ -81,19 +73,21 @@ t_v3list	*read_input(char *filename)
 		{
 			if (*buf == '\n')
 			{
-				y++;
-				x = 0;
+				crds[Y]++;
+				crds[X] = 0;
 			}
 			continue;
 		}
-		resv->list[cur].x = x;
-		resv->list[cur].y = y;
-		resv->list[cur].z = *buf - '0';
-		x++;
+		v3 = v3new(crds[X], crds[Y], *buf - '0');
+		if (vlist == NULL)
+			vlist = ft_lstnew(v3, sizeof(float *));
+		else
+			ft_lstapp(&vlist, ft_lstnew(v3, sizeof(float *)));
+		crds[X]++;
 		cur++;
+		printf("CUR READINPUT %i \n", cur);
 	}
-	resv->length = cur;
-	return (resv);
+	return (vlist);
 }
 
 int	main(int argc, char **argv)
