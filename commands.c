@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 03:43:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 05:53:06 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,28 +119,34 @@ void	c_readcommands(t_mlx_i *i)
 
 void	preprocess_points(t_v3list *points)
 {
-	v3mul_list(scale, points);
+	/*v3mul_list(scale, points);
 	v3addx_list(120, points);
 	v3addy_list(200, points);
 	v3mul_list(mr, points);
-	v3addx_list(600, points);
+	v3addx_list(600, points);*/
 }
 
 void	draw_points(t_mlx_i i)
 {
 	t_map	map;
 	int		cur;
-	float	*v3;
+	//float	*v3;
+	int		*v3_integers[4];
 
 	//map.
 	map.width = 0;
 	read_inputmap("input", &map);
 	cur = 0;
-	while (cur < map.length)
+	while ((cur + map.width + 1) < map.length)
 	{
-		v3 = map.points[cur];
-		printf("cur x: %f y: %f z: %f\n", v3[X], v3[Y], v3[Z]);
+		v3_integers[0] = map.points[cur];
+		v3_integers[1] = map.points[cur + 1];
+		v3_integers[2] = map.points[cur + map.width];
+		v3_integers[3] = map.points[cur + map.width + 1];
+		printf("drawing x: %i y: %i z: %i\n", v3_integers[0][X], v3_integers[0][Y], v3_integers[0][Z]);
+		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
 		cur++;
+		cur += (cur % map.width == 0);
 	}
 }
 

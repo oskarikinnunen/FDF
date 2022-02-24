@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 06:53:22 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/11 15:33:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 05:49:03 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,6 @@ char	*fontchar(char font[1200], char c)
 	return (result);
 }
 
-void	drawstr(t_mlx_i i, char *str, int x, int y)
-{
-	while (*str)
-	{
-		drawchar(i, *str, x, y);
-		x += FONTSIZE * 6;
-		str++;
-	}
-}
-
 void	drawchar(t_mlx_i i, char c, int x, int y)
 {
 	static	char font[1200];
@@ -100,5 +90,15 @@ void	drawchar(t_mlx_i i, char c, int x, int y)
 		nlcount++;
 		fchar++;
 		x = 0;
+	}
+}
+
+void	drawstr(t_mlx_i i, char *str, int x, int y)
+{
+	while (*str)
+	{
+		drawchar(i, *str, x, y);
+		x += FONTSIZE * 6;
+		str++;
 	}
 }

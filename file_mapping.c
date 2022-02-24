@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 04:28:23 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 05:00:36 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	read_inputmap(char *filename, t_map *map)
 	cur = 0;
 	map->points = ft_memalloc(map->length * sizeof(float *));
 	printf("MAP WIDTH IS %i\n", map->width);
-	printf("MAP WIDTH IS %i\n", map->length);
 	while (cur < map->length)
 	{
 		//printf("cur %i moduloresult = %i\n", cur, (cur + 1) % (map->width));

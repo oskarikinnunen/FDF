@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 03:17:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 05:50:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,6 @@ typedef struct s_command
 
 float	*v3new(float x, float y, float z);
 void	v3mul(float matrix[3][3], float *v3);
-void	v3mul_list(float matrix[3][3], t_v3list *lst);
-void	v3addx_list(int x, t_v3list *lst);
-void	v3addy_list(int y, t_v3list *lst);
 void	drawstr(t_mlx_i i, char *str, int x, int y);
 int		max(int a, int b);
 
@@ -101,11 +98,8 @@ void		c_addbutton(t_mlx_i *i);
 void		read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
-void	drawlinefill(t_v3 *points, t_mlx_i i, int c);
-void	drawlinec(t_v3 p1, t_v3 p2, t_mlx_i i, int c);
+void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
 void	drawline_toimage(t_v3 p1, t_v3 p2, char *img, int c);
-void	drawline(t_v3 p1, t_v3 p2, t_mlx_i i);
-void	drawchar(t_mlx_i i, char c, int x, int y);
 void	debug_matrix(float m[3][3], t_mlx_i i);
 int		color(char r, char g, char b);
 
