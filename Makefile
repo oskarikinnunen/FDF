@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/02/23 05:48:14 by okinnune         ###   ########.fr        #
+#    Updated: 2022/02/24 03:23:35 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
 NAME= mlx-test
-SRC = main.c text.c math.c vectors.c commands.c drawing.c cocoaconvert.c image.c
+SRC = main.c text.c math.c vectors.c commands.c drawing.c cocoaconvert.c image.c file_mapping.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 UNAME= $(shell uname)

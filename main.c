@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/23 06:48:18 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 03:15:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	context_loop(void *p)
 
 	i = (t_mlx_i *)p;
 	if (i->key == -1)
-		return 0;
+		return (0);
 	printf("KEYPRESS %i\n", i->key);
 	i->key = convert_cocoakc_to_ascii_global(i->key);
 	printf("Converted to ascii: %i\n", i->key);
@@ -53,65 +53,19 @@ int	keystroke(int key, void *p)
 	i->key = key;
 }
 
-t_list	*read_input(char *filename)
-{
-	int			res;
-	int			fd;
-	char		buf[1];
-	int			crds[2];
-	int			cur;
-	t_list		*vlist;
-	float		*v3;
-
-	fd = open(filename, O_RDONLY);
-	ft_bzero(crds, sizeof(int) * 2);
-	vlist = NULL;
-	cur = 0;
-	while ((res = read(fd, buf, 1)) == 1)
-	{
-		if (*buf == '\n' || *buf == '\t')
-		{
-			if (*buf == '\n')
-			{
-				crds[Y]++;
-				crds[X] = 0;
-			}
-			continue;
-		}
-		v3 = v3new(crds[X], crds[Y], (float)(*buf - '0'));
-		printf("v3 content x: %f y: %f z: %f \n", v3[0], v3[1], v3[2]);
-		if (vlist == NULL)
-			vlist = ft_lstnew(v3, sizeof(float *) * 3);
-		else
-			ft_lstapp(&vlist, ft_lstnew(v3, V3SIZE));
-		crds[X]++;
-		cur++;
-		printf("CUR vlist content %f \n", ((float *)vlist->content)[X]);
-		printf("CUR READINPUT %i \n", cur);
-	}
-	return (vlist);
-}
-
 int	main(int argc, char **argv)
 {
-	t_mlx_i 	i;
-	void		*mlx;
-	void		*win;
-	void		*cmdimage;
-	void		*image;
-	
+	t_mlx_i		i;
+
 	if (argc != 2)
 		return (-1);
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, WSZ, WSZ, "new_window");
-	i.mlx = mlx;
-	i.win = win;
+	i.mlx = mlx_init();
+	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	i.curcmd = NULL;
-	//mlx_new_image(mlx, WSZ, WSZ / 2);
 	get_commands(&i);
-	mlx_mouse_hook(win,mouse_win1,&i);
-	mlx_key_hook(win,keystroke,&i);
-	mlx_loop_hook(mlx, context_loop, &i);
-	mlx_loop(mlx);
+	mlx_mouse_hook(i.win, mouse_win1, &i);
+	mlx_key_hook(i.win, keystroke, &i);
+	mlx_loop_hook(i.mlx, context_loop, &i);
+	mlx_loop(i.mlx);
 	return (0);
 }

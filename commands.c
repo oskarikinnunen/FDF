@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/23 05:41:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 03:43:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,38 +128,20 @@ void	preprocess_points(t_v3list *points)
 
 void	draw_points(t_mlx_i i)
 {
-	t_list		*lst;
-	int			cur;
-	t_v3		edges[4];
-	void		*img;
+	t_map	map;
+	int		cur;
+	float	*v3;
 
-	lst = read_input("input");
-	//preprocess_points(&lst);
+	//map.
+	map.width = 0;
+	read_inputmap("input", &map);
 	cur = 0;
-	while (lst->next != NULL)
+	while (cur < map.length)
 	{
-		printf("X %f Y %f Z %f \n", ((float *)lst->content)[X], ((float *)lst->content)[Y], ((float *)lst->content)[Z]);
-		lst = lst->next;
-	}
-	/*while (cur + 20 < lst.length)
-	{
-		t_v3 *l = lst.list;
-		
-		edges[0] = l[cur];
-		edges[1] = l[cur + 1];
-		edges[2] = l[cur + 19];
-		edges[3] = l[cur + 20];
+		v3 = map.points[cur];
+		printf("cur x: %f y: %f z: %f\n", v3[X], v3[Y], v3[Z]);
 		cur++;
-		if ((cur + 1) % 19 == 0)
-			continue ;
-		//bzero the image first!
-		drawline_toimage(edges[0], edges[1], ci_data_adder(&i, &img), 1);
-		//drawlinec(edges[0], edges[1], i, INT_MAX);
-		//drawlinec(edges[0], edges[2], i, INT_MAX);
-		//drawlinec(edges[2], edges[3], i, INT_MAX);
-		//drawlinec(edges[1], edges[3], i, INT_MAX);
-	}*/
-	//mlx_put_image_to_window(i.mlx, i.win, img, 0, WSZ / 2);
+	}
 }
 
 void	c_modmatrix(t_mlx_i *i)

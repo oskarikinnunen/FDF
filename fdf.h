@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/23 05:45:15 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/24 03:17:58 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ typedef struct s_v3list
 	size_t	length;
 }				t_v3list;
 
+typedef struct s_map
+{
+	float	**points;
+	int		length;
+	int		width;
+}	t_map;
+
 typedef struct s_mlx_info
 {
 	void				*mlx;
@@ -91,7 +98,7 @@ void		get_commands(t_mlx_i *i);
 void		c_readcommands(t_mlx_i *i);
 void		c_addbutton(t_mlx_i *i);
 
-t_list		*read_input(char *filename);
+void		read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
 void	drawlinefill(t_v3 *points, t_mlx_i i, int c);
