@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 05:50:32 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/25 10:43:38 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_command
 
 float	*v3new(float x, float y, float z);
 void	v3mul(float matrix[3][3], float *v3);
+int		*v3_int(float	*v3);
 void	drawstr(t_mlx_i i, char *str, int x, int y);
 int		max(int a, int b);
 

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 05:53:06 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/25 10:46:59 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,21 +130,19 @@ void	draw_points(t_mlx_i i)
 {
 	t_map	map;
 	int		cur;
-	//float	*v3;
 	int		*v3_integers[4];
 
-	//map.
 	map.width = 0;
 	read_inputmap("input", &map);
 	cur = 0;
-	while ((cur + map.width + 1) < map.length)
+	while ((cur + map.width + 1) <= map.length)
 	{
-		v3_integers[0] = map.points[cur];
-		v3_integers[1] = map.points[cur + 1];
-		v3_integers[2] = map.points[cur + map.width];
-		v3_integers[3] = map.points[cur + map.width + 1];
+		v3_integers[0] = v3_int(map.points[cur]);
+		v3_integers[1] = v3_int(map.points[cur + 1]);
+		v3_integers[2] = v3_int(map.points[cur + map.width]);
+		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
 		printf("drawing x: %i y: %i z: %i\n", v3_integers[0][X], v3_integers[0][Y], v3_integers[0][Z]);
-		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
+		//draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
 		cur++;
 		cur += (cur % map.width == 0);
 	}
