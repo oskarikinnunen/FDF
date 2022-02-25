@@ -16,7 +16,7 @@ float	*v3new(float x, float y, float z)
 {
 	float	*v3;
 
-	v3 = (float *)malloc(sizeof(float *) * 3);
+	v3 = (float *)malloc(sizeof(float) * 3);
 	v3[X] = x;
 	v3[Y] = y;
 	v3[Z] = z;
@@ -27,7 +27,7 @@ int		*v3_int(float	*v3)
 {
 	int	*i3;
 
-	i3 = (float *)malloc(sizeof(int *) * 3);
+	i3 = (int *)malloc(sizeof(int) * 3);
 	i3[X] = (int)v3[X];
 	i3[Y] = (int)v3[Y];
 	i3[Z] = (int)v3[Z];

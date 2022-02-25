@@ -60,7 +60,7 @@ void	read_inputmap(char *filename, t_map *map)
 	data = get_mapdata(map, fd);
 	ft_bzero(crds, sizeof(int) * 2);
 	cur = 0;
-	map->points = ft_memalloc(map->length * sizeof(float *));
+	map->points = ft_memalloc((map->length + 1) * sizeof(float *));
 	printf("MAP WIDTH IS %i\n", map->width);
 	while (cur < map->length)
 	{

@@ -135,14 +135,14 @@ void	draw_points(t_mlx_i i)
 	map.width = 0;
 	read_inputmap("input", &map);
 	cur = 0;
-	while ((cur + map.width + 1) <= map.length)
+	while ((cur + map.width + 1) <= map.length - 1)
 	{
 		v3_integers[0] = v3_int(map.points[cur]);
 		v3_integers[1] = v3_int(map.points[cur + 1]);
 		v3_integers[2] = v3_int(map.points[cur + map.width]);
 		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
-		printf("drawing x: %i y: %i z: %i\n", v3_integers[0][X], v3_integers[0][Y], v3_integers[0][Z]);
-		//draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
+		//printf("drawing x: %i y: %i z: %i\n", v3_integers[0][X], v3_integers[0][Y], v3_integers[0][Z]);
+		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
 		cur++;
 		cur += (cur % map.width == 0);
 	}

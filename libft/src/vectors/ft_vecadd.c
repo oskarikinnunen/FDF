@@ -45,7 +45,6 @@ void	*ft_vecadd(void **v_address, size_t content)
 	t_vector		*data;
 	t_vector		**fr;
 	void			*temp;
-	unsigned int	sc;
 
 	data = vecdata(*v_address);
 	fr = &data;
@@ -74,15 +73,8 @@ void	*ft_vecadd(void **v_address, size_t content)
 		//*v_address = data->buff;
 	}
 	//data = vecdata(*v_address);
-	sc = 0;
 	
 	ft_memcpy(*v_address + data->count, &content, data->content_size);
-	/*while (sc < data->content_size)
-	{
-		((char *)(*v_address))[sc
-			+ (vecdata(*v_address)->count)] = ((char *)&content)[sc];
-		sc++;
-	}*/
 	vecdata(*v_address)->count += 1;
 	/*printf("end of add alloc %lu \n", vecdata(*v_address)->alloc);
 	printf("end of add count %lu \n", vecdata(*v_address)->count);
