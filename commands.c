@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/25 10:46:59 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/25 11:43:27 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,15 @@ void	c_readcommands(t_mlx_i *i)
 	mlx_string_put(i->mlx, i->win, 10, 10, INT_MAX, command);
 }
 
-void	preprocess_points(t_v3list *points)
+void	preprocess_points(t_map *map)
 {
+	float add[3];
+
+	add[X] = 120;
+	add[Y] = 200;
+	add[Z] = 0;
+	v3listmul(scale, map->points, map->length - 2);
+	v3listadd(map->points, add, map->length);
 	/*v3mul_list(scale, points);
 	v3addx_list(120, points);
 	v3addy_list(200, points);
@@ -134,6 +141,7 @@ void	draw_points(t_mlx_i i)
 
 	map.width = 0;
 	read_inputmap("input", &map);
+	preprocess_points(&map);
 	cur = 0;
 	while ((cur + map.width + 1) <= map.length - 1)
 	{

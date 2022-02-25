@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 12:47:59 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 05:43:03 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/02/25 11:41:58 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ int		*v3_int(float	*v3)
 	return (i1[X])
 }*/
 
+/*TODO: make an "for all" function for vectors, applies something to all dimensions */
+void	v3add(float *v3, float *add)
+{
+	v3[X] += add[X];
+	v3[Y] += add[Y];
+	v3[Z] += add[Z];
+}
+
 void	v3mul(float matrix[3][3], float *v3)
 {
 	float	t[3];
@@ -56,4 +64,22 @@ void	v3mul(float matrix[3][3], float *v3)
 	v3[X] = t[X];
 	v3[Y] = t[Y];
 	v3[Z] = t[Z];
+}
+
+void	v3listmul(float matrix[3][3], float **v3s, int len)
+{
+	while (len >= 0)
+	{
+		v3mul(matrix, v3s[len]);
+		len--;
+	}
+}
+
+void	v3listadd(float **v3s, float *add, int len)
+{
+	while (len >= 0)
+	{
+		v3add(v3s[len], add);
+		len--;
+	}
 }
