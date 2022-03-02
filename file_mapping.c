@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 17:13:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:03:11 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static unsigned char *get_mapdata(t_map *map, int fd)
 		}
 		if (ft_isdigit(*buf) && res == 1)
 		{
-			printf("Adding left hand %i right hand %i\n", (int)(str[cur] * 10), (int)(*buf - '0'));
 			str[cur] = (unsigned char)(str[cur] * 10) + (unsigned char)((*buf) - '0'); //TODO: overflow
 		}
 	}
@@ -66,7 +65,6 @@ void	read_inputmap(char *filename, t_map *map)
 			crds[Y]++;
 		}
 		map->points[cur] = v3new(crds[X], crds[Y], (float)data[cur]);
-		printf("assigned vector %f %f %f \n", map->points[cur][X], map->points[cur][Y], map->points[cur][Z]);
 		crds[X]++;
 		cur++;
 		/*(float **)((map->points) + cur) = 

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/25 10:45:54 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:01:54 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	draw_line(int *i1, int *i2, t_mlx_i i, int c)
 	while (1)
 	{
 		mlx_pixel_put(i.mlx, i.win, local[X], local[Y], c);
-		//printf("drawpixel %f, %f. error %i addx %f addy %f diffx %f diffy %f\n", local.x, local.y, error, add.x, add.y, diff.x, diff.y);
+		printf("drawpixel %i %i \n", local[X], local[Y]);
 		if (local[X] == i2[X] && local[Y] == i2[Y])
 			break ;
 		if (error * 2 >= diff[Y])

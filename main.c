@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 17:52:46 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:07:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	drawpoints(t_mlx_i i, t_map map)
 	int		*v3_integers[4];
 
 	cur = 0;
+	printf("initial drawpoints\n");
 	while ((cur + map.width + 1) <= map.length)
 	{
 		v3_integers[0] = v3_int(map.points[cur]);
@@ -60,7 +61,23 @@ void	drawpoints(t_mlx_i i, t_map map)
 		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
 		cur++;
 		cur += ((cur  + 1) % map.width == 0);
+		printf("drawpoints while call\n");
 	}
+}
+
+void preprocess(t_map *map)
+{
+	float	add[3];
+	float	matrix[3][3];
+
+	add[X] = 400;
+	add[Y] = 400;
+	add[Z] = 0;
+	setmatrix_scale(matrix);
+	v3listmul(matrix, map->points, map->length);
+	setmatrix_iso(matrix);
+	v3listmul(matrix, map->points, map->length);
+	v3listadd(map->points, add, map->length);
 }
 
 int	main(int argc, char **argv)
@@ -74,12 +91,9 @@ int	main(int argc, char **argv)
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	read_inputmap(argv[1], &map);
-	setmatrix_scale(matrix);
-	v3listmul(matrix, map.points, map.length);
-	setmatrix_iso(matrix);
-	v3listmul(matrix, map.points, map.length);
-	
+	preprocess(&map);
+	//	drawpoints(i, map);
 	mlx_loop(i.mlx);
-	draw_points(i);
+	
 	return (0);
 }
