@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 19:27:11 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:38:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,37 @@ void	drawpoints(t_mlx_i i, t_map map)
 	}
 }
 
+void	drawpoints_image(t_mlx_i i, t_map map)
+{
+	int		cur;
+	int		*v3_integers[4];
+
+	cur = 0;
+	printf("initial drawpoints\n");
+	while ((cur + map.width + 1) <= map.length)
+	{
+		v3_integers[0] = v3_int(map.points[cur]);
+		v3_integers[1] = v3_int(map.points[cur + 1]);
+		v3_integers[2] = v3_int(map.points[cur + map.width]);
+		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
+		/*
+		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
+		draw_line(v3_integers[0], v3_integers[2], i, INT_MAX);
+		draw_line(v3_integers[3], v3_integers[1], i, INT_MAX);
+		draw_line(v3_integers[3], v3_integers[2], i, INT_MAX);
+		make a draw_line_toimage!!
+		*/
+		
+		cur++;
+		cur += ((cur  + 1) % map.width == 0);
+		free(v3_integers[0]);
+		free(v3_integers[1]);
+		free(v3_integers[2]);
+		free(v3_integers[3]);
+		//printf("drawpoints while call\n");
+	}
+}
+
 void preprocess(t_map *map)
 {
 	float	add[3];
@@ -97,6 +128,14 @@ void preprocess(t_map *map)
 
 char *image_data_addr(void *mlx)
 {
+	void	*image;
+	t_image_info t;
+
+	t.bpp = 16;
+	t.size_line = WSZ;
+	t.endian = 0;
+	image = mlx_new_image(mlx, WSZ, WSZ);
+	return (mlx_get_data_addr(image, &(t.bpp), &(t.size_line), &(t.endian)));
 	/* new_image(mlx, width, height) 
 		get data addr, and return it
 		+ error checks?
