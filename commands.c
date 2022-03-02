@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 11:25:44 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/25 11:43:27 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:18:03 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,10 @@ void	preprocess_points(t_map *map)
 	add[X] = 120;
 	add[Y] = 200;
 	add[Z] = 0;
-	v3listmul(scale, map->points, map->length - 2);
+	v3listmul(scale, map->points, map->length);
+	//segfaults in add probably.
 	v3listadd(map->points, add, map->length);
+	
 	/*v3mul_list(scale, points);
 	v3addx_list(120, points);
 	v3addy_list(200, points);
@@ -143,7 +145,7 @@ void	draw_points(t_mlx_i i)
 	read_inputmap("input", &map);
 	preprocess_points(&map);
 	cur = 0;
-	while ((cur + map.width + 1) <= map.length - 1)
+	while ((cur + map.width + 1) <= map.length)
 	{
 		v3_integers[0] = v3_int(map.points[cur]);
 		v3_integers[1] = v3_int(map.points[cur + 1]);
