@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/24 03:15:41 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:52:46 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,69 @@
 #include "libft/libft.h"
 //#include <mlx_int.h>
 
-int	mouse_win1(int button, int x, int y, void *p)
+void	setmatrix_scale(float matrix[3][3])
 {
-	t_mlx_i	*i;
+	static float	scale[3][3] = {
+	{22, 0, 0},
+	{0, 22, 0},
+	{0, 0, 3}
+	};
+	int				i;
 
-	i = (t_mlx_i *)p;
-	i->m_x = x;
-	i->m_y = y;
-	i->m_b = button;
+	i = 0;
+	while (i < 3)
+		ft_memcpy(&matrix[i], &scale[i++], sizeof(float) * 3);
 }
 
-int	context_loop(void *p)
+void	setmatrix_iso(float matrix[3][3])
 {
-	t_mlx_i	*i;
+	static float	iso[3][3] = {
+	{1,	-0.6, 0},
+	{0, 1, -0.2},
+	{0, 0.0, 2.0}
+	};
+	int				i;
 
-	i = (t_mlx_i *)p;
-	if (i->key == -1)
-		return (0);
-	printf("KEYPRESS %i\n", i->key);
-	i->key = convert_cocoakc_to_ascii_global(i->key);
-	printf("Converted to ascii: %i\n", i->key);
-	if (i->key == KEY_TILDE)
-		i->curcmd = i->cmds[0];
-	if (i->curcmd != NULL && i->key != -1)
-		i->curcmd->function(i);
-	i->key = -1;
-	return (1);
+	i = 0;
+	while (i < 3)
+		ft_memcpy(&matrix[i], &iso[i++], sizeof(float) * 3);
 }
 
-int	keystroke(int key, void *p)
+void	drawpoints(t_mlx_i i, t_map map)
 {
-	t_mlx_i	*i;
+	int		cur;
+	int		*v3_integers[4];
 
-	i = (t_mlx_i *)p;
-	i->key = key;
+	cur = 0;
+	while ((cur + map.width + 1) <= map.length)
+	{
+		v3_integers[0] = v3_int(map.points[cur]);
+		v3_integers[1] = v3_int(map.points[cur + 1]);
+		v3_integers[2] = v3_int(map.points[cur + map.width]);
+		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
+		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
+		cur++;
+		cur += ((cur  + 1) % map.width == 0);
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	t_mlx_i		i;
+	t_map		map;
+	float		matrix[3][3];
 
 	if (argc != 2)
 		return (-1);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
-	i.curcmd = NULL;
-	get_commands(&i);
-	mlx_mouse_hook(i.win, mouse_win1, &i);
-	mlx_key_hook(i.win, keystroke, &i);
-	mlx_loop_hook(i.mlx, context_loop, &i);
+	read_inputmap(argv[1], &map);
+	setmatrix_scale(matrix);
+	v3listmul(matrix, map.points, map.length);
+	setmatrix_iso(matrix);
+	v3listmul(matrix, map.points, map.length);
+	
 	mlx_loop(i.mlx);
+	draw_points(i);
 	return (0);
 }

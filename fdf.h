@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/02/25 11:42:16 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:01:59 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int		max(int a, int b);
 void		get_commands(t_mlx_i *i);
 void		c_readcommands(t_mlx_i *i);
 void		c_addbutton(t_mlx_i *i);
+void		draw_points(t_mlx_i i);
 
 void		read_inputmap(char *filename, t_map *map);
 

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 16:17:47 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 17:13:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,16 @@ static unsigned char *get_mapdata(t_map *map, int fd)
 		res = read(fd, buf, 1);
 		if (*buf == '\n' || *buf == '\t')
 		{
-			printf("BUFF IS NEWLINE OR TAB, BUFF: %c\n", *buf);
 			if (*buf == '\n' && map->width == 0)
-			{
-				printf("assigned width at cur %i\n", cur);
 				map->width = cur + 1;
-			}
 			cur++;
 			continue;
 		}
 		if (ft_isdigit(*buf) && res == 1)
 		{
-			//printf("ISDIGIT %i \n", (int)*buf);
 			printf("Adding left hand %i right hand %i\n", (int)(str[cur] * 10), (int)(*buf - '0'));
 			str[cur] = (unsigned char)(str[cur] * 10) + (unsigned char)((*buf) - '0'); //TODO: overflow
 		}
-		//cur++;
 	}
 	map->length = cur; //Fix with real indexing
 	printf("map length %i \n", map->length);
