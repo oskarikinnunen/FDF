@@ -16,8 +16,6 @@
 #	libx11-dev && libxext-dev
 #
 INC=/usr/local/lib
-#HT=Linux
-#DOCP=do_cp
 INCLIB=$(INC)/../lib
 CC=gcc
 NAME= mlx-test
@@ -30,12 +28,6 @@ MLXLIB = libmlx.dylib
 ifeq ($(UNAME), Linux)
 MLXLIB = mlx/Linux/libmlx.a -I/usr/include -I/usr/lib/ -lm -lX11 -lXext -Imlx/Linux/
 endif
-#LINUX : 
-
-#CFLAGS= -I$(INC) -I.. -I/libft
-#$(CC) -o $(NAME) $(OBJ) -L.. -lmlx -lbsd -L$(INCLIB) -lXext -lX11 -lm $(LIB) $(CFLAGS)
-
-#Linux flags = X11, lm
 
 all	:$(NAME)
 

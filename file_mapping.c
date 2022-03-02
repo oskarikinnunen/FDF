@@ -63,7 +63,7 @@ void	read_inputmap(char *filename, t_map *map)
 	cur = 0;
 	map->points = ft_memalloc((map->length + 1) * sizeof(float *));
 	printf("MAP WIDTH IS %i\n", map->width);
-	while (cur < map->length)
+	while (cur <= map->length)
 	{
 		//printf("cur %i moduloresult = %i\n", cur, (cur + 1) % (map->width));
 		if (cur != 0 && cur % map->width == 0)

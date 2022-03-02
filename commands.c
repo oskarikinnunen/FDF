@@ -38,7 +38,7 @@ float m3[3][3] =
 float mr[3][3] =
 {
 	{1,	-0.6, 0},
-	{0, 1, -1.2/*0.81, 0.57*/},
+	{0, 1, -0.2/*0.81, 0.57*/},
 	{0, 0.0, 2.0}
 }; /* original 3,3 value -0.81f */
 
@@ -121,13 +121,14 @@ void	preprocess_points(t_map *map)
 {
 	float add[3];
 
-	add[X] = 120;
-	add[Y] = 200;
+	add[X] = 400;
+	add[Y] = 400;
 	add[Z] = 0;
 	v3listmul(scale, map->points, map->length);
 	//segfaults in add probably.
 	v3listadd(map->points, add, map->length);
 	
+	v3listmul(mr, map->points, map->length);
 	/*v3mul_list(scale, points);
 	v3addx_list(120, points);
 	v3addy_list(200, points);
@@ -154,7 +155,7 @@ void	draw_points(t_mlx_i i)
 		//printf("drawing x: %i y: %i z: %i\n", v3_integers[0][X], v3_integers[0][Y], v3_integers[0][Z]);
 		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
 		cur++;
-		cur += (cur % map.width == 0);
+		cur += ((cur  + 1) % map.width == 0);
 	}
 }
 
