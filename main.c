@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 18:07:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/02 19:27:11 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,15 @@ void preprocess(t_map *map)
 	setmatrix_iso(matrix);
 	v3listmul(matrix, map->points, map->length);
 	v3listadd(map->points, add, map->length);
+}
+
+char *image_data_addr(void *mlx)
+{
+	/* new_image(mlx, width, height) 
+		get data addr, and return it
+		+ error checks?
+	*/
+
 }
 
 int	main(int argc, char **argv)
