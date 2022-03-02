@@ -13,11 +13,11 @@
 
 #NOTES:
 #	For compiling fully from sources on Linux you need to install the following packages:
-#	libx11-dev && libxext-dev
+#	libx11-dev && libxext-dev 
 #
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
-CC=gcc
+CC=gcc -fstack-protector-all
 NAME= mlx-test
 SRC = main.c text.c math.c vectors.c commands.c drawing.c cocoaconvert.c image.c file_mapping.c
 LIB = libft/libft.a

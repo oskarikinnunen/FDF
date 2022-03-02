@@ -28,7 +28,10 @@ void	setmatrix_scale(float matrix[3][3])
 
 	i = 0;
 	while (i < 3)
-		ft_memcpy(&matrix[i], &scale[i++], sizeof(float) * 3);
+	{
+		ft_memcpy(&(matrix[i]), &(scale[i]), sizeof(float) * 3);
+		i++;
+	}
 }
 
 void	setmatrix_iso(float matrix[3][3])
@@ -42,7 +45,11 @@ void	setmatrix_iso(float matrix[3][3])
 
 	i = 0;
 	while (i < 3)
-		ft_memcpy(&matrix[i], &iso[i++], sizeof(float) * 3);
+	{
+		ft_memcpy(&(matrix[i]), &(iso[i]), sizeof(float) * 3);
+		i++;
+	}
+	
 }
 
 void	drawpoints(t_mlx_i i, t_map map)
@@ -59,9 +66,17 @@ void	drawpoints(t_mlx_i i, t_map map)
 		v3_integers[2] = v3_int(map.points[cur + map.width]);
 		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
 		draw_line(v3_integers[0], v3_integers[1], i, INT_MAX);
+		draw_line(v3_integers[0], v3_integers[2], i, INT_MAX);
+		draw_line(v3_integers[3], v3_integers[1], i, INT_MAX);
+		draw_line(v3_integers[3], v3_integers[2], i, INT_MAX);
+		
 		cur++;
 		cur += ((cur  + 1) % map.width == 0);
-		printf("drawpoints while call\n");
+		free(v3_integers[0]);
+		free(v3_integers[1]);
+		free(v3_integers[2]);
+		free(v3_integers[3]);
+		//printf("drawpoints while call\n");
 	}
 }
 
@@ -86,13 +101,15 @@ int	main(int argc, char **argv)
 	t_map		map;
 	float		matrix[3][3];
 
+	
 	if (argc != 2)
 		return (-1);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
+	ft_bzero(&map, sizeof(t_map));
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
-	//	drawpoints(i, map);
+	drawpoints(i, map);
 	mlx_loop(i.mlx);
 	
 	return (0);

@@ -160,20 +160,15 @@ void	draw_line(int *i1, int *i2, t_mlx_i i, int c)
 	local[X] = i1[X];
 	local[Y] = i1[Y];
 	local[Z] = i1[Z]; //Memset, cpy, mikälie
-	printf("p1  X: %i Y: %i\n", local[X], local[Y]);
-	printf("p2  X: %i Y: %i\n", i2[X], i2[Y]);
 	diff[X] = ft_abs(local[X] - i2[X]);
 	diff[Y] = -ft_abs(local[Y] - i2[Y]);
 	add[X] = 1 - ((local[X] > i2[X]) * 2);
 	add[Y] = 1 - ((local[Y] > i2[Y]) * 2);
-	printf("ADD  X: %i Y: %i\n", add[X], add[Y]);
-	printf("DIFF X: %i Y: %i\n", diff[X], diff[Y]);
 	//return ;
 	error = diff[X] + diff[Y];
 	while (1)
 	{
 		mlx_pixel_put(i.mlx, i.win, local[X], local[Y], c);
-		printf("drawpixel %i %i \n", local[X], local[Y]);
 		if (local[X] == i2[X] && local[Y] == i2[Y])
 			break ;
 		if (error * 2 >= diff[Y])
