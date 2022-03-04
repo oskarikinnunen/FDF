@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 19:09:19 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:34:03 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			//printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
 			i++;
 		}
-		printf("drawing point X %i Y %i \n", v3_integers[0][X], v3_integers[0][Y]);
+		printf("drawing point X %i Y %i bpp %i \n", v3_integers[0][X], v3_integers[0][Y], i_i.bpp);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
@@ -127,6 +127,8 @@ void	preprocess(t_map *map)
 	v3listadd(map->points, add, map->length);
 }
 
+
+//TODO: animate!!
 int	main(int argc, char **argv)
 {
 	t_mlx_i			i;
@@ -142,7 +144,7 @@ int	main(int argc, char **argv)
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
 	//drawpoints(i, map);
-	img.bpp = 16;
+	img.bpp = 32;
 	img.endian = 1;
 	img.size_line = WSZ * img.bpp; //Times bpp??
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
