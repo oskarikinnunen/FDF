@@ -91,7 +91,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 
 	cur = 0;
 	printf("initial drawpoints\n");
-	while ((cur + map.width + 1) <= map.length)
+	while ((cur + map.width + 1) < map.length)
 	{
 		i = 0;
 		while (i < 4)
@@ -104,6 +104,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			//printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
 			i++;
 		}
+		printf("drawing point X %i Y %i \n", v3_integers[0][X], v3_integers[0][Y]);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
@@ -126,22 +127,10 @@ void	preprocess(t_map *map)
 	v3listadd(map->points, add, map->length);
 }
 
-char	*image_data_addr(void *mlx)
-{
-	void			*image;
-	t_image_info	t;
-
-	t.bpp = 16;
-	t.size_line = WSZ;
-	t.endian = 0;
-	image = mlx_new_image(mlx, WSZ, WSZ);
-	return (mlx_get_data_addr(image, &(t.bpp), &(t.size_line), &(t.endian)));
-}
-
 int	main(int argc, char **argv)
 {
 	t_mlx_i			i;
-	t_image_info	imageinfo;
+	t_image_info	img;
 	t_map			map;
 	float			matrix[3][3];
 
@@ -152,11 +141,15 @@ int	main(int argc, char **argv)
 	ft_bzero(&map, sizeof(t_map));
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
-	drawpoints(i, map);
-	imageinfo.bpp = 16;
-	imageinfo.endian = 0;
-	imageinfo.size_line = WSZ * imageinfo.bpp; //Times bpp??
-	drawpoints_image(image_data_addr(i.mlx), map, imageinfo);
+	//drawpoints(i, map);
+	img.bpp = 16;
+	img.endian = 1;
+	img.size_line = WSZ * img.bpp; //Times bpp??
+	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
+	drawpoints_image(
+		mlx_get_data_addr(img.ptr, &(img.bpp), &(img.size_line), &(img.endian)),
+		map, img);
+	mlx_put_image_to_window(i.mlx, i.win, img.ptr, 0,0);
 	mlx_loop(i.mlx);
 	return (0);
 }

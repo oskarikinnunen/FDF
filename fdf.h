@@ -74,9 +74,10 @@ typedef struct s_mlx_info
 
 typedef struct s_image_info
 {
-	int	bpp;
-	int	size_line;
-	int	endian;
+	void	*ptr;
+	int		bpp;
+	int		size_line;
+	int		endian;
 }			t_image_info;
 
 typedef struct s_command

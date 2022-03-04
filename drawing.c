@@ -46,7 +46,7 @@ void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i)
 	while ((local[X] != i2[X] || local[Y] != i2[Y]))
 	{
 		//mlx_pixel_put(i.mlx, i.win, local[X], local[Y], c);
-		*(adder + (i.bpp * local[X]) + (i.size_line * local[Y])) = 254;
+		*(adder + (local[X]) + (i.size_line * local[Y])) = 244;
 		if (error * 2 >= diff[Y])
 		{
 			error += (local[X] != i2[X]) * diff[Y];
