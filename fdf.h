@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 17:01:59 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:33:06 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,13 @@ void	v3mul(float matrix[3][3], float *v3);
 void	v3listmul(float matrix[3][3], float **v3s, int len);
 void	v3listadd(float **v3s, float *add, int len);
 int		*v3_int(float	*v3);
-void	drawstr(t_mlx_i i, char *str, int x, int y);
-int		max(int a, int b);
-
-/* COMMANDS */
-void		get_commands(t_mlx_i *i);
-void		c_readcommands(t_mlx_i *i);
-void		c_addbutton(t_mlx_i *i);
-void		draw_points(t_mlx_i i);
+void	v3_int_block(float	*v3, int *i3);
 
 void		read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
 void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
 void	drawline_toimage(t_v3 p1, t_v3 p2, char *img, int c);
-void	debug_matrix(float m[3][3], t_mlx_i i);
 int		color(char r, char g, char b);
 
 char	*ci_data_adder(t_mlx_i *i, void **imagereturn);

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 12:47:59 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 16:54:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:16:18 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ int		*v3_int(float	*v3)
 	i3[Y] = (int)v3[Y];
 	i3[Z] = (int)v3[Z];
 	return (i3);
+}
+
+void	v3_int_block(float	*v3, int *i3)
+{
+	i3[X] = (int)v3[X];
+	i3[Y] = (int)v3[Y];
+	i3[Z] = (int)v3[Z];
 }
 
 /*int		i3_equal(int *i1, int *i2)

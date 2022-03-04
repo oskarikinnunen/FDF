@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 16:31:29 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:25:49 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,26 @@ void	drawpoints(t_mlx_i i, t_map map)
 void	drawpoints_image(char *da, t_map map)
 {
 	int		cur;
-	int		*v3_integers[4];
+	int		v3_integers[4][3];
+	int		i;
 
 	cur = 0;
 	printf("initial drawpoints\n");
 	while ((cur + map.width + 1) <= map.length)
 	{
-		v3_integers[0] = v3_int(map.points[cur]);
-		v3_integers[1] = v3_int(map.points[cur + 1]);
-		v3_integers[2] = v3_int(map.points[cur + map.width]);
-		v3_integers[3] = v3_int(map.points[cur + map.width + 1]);
+		i = 0;
+		while (i < 4)
+		{
+			/*v3_integers[i] = v3_int(map.points
+				[cur + (i >= 2 * map.width) + ((i + 1) % 2)]);*/
+			v3_int_block(map.points
+						[cur + ((i >= 2) * map.width) + !((i + 1) % 2)],
+						v3_integers[i]);
+			printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
+			i++;
+		}
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
-		free(v3_integers[0]);
-		free(v3_integers[1]);
-		free(v3_integers[2]);
-		free(v3_integers[3]);
 		printf("drawpoints while call\n");
 	}
 }
@@ -146,7 +150,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&map, sizeof(t_map));
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
-	drawpoints(i, map);
+	drawpoints_image(image_data_addr(i.mlx), map);
 	mlx_loop(i.mlx);
 	return (0);
 }
