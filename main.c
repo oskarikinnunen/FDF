@@ -101,12 +101,12 @@ void	drawpoints_image(char *da, t_map map)
 			v3_int_block(map.points
 						[cur + ((i >= 2) * map.width) + !((i + 1) % 2)],
 						v3_integers[i]);
-			printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
+			//printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
 			i++;
 		}
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
-		printf("drawpoints while call\n");
+		//printf("drawpoints while call\n");
 	}
 }
 
@@ -150,7 +150,8 @@ int	main(int argc, char **argv)
 	ft_bzero(&map, sizeof(t_map));
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
-	drawpoints_image(image_data_addr(i.mlx), map);
+	drawpoints(i, map);
+	//drawpoints_image(image_data_addr(i.mlx), map);
 	mlx_loop(i.mlx);
 	return (0);
 }

@@ -37,20 +37,15 @@ void	draw_line(int *i1, int *i2, t_mlx_i i, int c)
 	int		local[3];
 	int		error;
 
-	/*local[X] = i1[X];
-	local[Y] = i1[Y];
-	local[Z] = i1[Z];*/
 	ft_memcpy(local, i1, sizeof(int) * 3);
 	diff[X] = ft_abs(local[X] - i2[X]);
 	diff[Y] = -ft_abs(local[Y] - i2[Y]);
 	add[X] = 1 - ((local[X] > i2[X]) * 2);
 	add[Y] = 1 - ((local[Y] > i2[Y]) * 2);
 	error = diff[X] + diff[Y];
-	while (1)
+	while ((local[X] != i2[X] || local[Y] != i2[Y]))
 	{
 		mlx_pixel_put(i.mlx, i.win, local[X], local[Y], c);
-		if (local[X] == i2[X] && local[Y] == i2[Y])
-			break ;
 		if (error * 2 >= diff[Y])
 		{
 			error += (local[X] != i2[X]) * diff[Y];
