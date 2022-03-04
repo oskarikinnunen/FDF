@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 19:02:18 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:50:23 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,6 @@ typedef struct s_map
 	int		width;
 }	t_map;
 
-typedef struct s_mlx_info
-{
-	void				*mlx;
-	void				*win;
-	int					m_x;
-	int					m_y;
-	int					m_b;
-	int					key;
-	struct s_command	**cmds;
-	struct s_command	*curcmd;
-}			t_mlx_i;
-
 typedef struct s_image_info
 {
 	void	*ptr;
@@ -79,6 +67,14 @@ typedef struct s_image_info
 	int		size_line;
 	int		endian;
 }			t_image_info;
+
+typedef struct s_mlx_info
+{
+	void				*mlx;
+	void				*win;
+	t_image_info		*img;
+	t_map				*map;
+}			t_mlx_i;
 
 typedef struct s_command
 {

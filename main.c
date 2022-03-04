@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 20:34:03 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:53:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,23 @@ void	preprocess(t_map *map)
 	v3listadd(map->points, add, map->length);
 }
 
+int	loop(void *p)
+{
+	t_mlx_i			*i;
+	t_image_info	img;
+	t_map			map;
+
+	i = (t_mlx_i *)p;
+	img = *(i->img);
+	map = *(i->map);
+
+	//Transform points with matrix or some kind of function here, before clearing the picture and drawing again
+	drawpoints_image(
+		mlx_get_data_addr(img.ptr, &(img.bpp), &(img.size_line), &(img.endian)),
+		map, img);
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
+	return (1);
+}
 
 //TODO: animate!!
 int	main(int argc, char **argv)
@@ -148,10 +165,11 @@ int	main(int argc, char **argv)
 	img.endian = 1;
 	img.size_line = WSZ * img.bpp; //Times bpp??
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
-	drawpoints_image(
-		mlx_get_data_addr(img.ptr, &(img.bpp), &(img.size_line), &(img.endian)),
-		map, img);
-	mlx_put_image_to_window(i.mlx, i.win, img.ptr, 0,0);
+	i.img = &img;
+	i.map = &map;
+	
+	//mlx_put_image_to_window(i.mlx, i.win, img.ptr, 0,0);
+	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_loop(i.mlx);
 	return (0);
 }
