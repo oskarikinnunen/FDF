@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 18:25:49 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 19:09:19 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	drawpoints(t_mlx_i i, t_map map)
 		draw_line(v3_integers[3], v3_integers[2], i, INT_MAX);*/
 		//make a draw_line_toimage!!
 
-void	drawpoints_image(char *da, t_map map)
+void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 {
 	int		cur;
 	int		v3_integers[4][3];
@@ -104,6 +104,7 @@ void	drawpoints_image(char *da, t_map map)
 			//printf("int block addresses cur index %i \n", cur + ((i >= 2) * map.width) + !((i + 1) % 2));
 			i++;
 		}
+		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
 		//printf("drawpoints while call\n");
@@ -139,9 +140,10 @@ char	*image_data_addr(void *mlx)
 
 int	main(int argc, char **argv)
 {
-	t_mlx_i		i;
-	t_map		map;
-	float		matrix[3][3];
+	t_mlx_i			i;
+	t_image_info	imageinfo;
+	t_map			map;
+	float			matrix[3][3];
 
 	if (argc != 2)
 		return (-1);
@@ -151,7 +153,10 @@ int	main(int argc, char **argv)
 	read_inputmap(argv[1], &map);
 	preprocess(&map);
 	drawpoints(i, map);
-	//drawpoints_image(image_data_addr(i.mlx), map);
+	imageinfo.bpp = 16;
+	imageinfo.endian = 0;
+	imageinfo.size_line = WSZ * imageinfo.bpp; //Times bpp??
+	drawpoints_image(image_data_addr(i.mlx), map, imageinfo);
 	mlx_loop(i.mlx);
 	return (0);
 }

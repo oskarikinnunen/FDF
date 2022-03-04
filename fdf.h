@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 18:33:06 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/04 19:02:18 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void		read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
 void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
-void	drawline_toimage(t_v3 p1, t_v3 p2, char *img, int c);
+void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
 
 char	*ci_data_adder(t_mlx_i *i, void **imagereturn);
