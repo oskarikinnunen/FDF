@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/04 18:37:19 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/07 21:01:54 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 #
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
-CC=gcc -fstack-protector-all
+CC=gcc -g -fstack-protector-all
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c
 LIB = libft/libft.a

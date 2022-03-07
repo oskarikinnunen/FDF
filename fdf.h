@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 20:50:23 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:14:12 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <math.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <sys/time.h>
 # include <stdio.h>
 
 typedef struct s_v3
@@ -72,6 +73,9 @@ typedef struct s_mlx_info
 {
 	void				*mlx;
 	void				*win;
+	struct timeval		t1;
+	double				time;
+	double				p_time;
 	t_image_info		*img;
 	t_map				*map;
 }			t_mlx_i;
@@ -88,12 +92,11 @@ void	v3listmul(float matrix[3][3], float **v3s, int len);
 void	v3listadd(float **v3s, float *add, int len);
 int		*v3_int(float	*v3);
 void	v3_int_block(float	*v3, int *i3);
-
-void		read_inputmap(char *filename, t_map *map);
+void	read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
 void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
-void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i);
+void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int color);
 int		color(char r, char g, char b);
 
 char	*ci_data_adder(t_mlx_i *i, void **imagereturn);

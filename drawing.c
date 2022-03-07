@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 20:33:07 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/07 21:36:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	color(char r, char g, char b)
 	return (c);
 }
 
-void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i)
+void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int clr)
 {
 	int		diff[3];
 	int		add[3];
@@ -46,7 +46,8 @@ void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i)
 	while ((local[X] != i2[X] || local[Y] != i2[Y]))
 	{
 		//mlx_pixel_put(i.mlx, i.win, local[X], local[Y], c);
-		*(int *)(adder + (local[X] * (i.bpp / 8)) + (i.size_line * local[Y])) = color(100 + ((i1[Z] + i2[Z]) / 2),0,0); //Have no idea why this needs to be hardcoded 4 instead of i.bpp...
+		//printf("drawing %lu local X %i local Y %i\n", adder + (local[X] * (i.bpp / 8)) + (i.size_line * local[Y]), local[X], local[Y]);
+		*(int *)(adder + (local[X] * (i.bpp / 8)) + (i.size_line * local[Y])) = clr; //Have no idea why this needs to be hardcoded 4 instead of i.bpp...
 		if (error * 2 >= diff[Y])
 		{
 			error += (local[X] != i2[X]) * diff[Y];
