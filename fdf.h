@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/07 17:14:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/08 20:55:01 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_mlx_info
 	struct timeval		t1;
 	double				time;
 	double				p_time;
+	double				x_angle;
+	double				y_angle;
 	t_image_info		*img;
 	t_map				*map;
 }			t_mlx_i;
@@ -97,6 +99,7 @@ void	read_inputmap(char *filename, t_map *map);
 /* DRAWING */
 void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
 void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int color);
+void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
 
 char	*ci_data_adder(t_mlx_i *i, void **imagereturn);

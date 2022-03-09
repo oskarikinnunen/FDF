@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/07 21:36:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/08 20:47:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ int	color(char r, char g, char b)
 		i++;
 	}
 	return (c);
+}
+
+void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i)
+{
+	int	topright[2];
+	int	botmleft[2];
+
+	topright[X] = i2[X];
+	topright[Y] = i1[Y];
+	botmleft[X] = i2[Y];
+	botmleft[Y] = i1[X];
+	draw_line_img(i1, topright, adder, i, INT_MAX);
+	draw_line_img(i1, botmleft, adder, i, INT_MAX);
+	draw_line_img(i2, topright, adder, i, INT_MAX);
+	draw_line_img(i2, botmleft, adder, i, INT_MAX);
 }
 
 void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int clr)
