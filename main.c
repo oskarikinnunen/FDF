@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/08 21:13:00 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/09 22:24:18 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			draw_line_img(v3_integers[1], v3_integers[3], da, i_i, color_green());
 		if (cur > map.length - map.width * 2)
 			draw_line_img(v3_integers[2], v3_integers[3], da, i_i, color_green());
+
+		fill_tri(v3_integers, da, i_i);
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
 	}
@@ -241,11 +243,12 @@ int	loop(void *p)
 	transform(cpy, i->time);
 	preprocess(cpy, *i);
 	drawpoints_image(addr, *cpy, img);
-	//draw_rect_img((int *)[2, 1], 
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
 
-	debug_points_zvalues(*cpy, *i);
-	mlx_string_put(i->mlx, i->win, WSZ / 2, WSZ / 2, INT_MAX, "HEllo");
+	//MOVE TO DRAW!
+	
+	//debug_points_zvalues(*cpy, *i);
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
+	//mlx_string_put(i->mlx, i->win, WSZ / 2, WSZ / 2, INT_MAX, "HEllo");
 
 
 	return (1);
@@ -304,6 +307,7 @@ int	main(int argc, char **argv)
 	//mlx_put_image_to_window(i.mlx, i.win, img.ptr, 0,0);
 	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_mouse_hook(i.win, mouse_loop, &i);
+	//mlx_expose_hook(i.win, expose_loop, &i);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop(i.mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/08 20:55:01 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/09 22:25:29 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_mlx_info
 	double				x_angle;
 	double				y_angle;
 	t_image_info		*img;
+	//void				*imgpointer;
 	t_map				*map;
 }			t_mlx_i;
 
@@ -102,7 +103,10 @@ void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int color);
 void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
 
-char	*ci_data_adder(t_mlx_i *i, void **imagereturn);
+void	fill_tri(int tris[4][3], char *adder, t_image_info i);
+
+/* HOOKS */
+int		expose_loop(void *param);
 
 int		convert_cocoakc_to_ascii_global(int kc);
 
