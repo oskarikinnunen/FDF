@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/10 02:03:51 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/10 03:03:52 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,19 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 	while ((cur + map.width + 1) <= map.length)
 	{
 		i = 0;
+		if (cur >= 22 + 19 && cur < 33 + 19)
+		{
+			
+			//printf("should fill %i\n", cur);
+			int fill[2];
+			fill[X] = (int)((map.points[cur][X] + map.points[cur - map.width][X]) / 2);
+			fill[Y] = (int)((map.points[cur][Y] + map.points[cur - map.width][Y]) / 2);
+			draw_line_img(fill, (int[2]){map.points[cur][X], map.points[cur][Y]}, da, i_i, color_green());
+			//flood_fill(fill, da, i_i, color_red());
+		}
+		if (cur == 33 + 20)
+			return ;
+		printf("cur %i divisible by width %i \n", cur, cur % map.width == 0);
 		while (i < 4)
 		{
 			v3_int_block(map.points
@@ -135,16 +148,13 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i, color_red());
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i, color_red());
 		if ((cur + 2) % map.width == 0)
-			draw_line_img(v3_integers[1], v3_integers[3], da, i_i, color_green());
+			draw_line_img(v3_integers[1], v3_integers[3], da, i_i, color_red());
 		if (cur > map.length - map.width * 2)
-			draw_line_img(v3_integers[2], v3_integers[3], da, i_i, color_green());
-		int pos[2];
-		pos [X] = (v3_integers[0][X] + v3_integers[1][X] + v3_integers[2][X] + v3_integers[3][X]) / 4;
-		pos [Y] = (v3_integers[0][Y] + v3_integers[1][Y] + v3_integers[2][Y] + v3_integers[3][Y]) / 4;
-		flood_fill(pos, da, i_i, color_red);
+			draw_line_img(v3_integers[2], v3_integers[3], da, i_i, color_red());
 		
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
+
 	}
 }
 

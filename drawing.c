@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/10 02:04:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/10 02:31:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,14 +201,25 @@ void	fill_tri(int tris[4][3], char *adder, t_image_info i)
 
 void	flood_fill(int pos[2], char *adder, t_image_info i, int borderclr)
 {
-	if (*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) != borderclr)
+	//printf("pos X%i Y%i\n", pos[X], pos[Y]);
+	/*if (*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) == borderclr)
+		printf("FOUND RED \n");*/
+	if (*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) != borderclr
+	&& *(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) != INT_MAX)
+	{
 		*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) = INT_MAX;
-	//int posnew[2] = (int[2]){3, 4};
-	flood_fill((int [2]){pos[X] + 1, pos[Y]}, adder, i, borderclr);
-	flood_fill((int [2]){pos[X] - 1, pos[Y]}, adder, i, borderclr);
-	flood_fill((int [2]){pos[X], pos[Y] + 1}, adder, i, borderclr);
-	flood_fill((int [2]){pos[X], pos[Y] - 1}, adder, i, borderclr);
-	printf("floodfill! \n");
+		if (pos[Y] > 1000 || pos[X] > 1000)
+			return ;
+		flood_fill((int [2]){pos[X], pos[Y] + 1}, adder, i, borderclr);
+		flood_fill((int [2]){pos[X], pos[Y] - 1}, adder, i, borderclr);
+		flood_fill((int [2]){pos[X] - 1, pos[Y]}, adder, i, borderclr);
+		flood_fill((int [2]){pos[X] + 1, pos[Y]}, adder, i, borderclr);
+	}
+	
+	//flood_fill((int [2]){pos[X] - 1, pos[Y]}, adder, i, borderclr);
+	//flood_fill((int [2]){pos[X], pos[Y] + 1}, adder, i, borderclr);
+	//flood_fill((int [2]){pos[X], pos[Y] - 1}, adder, i, borderclr);
+	//printf("floodfill! \n");
 }
 
 
