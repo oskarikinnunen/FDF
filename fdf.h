@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/09 22:25:29 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/10 02:01:54 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,20 @@
 # include <sys/time.h>
 # include <stdio.h>
 
-typedef struct s_v3
-{
-	float	x;
-	float	y;
-	float	z;
-}				t_v3;
-
-typedef struct s_v3list
-{
-	t_v3	*list;
-	size_t	length;
-}				t_v3list;
-
 typedef struct s_map
 {
 	float	**points;
 	int		length;
 	int		width;
 }	t_map;
+
+typedef struct s_brasenham
+{
+	int	diff[2];
+	int	add[2];
+	int	local[2];
+	int	error;
+}	t_brasenham;
 
 typedef struct s_image_info
 {
@@ -83,11 +78,7 @@ typedef struct s_mlx_info
 	t_map				*map;
 }			t_mlx_i;
 
-typedef struct s_command
-{
-	char	*str;
-	void	(*function)(t_mlx_i *i);
-}				t_command;
+
 
 float	*v3new(float x, float y, float z);
 void	v3mul(float matrix[3][3], float *v3);
@@ -104,6 +95,7 @@ void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
 
 void	fill_tri(int tris[4][3], char *adder, t_image_info i);
+void	flood_fill(int pos[2], char *adder, t_image_info i, int borderclr);
 
 /* HOOKS */
 int		expose_loop(void *param);

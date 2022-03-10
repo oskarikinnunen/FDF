@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/09 23:57:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/10 02:04:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,22 @@ void	sort_tris(int tris[4][3])
 	//TEST!
 }
 
+void	pop_brasenham(t_brasenham *b, int *from, int *to)
+{
+	ft_memcpy(b->local, from, sizeof(int) * 2);
+	b->diff[X] = ft_abs(b->local[X] - to[X]);
+	b->diff[Y] = -ft_abs(b->local[Y] - to[Y]);
+	b->add[X] = 1 - ((b->local[X] > to[X]) * 2);
+	b->add[Y] = 1 - ((b->local[Y] > to[Y]) * 2);
+	b->error = b->diff[X] + b->diff[Y];
+}
+
 void	fill_bottom_tri(int *top, int *bot1, int *bot2, char *adder, t_image_info i)
 {
-	int		sort[2][2];
-	float	slope1;
-	float	slope2;
-	float	xs[2];
-	int		scan;
+	int			sort[2][2];
+	t_brasenham	b[2];
+	//float		xs[2];
+	int			scan;
 
 	ft_memcpy(sort[0], bot2, sizeof(int) * 2);
 	ft_memcpy(sort[1], bot1, sizeof(int) * 2);
@@ -83,23 +92,90 @@ void	fill_bottom_tri(int *top, int *bot1, int *bot2, char *adder, t_image_info i
 		ft_memcpy(sort[1], bot2, sizeof(int) * 2);
 		ft_memcpy(sort[0], bot1, sizeof(int) * 2);
 	}
-	slope1 = (sort[0][X] - top[X]) / (sort[0][Y] - top[Y]);
-	slope2 = (sort[1][X] - top[X]) / (sort[1][Y] - top[Y]);
+	pop_brasenham(&(b[0]), top, sort[0]);
+	pop_brasenham(&(b[1]), top, sort[1]);
 	scan = top[Y];
-	xs[0] = top[X];
-	xs[1] = top[X];
-	while (scan < (int)(bot2[Y]))
+	while (b[0].local[Y] != bot2[Y])
 	{
-		int temp[3];
-		int temp2[3];
-		temp[X] = xs[0];
-		temp[Y] = scan;
-		temp2[X] = xs[1];
-		temp2[Y] = scan;
-		draw_line_img(temp, temp2, adder, i, INT_MAX);
-		xs[0] += slope1;
-		xs[1] += slope2;
-		scan++;
+		draw_line_img(b[0].local, b[1].local, adder, i, INT_MAX);
+		int try = 0;
+		while (b[0].local[Y] == b[1].local[Y]) 
+		{
+			if (b[0].error * 2 >= b[0].diff[Y] && b[0].local[X] != sort[0][X])
+			{
+				b[0].error += b[0].diff[Y];
+				b[0].local[X] += b[0].add[X];
+			}
+			if (b[0].error * 2 <= b[0].diff[X] && b[0].local[Y] != sort[0][Y])
+			{
+				b[0].error += b[0].diff[X];
+				b[0].local[Y] += b[0].add[Y];
+			}
+			//printf("local while x%i y%i add X%i Y%i\n", b[0].local[X],  b[0].local[Y], b[0].add[Y], b[0].add[Y]);
+			/*try++;
+			if (try > 40)
+				exit(0);*/
+			//printf("error 0 \n", b[0].error);
+		}
+		while (b[1].local[Y] != b[0].local[Y])
+		{
+			if (b[1].error * 2 >= b[1].diff[Y] && b[1].local[X] != sort[1][X])
+			{
+				b[1].error += b[1].diff[Y];
+				b[1].local[X] += b[1].add[X];
+			}
+			if (b[1].error * 2 <= b[1].diff[X] && b[1].local[Y] != sort[1][Y])
+			{
+				b[1].error += b[1].diff[X];
+				b[1].local[Y] += b[1].add[Y];
+			}
+		}
+	}
+}
+
+void	fill_top_tri(int *bot, int *top1, int *top2, char *adder, t_image_info i)
+{
+	int			sort[2][2];
+	t_brasenham	b[2];
+
+	ft_memcpy(sort[0], top2, sizeof(int) * 2);
+	ft_memcpy(sort[1], top1, sizeof(int) * 2);
+	if (top1[X] < top2[X])
+	{
+		ft_memcpy(sort[1], top2, sizeof(int) * 2);
+		ft_memcpy(sort[0], top1, sizeof(int) * 2);
+	}
+	pop_brasenham(&(b[0]), bot, sort[0]);
+	pop_brasenham(&(b[1]), bot, sort[1]);
+	while (b[0].local[Y] != top2[Y])
+	{
+		draw_line_img(b[0].local, b[1].local, adder, i, INT_MAX);
+		while (b[0].local[Y] == b[1].local[Y]) 
+		{
+			if (b[0].error * 2 >= b[0].diff[Y] && b[0].local[X] != sort[0][X])
+			{
+				b[0].error += b[0].diff[Y];
+				b[0].local[X] += b[0].add[X];
+			}
+			if (b[0].error * 2 <= b[0].diff[X] && b[0].local[Y] != sort[0][Y])
+			{
+				b[0].error += b[0].diff[X];
+				b[0].local[Y] += b[0].add[Y];
+			}
+		}
+		while (b[1].local[Y] != b[0].local[Y])
+		{
+			if (b[1].error * 2 >= b[1].diff[Y] && b[1].local[X] != sort[1][X])
+			{
+				b[1].error += b[1].diff[Y];
+				b[1].local[X] += b[1].add[X];
+			}
+			if (b[1].error * 2 <= b[1].diff[X] && b[1].local[Y] != sort[1][Y])
+			{
+				b[1].error += b[1].diff[X];
+				b[1].local[Y] += b[1].add[Y];
+			}
+		}
 	}
 }
 
@@ -116,38 +192,49 @@ void	fill_tri(int tris[4][3], char *adder, t_image_info i)
 	split[Z] = 0;
 
 	fill_bottom_tri(tris[0], tris[1], split, adder, i);
+	fill_top_tri(tris[2], tris[1], split, adder, i);
 	//draw_line_img(tris[0], split, adder, i, INT_MAX);
 
 
 	//exit(0);
 }
 
+void	flood_fill(int pos[2], char *adder, t_image_info i, int borderclr)
+{
+	if (*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) != borderclr)
+		*(int *)(adder + (pos[X] * (i.bpp / 8)) + (i.size_line * pos[Y])) = INT_MAX;
+	//int posnew[2] = (int[2]){3, 4};
+	flood_fill((int [2]){pos[X] + 1, pos[Y]}, adder, i, borderclr);
+	flood_fill((int [2]){pos[X] - 1, pos[Y]}, adder, i, borderclr);
+	flood_fill((int [2]){pos[X], pos[Y] + 1}, adder, i, borderclr);
+	flood_fill((int [2]){pos[X], pos[Y] - 1}, adder, i, borderclr);
+	printf("floodfill! \n");
+}
+
+
 void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int clr)
 {
-	int		diff[3];
-	int		add[3];
-	int		local[3];
-	int		error;
+	t_brasenham	b;
 
-	ft_memcpy(local, i1, sizeof(int) * 3);
-	diff[X] = ft_abs(local[X] - i2[X]);
-	diff[Y] = -ft_abs(local[Y] - i2[Y]);
-	add[X] = 1 - ((local[X] > i2[X]) * 2);
-	add[Y] = 1 - ((local[Y] > i2[Y]) * 2);
-	error = diff[X] + diff[Y];
-	while ((local[X] != i2[X] || local[Y] != i2[Y]))
+	ft_memcpy(b.local, i1, sizeof(int) * 3);
+	b.diff[X] = ft_abs(b.local[X] - i2[X]);
+	b.diff[Y] = -ft_abs(b.local[Y] - i2[Y]);
+	b.add[X] = 1 - ((b.local[X] > i2[X]) * 2);
+	b.add[Y] = 1 - ((b.local[Y] > i2[Y]) * 2);
+	b.error = b.diff[X] + b.diff[Y];
+	while ((b.local[X] != i2[X] || b.local[Y] != i2[Y]))
 	{
-		*(int *)(adder + (local[X] * (i.bpp / 8)) + (i.size_line * local[Y])) = clr; //Have no idea why this needs to be hardcoded 4 instead of i.bpp...
+		*(int *)(adder + (b.local[X] * (i.bpp / 8)) + (i.size_line * b.local[Y])) = clr; //Have no idea why this needs to be hardcoded 4 instead of i.bpp...
 		//Linememory.add(local);
-		if (error * 2 >= diff[Y] && local[X] != i2[X])
+		if (b.error * 2 >= b.diff[Y] && b.local[X] != i2[X])
 		{
-			error += diff[Y];
-			local[X] += add[X];
+			b.error += b.diff[Y];
+			b.local[X] += b.add[X];
 		}
-		if (error * 2 <= diff[X] && local[Y] != i2[Y])
+		if (b.error * 2 <= b.diff[X] && b.local[Y] != i2[Y])
 		{
-			error += diff[X];
-			local[Y] += add[Y];
+			b.error += b.diff[X];
+			b.local[Y] += b.add[Y];
 		}
 	}
 }

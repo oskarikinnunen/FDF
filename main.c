@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/09 22:24:18 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/10 02:03:51 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,18 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			i++;
 		}
 		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
+		//fill_tri(v3_integers, da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i, color_red());
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i, color_red());
 		if ((cur + 2) % map.width == 0)
 			draw_line_img(v3_integers[1], v3_integers[3], da, i_i, color_green());
 		if (cur > map.length - map.width * 2)
 			draw_line_img(v3_integers[2], v3_integers[3], da, i_i, color_green());
-
-		fill_tri(v3_integers, da, i_i);
+		int pos[2];
+		pos [X] = (v3_integers[0][X] + v3_integers[1][X] + v3_integers[2][X] + v3_integers[3][X]) / 4;
+		pos [Y] = (v3_integers[0][Y] + v3_integers[1][Y] + v3_integers[2][Y] + v3_integers[3][Y]) / 4;
+		flood_fill(pos, da, i_i, color_red);
+		
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
 	}
@@ -186,16 +190,10 @@ void	transform(t_map *map, double time)
 	{0, 1, 0},
 	{0, 0, 1}
 	};
-	/*ft_bzero(add[X], sizeof(float *) * 3);
-	ft_bzero(add[Y], sizeof(float *) * 3);
-	ft_bzero(add[Z], sizeof(float *) * 3);*/
-	//printf("zinoid %f", sin(time / 1000));
-	//add[X][Y] = 2 * sin(time / 1000);
-	add[Z][Z] = 1 * sin(time / 1000);
-	//add[X][Z] = 0.2 * sin(time / 500);
-	//add[2][Y] = 10 * sin(time / 1000);
+	
+	//add[Z][Z] = 1 * sin(time / 1000);
+	
 	v3listmul(add, map->points, map->length);
-	//v3listadd(map->points, add, map->length);
 }
 
 double	get_time(struct timeval t1)
