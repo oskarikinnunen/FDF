@@ -93,6 +93,7 @@ void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
 void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int color);
 void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
+int		color_green();
 
 void	fill_tri(int tris[4][3], char *adder, t_image_info i);
 void	flood_fill(int pos[2], char *adder, t_image_info i, int borderclr);

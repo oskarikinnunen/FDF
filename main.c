@@ -145,6 +145,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 		}
 		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
 		fill_tri(v3_integers, da, i_i);
+		fill_tri(&(v3_integers[1]), da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i, color_red());
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i, color_red());
 		if ((cur + 2) % map.width == 0)

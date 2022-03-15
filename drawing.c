@@ -45,27 +45,39 @@ void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i)
 	draw_line_img(i2, botmleft, adder, i, INT_MAX);
 }
 
-void	sort_tris(int tris[4][3])
+void	sort_tris(int tris[3][3])
 {
 	int	s_x;
 	int	s_j;
 	int	temp[3];
 
-	while (s_x < 3)
+	s_x = 0;
+	s_j = 0;
+	while (s_x < 2)
 	{
-		while (s_j < 3 - s_x - 1)
+		while (s_j < 2 - s_x)
 		{
-			if (tris[s_j][Y] > tris[s_j + 1][Y])
+			printf("comparing %i and %i\n", tris[s_j][Y], tris[s_j + 1][Y]);
+			if (tris[s_j][Y] < tris[s_j + 1][Y])
 			{
+				printf("doing swap! \n");
 				ft_memcpy(temp, tris[s_j], sizeof(int) * 3);
 				ft_memcpy(tris[s_j], tris[s_j + 1], sizeof(int) * 3);
 				ft_memcpy(tris[s_j + 1], temp, sizeof(int) * 3);
 			}
 			s_j++;
 		}
+		s_j = 0;
 		s_x++;
 	}
-	//TEST!
+	int i = 0;
+	while (i < 3)
+	{
+		printf("Sorted mby %i \n", tris[i][Y]);
+		i++;
+	}
+	printf("\n");
+		
 }
 
 void	pop_brasenham(t_brasenham *b, int *from, int *to)
@@ -94,7 +106,6 @@ void	fill_bottom_tri(int *top, int *bot1, int *bot2, char *adder, t_image_info i
 	}
 	pop_brasenham(&(b[0]), top, sort[0]);
 	pop_brasenham(&(b[1]), top, sort[1]);
-	scan = top[Y];
 	while (b[0].local[Y] != bot2[Y])
 	{
 		draw_line_img(b[0].local, b[1].local, adder, i, INT_MAX);
@@ -179,25 +190,30 @@ void	fill_top_tri(int *bot, int *top1, int *top2, char *adder, t_image_info i)
 	}
 }
 
-void	fill_tri(int tris[4][3], char *adder, t_image_info i)
+void	fill_tri(int tris[3][3], char *adder, t_image_info i)
 {
 	int		split[3];
+	int		sorted[3][3];
 	float	lerp;
-	sort_tris(tris);
+
+	ft_memcpy(sorted, tris, sizeof(int[3][3]));
+	sort_tris(sorted);
 	/*for (int x = 0; x < 3; x++)
 	{
 		printf("TRIS %i X%i Y%i Z%i\n", x, tris[x][X], tris[x][Y], tris[x][Z]);
 	}*/
 	//if ()
-	lerp = tris[1][Y] / (tris[0][Y] - tris[2][Y]);
-	split[X] = tris[2][X] + (lerp * (tris[0][X] - tris[2][X]));
-	split[Y] = tris[2][Y] + (lerp * (tris[0][Y] - tris[2][Y]));
+	lerp = (float)(sorted[1][Y] - sorted[2][Y]) / (float)(sorted[0][Y] - sorted[2][Y]);
+	printf("0 %i 1 %i 2 %i lerp is %f \n", sorted[0][Y], sorted[1][Y], sorted[2][Y], lerp);
+	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
+	split[Y] = sorted[2][Y] + (lerp * (sorted[0][Y] - sorted[2][Y]));
 	split[Z] = 0;
 
-	//fill_bottom_tri(tris[0], tris[1], split, adder, i);
-	//fill_top_tri(tris[2], tris[1], split, adder, i);
-	draw_line_img(tris[1], split, adder, i, INT_MAX);
-
+	fill_bottom_tri(sorted[0], sorted[1], split, adder, i);
+	fill_top_tri(sorted[2], sorted[1], split, adder, i);
+	draw_line_img(sorted[0], sorted[1], adder, i, color_green());
+	//draw_line_img(sorted[0], split, adder, i, INT_MAX);
+	//draw_line_img(sorted[1], split, adder, i, INT_MAX);
 
 	//exit(0);
 }
