@@ -34,4 +34,5 @@ void	pop_brasenham(t_brasenham *b, int *from, int *to)
 	b->add[X] = 1 - ((b->local[X] > to[X]) * 2);
 	b->add[Y] = 1 - ((b->local[Y] > to[Y]) * 2);
 	b->error = b->diff[X] + b->diff[Y];
+	b->error -= b->diff[Y];
 }

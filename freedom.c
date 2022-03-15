@@ -17,9 +17,10 @@ void	free_map(t_map *map)
 	int	i;
 
 	i = 0;
-	while (i < map->length)
+	while (i <= map->length)
 	{
 		free(map->points[i]);
 		i++;
 	}
+	free(map->points);
 }

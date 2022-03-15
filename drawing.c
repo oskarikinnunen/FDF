@@ -47,15 +47,16 @@ void	fill_bottom_tri(int *tris[3], char *adder,
 	}
 	pop_brasenham(&(b[0]), tris[0], sort[0]);
 	pop_brasenham(&(b[1]), tris[0], sort[1]);
-	while (b[0].local[Y] != tris[2][Y])
-	{		
-		draw_line_img(b[0].local, b[1].local, adder, i);
+	while (b[0].local[Y] != sort[0][Y] && sort[0][Y] > 0)
+	{
+		draw_line_img(b[0].local, (int [3]){b[1].local[X] + 2, b[0].local[Y], b[0].local[Z]}, adder, i);
 		while (b[0].local[Y] == b[1].local[Y])
 			step_bresenham(&(b[0]), sort[0]);
-		while (b[1].local[Y] != b[0].local[Y])
+		while (b[1].local[Y] != b[0].local[Y] && b[1].local[Y] != sort[1][Y]) //dum
 			step_bresenham(&(b[1]), sort[1]);
 		draw_line_img(b[0].local, b[1].local, adder, i);
 	}
+	draw_line_img(b[0].local, b[1].local, adder, i);
 }
 
 //bot, top1, tris[2]
@@ -73,18 +74,20 @@ void	fill_top_tri(int *tris[3], char *adder, t_image_info i)
 	}
 	pop_brasenham(&(b[0]), tris[0], sort[0]);
 	pop_brasenham(&(b[1]), tris[0], sort[1]);
-	while (b[0].local[Y] != tris[2][Y])
+	while (b[0].local[Y] != sort[0][Y] && sort[0][Y] > 0)
 	{
-		draw_line_img(b[0].local, b[1].local, adder, i);
+		draw_line_img(b[0].local, (int [3]){b[1].local[X] + 2, b[1].local[Y], b[1].local[Z]}, adder, i);
 		while (b[0].local[Y] == b[1].local[Y])
 			step_bresenham(&(b[0]), sort[0]);
-		while (b[1].local[Y] != b[0].local[Y])
+		while (b[1].local[Y] != b[0].local[Y] && b[1].local[Y] != sort[1][Y])
 			step_bresenham(&(b[1]), sort[1]);
-		draw_line_img(b[0].local, b[1].local, adder, i);
+		draw_line_img((int [3]){b[0].local[X], b[0].local[Y] + 2, b[0].local[Z]}
+					, (int [3]){b[1].local[X], b[0].local[Y] + 2, b[0].local[Z]}, adder, i);
 	}
+	draw_line_img(b[0].local, b[1].local, adder, i);
 }
 
-void	fill_tri(int tris[3][3], char *adder, t_image_info i)
+void	fill_tri(int tris[3][3], int vert_z, char *adder, t_image_info i)
 {
 	int		split[3];
 	int		sorted[3][3];
@@ -96,10 +99,13 @@ void	fill_tri(int tris[3][3], char *adder, t_image_info i)
 		/ (float)(sorted[0][Y] - sorted[2][Y]);
 	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
 	split[Y] = sorted[2][Y] + (lerp * (sorted[0][Y] - sorted[2][Y]));
-	split[Z] = sorted[0][Z];
+	split[Z] = vert_z;
+	sorted[0][Z] = vert_z;
+	sorted[1][Z] = vert_z;
+	sorted[2][Z] = vert_z;
 	fill_bottom_tri((int *[3]){&(sorted[0]), &(sorted[1]), &split}, adder, i);
 	fill_top_tri((int *[3]){&(sorted[2]), &(sorted[1]), &split}, adder, i);
-	//draw_line_img(sorted[0], sorted[1], adder, i);
+	//draw_line_img(sorted[0], sorted[2], adder, i);
 }
 
 void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i)

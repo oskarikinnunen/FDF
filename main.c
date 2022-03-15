@@ -117,6 +117,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 {
 	int		cur;
 	int		v3_integers[4][3];
+	int		vert_z;
 	int		i;
 
 	cur = 0;
@@ -131,8 +132,10 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			i++;
 		}
 		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
-		fill_tri(v3_integers, da, i_i);
-		fill_tri(&(v3_integers[1]), da, i_i);
+		vert_z = (v3_integers[0][Z] +  v3_integers[1][Z]
+				+ v3_integers[2][Z] +  v3_integers[3][Z]) / 4;
+		fill_tri(v3_integers, vert_z,  da, i_i);
+		fill_tri(&(v3_integers[1]), vert_z, da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i);
 		if ((cur + 2) % map.width == 0)
@@ -260,19 +263,25 @@ int	loop(void *p)
 	img = *(i->img);
 	
 	//Transform points with matrix or some kind of function here, before clearing the picture and drawing again
+	
 	i->time = get_time(i->t1);
+	//printf("deltatime is %f \n", (i->time - i->p_time));
+	mlx_clear_window(i->mlx, i->win);
+	mlx_string_put(i->mlx, i->win, 10, 10, color_red(), ft_itoa(1000 / (i->time - i->p_time)));
 	//printf("SINOIDAL is %f\n", sin(i->time / 1000));
 	addr = mlx_get_data_addr(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
 	ft_bzero(addr, WSZ * WSZ * 4);
-
+	i->p_time = i->time;
 	cpy = mapcpy(i->map);
 	transform(cpy, i->time);
 	preprocess(cpy, *i);
 	//debug_points_zvalues(*cpy, *i);
 	//sort_map_z(cpy);
 	drawpoints_image(addr, *cpy, img);
-	free_map(cpy);
-	free(cpy);
+	//free_map(cpy);
+	//free(cpy);
+
+	
 
 	//MOVE TO DRAW!
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
@@ -301,9 +310,10 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_UP) * 5;
 	printf("Pressed button %i \n", keycode);
 
-	if (keycode == KEY_ESC)
+	if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_map(i->map);
+		exit(0);
 	}
 }
 
