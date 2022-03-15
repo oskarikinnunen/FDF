@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 12:42:37 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:25:51 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,19 +123,6 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 	while ((cur + map.width + 1) <= map.length)
 	{
 		i = 0;
-		 /*if (cur >= 22 + 19 && cur < 33 + 19)
-		{
-			
-			//printf("should fill %i\n", cur);
-			int fill[2];
-			fill[X] = (int)((map.points[cur][X] + map.points[cur - map.width][X]) / 2);
-			fill[Y] = (int)((map.points[cur][Y] + map.points[cur - map.width][Y]) / 2);
-			draw_line_img(fill, (int[2]){map.points[cur][X], map.points[cur][Y]}, da, i_i, color_green());
-			//flood_fill(fill, da, i_i, color_red());
-		}
-		if (cur == 33 + 20)
-			return ;
-		printf("cur %i divisible by width %i \n", cur, cur % map.width == 0);*/
 		while (i < 4)
 		{
 			v3_int_block(map.points
@@ -152,7 +139,6 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			draw_line_img(v3_integers[1], v3_integers[3], da, i_i);
 		if (cur > map.length - map.width * 2)
 			draw_line_img(v3_integers[2], v3_integers[3], da, i_i);
-		
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
 
@@ -289,8 +275,6 @@ int	loop(void *p)
 	//MOVE TO DRAW!
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
 	//mlx_string_put(i->mlx, i->win, WSZ / 2, WSZ / 2, INT_MAX, "HEllo");
-
-
 	return (1);
 }
 
@@ -314,6 +298,11 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
 	printf("Pressed button %i \n", keycode);
+
+	if (keycode == KEY_ESC)
+	{
+		free_map(i->map);
+	}
 }
 
 //TODO: animate!!

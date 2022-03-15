@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 13:08:41 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:23:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define KEY_DOWN 65364
 # define KEY_UP 65362
 # define KEY_TILDE 167
+# define KEY_ESC 53
 # define KEY_ENTER 65293
 # define KEY_LEFTSHIFT 65505
 
@@ -104,7 +105,8 @@ int		convert_cocoakc_to_ascii_global(int kc);
 /* BRESENHAM */
 void	step_bresenham(t_brasenham *b, int target[3]);
 void	pop_brasenham(t_brasenham *b, int *from, int *to);
-
 void	sort_tris(int tris[3][3]);
+
+void	free_map(t_map *map);
 
 #endif
