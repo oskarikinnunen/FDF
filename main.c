@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 13:25:51 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:33:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,8 @@ int	loop(void *p)
 	//debug_points_zvalues(*cpy, *i);
 	//sort_map_z(cpy);
 	drawpoints_image(addr, *cpy, img);
+	free_map(cpy);
+	free(cpy);
 
 	//MOVE TO DRAW!
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);

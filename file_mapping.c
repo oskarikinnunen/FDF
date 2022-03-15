@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/02 18:03:11 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:31:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ void	read_inputmap(char *filename, t_map *map)
 		map->points[cur] = v3new(crds[X], crds[Y], (float)data[cur]);
 		crds[X]++;
 		cur++;
-		/*(float **)((map->points) + cur) = 
-		v3 = v3new(crds[X], crds[Y], (float)(*buf - '0'));
-		crds[X]++;
-		cur++;
-		printf("CUR vlist content %f \n", ((float *)vlist->content)[X]);
-		printf("CUR READINPUT %i \n", cur);*/
 	}
+	free(data);
 }
