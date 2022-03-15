@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 07:33:52 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 08:28:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,14 +181,17 @@ void	fill_top_tri(int *bot, int *top1, int *top2, char *adder, t_image_info i)
 
 void	fill_tri(int tris[4][3], char *adder, t_image_info i)
 {
-	int	split[3];
+	int		split[3];
+	float	lerp;
 	sort_tris(tris);
 	/*for (int x = 0; x < 3; x++)
 	{
 		printf("TRIS %i X%i Y%i Z%i\n", x, tris[x][X], tris[x][Y], tris[x][Z]);
 	}*/
-	split[X] = tris[0][X] + (tris[1][Y] - tris[0][Y]) / (tris[2][Y] - tris[0][Y]) * (tris[2][X] - tris[0][X]);
-	split[Y] = tris[1][Y];
+	//if ()
+	lerp = tris[1][Y] / (tris[0][Y] - tris[2][Y]);
+	split[X] = tris[2][X] + (lerp * (tris[0][X] - tris[2][X]));
+	split[Y] = tris[2][Y] + (lerp * (tris[0][Y] - tris[2][Y]));
 	split[Z] = 0;
 
 	//fill_bottom_tri(tris[0], tris[1], split, adder, i);
