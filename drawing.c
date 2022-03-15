@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/10 02:31:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 07:33:52 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,9 @@ void	fill_tri(int tris[4][3], char *adder, t_image_info i)
 	split[Y] = tris[1][Y];
 	split[Z] = 0;
 
-	fill_bottom_tri(tris[0], tris[1], split, adder, i);
-	fill_top_tri(tris[2], tris[1], split, adder, i);
-	//draw_line_img(tris[0], split, adder, i, INT_MAX);
+	//fill_bottom_tri(tris[0], tris[1], split, adder, i);
+	//fill_top_tri(tris[2], tris[1], split, adder, i);
+	draw_line_img(tris[1], split, adder, i, INT_MAX);
 
 
 	//exit(0);

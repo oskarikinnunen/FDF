@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/10 03:03:52 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 07:30:20 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 	while ((cur + map.width + 1) <= map.length)
 	{
 		i = 0;
-		if (cur >= 22 + 19 && cur < 33 + 19)
+		 /*if (cur >= 22 + 19 && cur < 33 + 19)
 		{
 			
 			//printf("should fill %i\n", cur);
@@ -135,7 +135,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 		}
 		if (cur == 33 + 20)
 			return ;
-		printf("cur %i divisible by width %i \n", cur, cur % map.width == 0);
+		printf("cur %i divisible by width %i \n", cur, cur % map.width == 0);*/
 		while (i < 4)
 		{
 			v3_int_block(map.points
@@ -144,7 +144,7 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 			i++;
 		}
 		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
-		//fill_tri(v3_integers, da, i_i);
+		fill_tri(v3_integers, da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i, color_red());
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i, color_red());
 		if ((cur + 2) % map.width == 0)
@@ -267,13 +267,8 @@ int	mouse_loop(int button, int x, int y, void *p)
 	t_mlx_i			*i;
 
 	i = (t_mlx_i *)p;
-	//	i->x_axis;
 	if (button == 1)
-	{
-		//printf("X axis = %i", x);
-		//i->x_angle += 5;
 		i->x_angle += 5 * (x < WSZ / 2) + -5 * (x > WSZ / 2);
-	}
 }
 
 int	key_loop(int keycode, void *p)
