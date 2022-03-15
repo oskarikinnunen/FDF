@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/10 02:14:25 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:08:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_brasenham
 {
 	int	diff[2];
 	int	add[2];
-	int	local[2];
+	int	local[3];
 	int	error;
 }	t_brasenham;
 
@@ -90,8 +90,7 @@ void	read_inputmap(char *filename, t_map *map);
 
 /* DRAWING */
 void	draw_line(int *i1, int *i2, t_mlx_i i, int c);
-void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i, int color);
-void	draw_rect_img(int *i1, int *i2, char *adder, t_image_info i);
+void	draw_line_img(int *i1, int *i2, char *adder, t_image_info i);
 int		color(char r, char g, char b);
 int		color_green();
 
@@ -100,7 +99,12 @@ void	flood_fill(int pos[2], char *adder, t_image_info i, int borderclr);
 
 /* HOOKS */
 int		expose_loop(void *param);
-
 int		convert_cocoakc_to_ascii_global(int kc);
+
+/* BRESENHAM */
+void	step_bresenham(t_brasenham *b, int target[3]);
+void	pop_brasenham(t_brasenham *b, int *from, int *to);
+
+void	sort_tris(int tris[3][3]);
 
 #endif

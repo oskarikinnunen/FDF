@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 07:30:20 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/15 12:42:37 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,12 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
 		fill_tri(v3_integers, da, i_i);
 		fill_tri(&(v3_integers[1]), da, i_i);
-		draw_line_img(v3_integers[0], v3_integers[1], da, i_i, color_red());
-		draw_line_img(v3_integers[0], v3_integers[2], da, i_i, color_red());
+		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
+		draw_line_img(v3_integers[0], v3_integers[2], da, i_i);
 		if ((cur + 2) % map.width == 0)
-			draw_line_img(v3_integers[1], v3_integers[3], da, i_i, color_red());
+			draw_line_img(v3_integers[1], v3_integers[3], da, i_i);
 		if (cur > map.length - map.width * 2)
-			draw_line_img(v3_integers[2], v3_integers[3], da, i_i, color_red());
+			draw_line_img(v3_integers[2], v3_integers[3], da, i_i);
 		
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
@@ -202,7 +202,7 @@ void	transform(t_map *map, double time)
 	{0, 0, 1}
 	};
 	
-	//add[Z][Z] = 1 * sin(time / 1000);
+	add[Z][Z] = 1 * sin(time / 1000);
 	
 	v3listmul(add, map->points, map->length);
 }
@@ -232,6 +232,37 @@ int	debug_points_zvalues(t_map map, t_mlx_i i)
 	}
 }
 
+void	sort_map_z(t_map *map)
+{
+	int		i;
+	int		c;
+	float	temp[3];
+
+	i = 0;
+	c = 0;
+	while (i < map->length - 1)
+	{
+		while (c < map->length - 1 - i)
+		{
+			if (map->points[c][Z] < map->points[c + 1][Z])
+			{
+				ft_memcpy(temp, map->points[c], sizeof(float[3]));
+				ft_memcpy(map->points[c], map->points[c + 1], sizeof(float[3]));
+				ft_memcpy(map->points[c + 1], temp, sizeof(float[3]));
+				//swap
+			}
+			c++;
+		}
+		c = 0;
+		i++;
+	}
+	/*for (int i = 0; i < map->length; i++)
+	{
+		printf("SORTED: %f \n", map->points[i][Z]);
+	}
+	exit(0);*/
+}
+
 int	loop(void *p)
 {
 	t_mlx_i			*i;
@@ -251,11 +282,11 @@ int	loop(void *p)
 	cpy = mapcpy(i->map);
 	transform(cpy, i->time);
 	preprocess(cpy, *i);
+	//debug_points_zvalues(*cpy, *i);
+	//sort_map_z(cpy);
 	drawpoints_image(addr, *cpy, img);
 
 	//MOVE TO DRAW!
-	
-	//debug_points_zvalues(*cpy, *i);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
 	//mlx_string_put(i->mlx, i->win, WSZ / 2, WSZ / 2, INT_MAX, "HEllo");
 
@@ -282,6 +313,7 @@ int	key_loop(int keycode, void *p)
 	i->x_angle += (keycode == KEY_RGHT) * 5;
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
+	printf("Pressed button %i \n", keycode);
 }
 
 //TODO: animate!!
