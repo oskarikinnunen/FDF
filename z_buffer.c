@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   z_buffer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/29 16:06:39 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/16 15:57:18 by okinnune         ###   ########.fr       */
+/*   Created: 2022/03/16 14:45:17 by okinnune          #+#    #+#             */
+/*   Updated: 2022/03/16 16:22:59 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fdf.h"
 
-void	ft_bzero(void *s, size_t n)
+void	save_z(t_map *map, t_image_info *info, int index)
 {
-	/*while (n > sizeof(long))
+	int	i;
+
+	i = 0;
+	while (i <= map->length)
 	{
-		*(long *) s = 0L;
-		s += sizeof(long);
-		n -= sizeof(long);
-		//n -= ((s += sizeof(long)) != 0) * sizeof(long);
+		((char *)&(info->z_values[i]))[index] = (char)(map->points[i][Z]);
+		//(info->z_values[i]) = map->points[i][Z];
+		i++;
 	}
-	while (n > sizeof(int))
-	{
-		*(int *) s = 0;
-		s += sizeof(int);
-		n -= sizeof(int);
-		//n -= ((s += sizeof(int)) != 0) * sizeof(int);
-	}*/
-	while (n-- > 0)
-		*(char *)s++ = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 12:47:59 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/08 18:37:33 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/16 14:07:54 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ float	*v3new(float x, float y, float z)
 	v3[Y] = y;
 	v3[Z] = z;
 	return (v3);
+}
+
+void	v3set(float *v3, float x, float y, float z)
+{
+	v3[X] = x;
+	v3[Y] = y;
+	v3[Z] = z;
 }
 
 int		*v3_int(float	*v3)
@@ -39,6 +46,21 @@ void	v3_int_block(float	*v3, int *i3)
 	i3[X] = (int)v3[X];
 	i3[Y] = (int)v3[Y];
 	i3[Z] = (int)v3[Z];
+}
+
+void	collect_square(float **v3, int i3[4][3], int width, int z)
+{
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		v3_int_block(v3
+					[((i >= 2) * width) + !((i + 1) % 2)],
+					i3[i]);
+		i3[i][Z] = z;
+		i++;
+	}
 }
 
 /*int		i3_equal(int *i1, int *i2)

@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/15 13:23:08 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/16 14:52:08 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc -g -fstack-protector-all
 NAME= mlx-test
-SRC = main.c drawing.c vectors.c file_mapping.c hooks.c bresenham.c sorting.c freedom.c
+SRC = main.c drawing.c vectors.c file_mapping.c hooks.c bresenham.c sorting.c freedom.c z_buffer.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 UNAME= $(shell uname)
@@ -36,7 +36,7 @@ $(NAME)	:$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LIB) $(MLXLIB) -I. -I/libft -g
 
 clean	:
-	make -C libft clean
+#	make -C libft clean
 	rm -f $(OBJ) *~ core *.core
 
 fclean	: clean

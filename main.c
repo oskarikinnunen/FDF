@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 13:33:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/16 16:23:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,8 @@ void	setmatrix_scale(float matrix[3][3])
 	}
 }
 
-void	setmatrix_iso(float matrix[3][3], double angle)
+void	setmatrix_iso_x(float matrix[3][3], double angle)
 {
-	/*static float	iso[3][3] = {
-	{1,	-0.6, -0.4},
-	{0, 1, -0.2},
-	{0.4, 0.0, 2.0}
-	};*/
 	float	v1 = sqrt(3);
 	static float	iso[3][3] = {
 	{1, 0, 0},
@@ -48,7 +43,6 @@ void	setmatrix_iso(float matrix[3][3], double angle)
 	{0, 0, 0}
 	};
 	int				i;
-	//iso[Y][Y] = cos()
 	
 	angle = angle * 3.14 / 180;
 	angle = asin(tan(angle));
@@ -56,7 +50,6 @@ void	setmatrix_iso(float matrix[3][3], double angle)
 	iso[Y][Z] = sin(angle);
 	iso[Z][Y] = -sin(angle);
 	iso[Z][Z] = cos(angle);
-	//iso[Y][Z] = a;
 	i = 0;
 	while (i < 3)
 	{
@@ -65,28 +58,20 @@ void	setmatrix_iso(float matrix[3][3], double angle)
 	}
 }
 
-void	setmatrix_iso2(float matrix[3][3], double angle)
+void	setmatrix_iso_y(float matrix[3][3], double angle)
 {
-	/*static float	iso[3][3] = {
-	{1,	-0.6, -0.4},
-	{0, 1, -0.2},
-	{0.4, 0.0, 2.0}
-	};*/
-	float	v1 = sqrt(3);
 	static float	iso[3][3] = {
 	{0, 0, 0},
 	{0, 1, 0},
 	{0, 0, 0}
 	};
 	int				i;
-	//iso[Y][Y] = cos()
-	//double angle = 45;
+
 	angle = angle * 3.14 / 180;
 	iso[X][X] = cos(angle);
 	iso[X][Z] = -sin(angle);
 	iso[Z][X] = sin(angle);
 	iso[Z][Z] = cos(angle);
-	//iso[Y][Z] = a;
 	i = 0;
 	while (i < 3)
 	{
@@ -118,33 +103,23 @@ void	drawpoints_image(char *da, t_map map, t_image_info i_i)
 	int		cur;
 	int		v3_integers[4][3];
 	int		vert_z;
-	int		i;
 
 	cur = 0;
 	while ((cur + map.width + 1) <= map.length)
 	{
-		i = 0;
-		while (i < 4)
-		{
-			v3_int_block(map.points
-						[cur + ((i >= 2) * map.width) + !((i + 1) % 2)],
-						v3_integers[i]);
-			i++;
-		}
-		//printf("drawing point X%i Y%i \n", v3_integers[0][0], v3_integers[0][1]);
-		vert_z = (v3_integers[0][Z] +  v3_integers[1][Z]
-				+ v3_integers[2][Z] +  v3_integers[3][Z]) / 4;
+		vert_z = i_i.z_values[cur] + i_i.z_values[cur + 1]
+				+ i_i.z_values[cur + map.width]
+				+ i_i.z_values[cur + map.width + 1];
+		vert_z = vert_z / 4;
+		vert_z = ft_clamp(vert_z * 2, -127, 127) + 127;
+		collect_square(&(map.points[cur]), v3_integers, map.width, vert_z);
 		fill_tri(v3_integers, vert_z,  da, i_i);
 		fill_tri(&(v3_integers[1]), vert_z, da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[1], da, i_i);
+		draw_line_img(v3_integers[1], v3_integers[2], da, i_i);
 		draw_line_img(v3_integers[0], v3_integers[2], da, i_i);
-		if ((cur + 2) % map.width == 0)
-			draw_line_img(v3_integers[1], v3_integers[3], da, i_i);
-		if (cur > map.length - map.width * 2)
-			draw_line_img(v3_integers[2], v3_integers[3], da, i_i);
 		cur++;
 		cur += ((cur + 1) % map.width == 0);
-
 	}
 }
 
@@ -153,14 +128,14 @@ void	preprocess(t_map *map, t_mlx_i i)
 	float	add[3];
 	float	matrix[3][3];
 
-	add[X] = 400;
-	add[Y] = 400;
-	add[Z] = 0;
+	add[X] = WSZ / 4;
+	add[Y] = WSZ / 4;
+	add[Z] = 20;
 	setmatrix_scale(matrix);
 	v3listmul(matrix, map->points, map->length);
-	setmatrix_iso2(matrix, i.x_angle);
+	setmatrix_iso_y(matrix, i.x_angle);
 	v3listmul(matrix, map->points, map->length);
-	setmatrix_iso(matrix, i.y_angle);
+	setmatrix_iso_x(matrix, i.y_angle);
 	v3listmul(matrix, map->points, map->length);
 	v3listadd(map->points, add, map->length);
 }
@@ -181,6 +156,18 @@ t_map	*mapcpy(t_map *map)
 		i++;
 	}
 	return (l_map);
+}
+
+void	mapcpy_shallow(t_map *src, t_map *dst)
+{
+	int	i;
+
+	i = 0;
+	while (i <= src->length)
+	{
+		ft_memcpy(dst->points[i], src->points[i], sizeof(float) * 3);
+		i++;
+	}
 }
 
 void	transform(t_map *map, double time)
@@ -207,20 +194,6 @@ double	get_time(struct timeval t1)
 	return (time);
 }
 
-int	debug_points_zvalues(t_map map, t_mlx_i i)
-{
-	int	c;
-
-	c = 0;
-	while (c < map.length)
-	{
-		int *i3 = v3_int(map.points[c]);
-		mlx_string_put(i.mlx, i.win, i3[X], i3[Y], INT_MAX, ft_itoa(i3[Z])); //Memory!!
-		free(i3);
-		c++;
-	}
-}
-
 void	sort_map_z(t_map *map)
 {
 	int		i;
@@ -238,54 +211,51 @@ void	sort_map_z(t_map *map)
 				ft_memcpy(temp, map->points[c], sizeof(float[3]));
 				ft_memcpy(map->points[c], map->points[c + 1], sizeof(float[3]));
 				ft_memcpy(map->points[c + 1], temp, sizeof(float[3]));
-				//swap
 			}
 			c++;
 		}
 		c = 0;
 		i++;
 	}
-	/*for (int i = 0; i < map->length; i++)
-	{
-		printf("SORTED: %f \n", map->points[i][Z]);
-	}
-	exit(0);*/
 }
 
 int	loop(void *p)
 {
 	t_mlx_i			*i;
 	t_image_info	img;
-	t_map			*cpy;
+	t_map			cpy;
 	char			*addr;
 
 	i = (t_mlx_i *)p;
 	img = *(i->img);
-	
-	//Transform points with matrix or some kind of function here, before clearing the picture and drawing again
-	
 	i->time = get_time(i->t1);
-	//printf("deltatime is %f \n", (i->time - i->p_time));
-	mlx_clear_window(i->mlx, i->win);
-	mlx_string_put(i->mlx, i->win, 10, 10, color_red(), ft_itoa(1000 / (i->time - i->p_time)));
-	//printf("SINOIDAL is %f\n", sin(i->time / 1000));
+	//mlx_clear_window(i->mlx, i->win);
+	/*char *fps = ft_itoa(1000 / (i->time - i->p_time));
+	mlx_string_put(i->mlx, i->win, 10, 10, color_red(), fps);
+	free(fps);*/
+	i->p_time = i->time;
 	addr = mlx_get_data_addr(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
 	ft_bzero(addr, WSZ * WSZ * 4);
-	i->p_time = i->time;
-	cpy = mapcpy(i->map);
-	transform(cpy, i->time);
-	preprocess(cpy, *i);
+	cpy = i->maps[1];
+	mapcpy_shallow(i->maps, &cpy);
+	
+	transform(&cpy, i->time);
+	save_z(&cpy, &img, 0);
+	preprocess(&cpy, *i);
+	//save_z(&cpy, &img, 1);
+	//save_z(&cpy, &img, 1);
 	//debug_points_zvalues(*cpy, *i);
 	//sort_map_z(cpy);
-	drawpoints_image(addr, *cpy, img);
+	drawpoints_image(addr, cpy, img);
 	//free_map(cpy);
 	//free(cpy);
 
 	
 
 	//MOVE TO DRAW!
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 50);
-	//mlx_string_put(i->mlx, i->win, WSZ / 2, WSZ / 2, INT_MAX, "HEllo");
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 20);
+	//exit(0);
+	
 	return (1);
 }
 
@@ -312,39 +282,39 @@ int	key_loop(int keycode, void *p)
 
 	if (keycode == KEY_ESC || keycode == 65307)
 	{
-		free_map(i->map);
+		free_map(&(i->maps[1]));
+		free_map(i->maps);
 		exit(0);
 	}
 }
 
-//TODO: animate!!
+
 int	main(int argc, char **argv)
 {
 	t_mlx_i			i;
 	t_image_info	img;
-	t_map			map;
+	t_map			maps[2];
 	float			matrix[3][3];
 
 	if (argc != 2)
 		return (-1);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
-	ft_bzero(&map, sizeof(t_map));
-	read_inputmap(argv[1], &map);
-	//preprocess(&map); // Move this elsewhere!
+	ft_bzero(maps, sizeof(t_map) * 2);
+	ft_bzero(&img, sizeof(t_image_info));
+	read_inputmap(argv[1], &(maps[0]));
+	read_inputmap(argv[1], &(maps[1]));
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
+	
 	i.img = &img;
-	i.map = &map;
+	i.maps = (t_map *)(&maps);
+	img.z_values = malloc(sizeof(int) * i.maps->length);
 	i.time = 0.0;
 	i.x_angle = 45;
 	i.y_angle = 30;
 	gettimeofday(&(i.t1), NULL);
-	//preprocess_return(&map);
-
-	//mlx_put_image_to_window(i.mlx, i.win, img.ptr, 0,0);
 	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_mouse_hook(i.win, mouse_loop, &i);
-	//mlx_expose_hook(i.win, expose_loop, &i);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop(i.mlx);
 	return (0);
