@@ -6,12 +6,11 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 17:57:56 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/16 11:20:13 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/17 07:31:48 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= libft.a
-V_NAME= libft_vectors.a
 HEADER= libft.h
 FILES= ft_abs.c ft_atoi.c ft_bzero.c ft_digitcount.c ft_isalnum.c ft_isalpha.c\
 	ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_lstadd.c ft_lstapp.c \
@@ -25,20 +24,16 @@ FILES= ft_abs.c ft_atoi.c ft_bzero.c ft_digitcount.c ft_isalnum.c ft_isalpha.c\
 	ft_strmapi.c ft_strncat.c ft_strncmp.c ft_strncpy.c ft_strnequ.c \
 	ft_strnew.c ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c \
 	ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c ft_isspace.c \
-	ft_ftoa.c ft_memdup.c ft_clamp.c
-V_FILES= ft_vecnew.c ft_vecadd.c
-V_SRCS= $(addprefix src/vectors/, $(V_FILES))
+	ft_ftoa.c ft_memdup.c ft_clamp.c ft_clampf.c
 FLAGS= -Wall -Wextra -Werror -c
 SRCS= $(addprefix src/, $(FILES))
 SRCS+=$(V_SRCS)
 OBJS= $(FILES:.c=.o)
-V_OBJS= $(V_FILES:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(SRCS) $(OBJS) $(V_OBJS)
-	ar rc $(NAME) $(OBJS) $(V_OBJS)
-	ar rc $(V_NAME) $(V_OBJS)
+$(NAME): $(SRCS) $(OBJS)
+	ar rc $(NAME) $(OBJS)
 
 $(OBJS):
 	gcc $(FLAGS) $(HEADER) $(SRCS) -I.

@@ -6,20 +6,20 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 13:31:39 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 06:14:50 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static unsigned char *get_mapdata(t_map *map, int fd)
+static unsigned char	*get_mapdata(t_map *map, int fd)
 {
 	int				res;
 	int				cur;
 	unsigned char	buf[2];
 	unsigned char	*str;
 
-	str = ft_strnew(1000);
+	str = (unsigned char *)ft_memalloc(1000);
 	ft_bzero(buf, 2);
 	cur = 0;
 	res = 1;
@@ -31,15 +31,13 @@ static unsigned char *get_mapdata(t_map *map, int fd)
 			if (*buf == '\n' && map->width == 0)
 				map->width = cur + 1;
 			cur++;
-			continue;
+			continue ;
 		}
 		if (ft_isdigit(*buf) && res == 1)
-		{
-			str[cur] = (unsigned char)(str[cur] * 10) + (unsigned char)((*buf) - '0'); //TODO: overflow
-		}
+			str[cur] = (unsigned char)(str[cur] * 10)
+				+ (unsigned char)((*buf) - '0');
 	}
-	map->length = cur; //Fix with real indexing
-	printf("map length %i \n", map->length);
+	map->length = cur;
 	return (str);
 }
 
@@ -58,7 +56,6 @@ void	read_inputmap(char *filename, t_map *map)
 	printf("MAP WIDTH IS %i\n", map->width);
 	while (cur <= map->length)
 	{
-		//printf("cur %i moduloresult = %i\n", cur, (cur + 1) % (map->width));
 		if (cur != 0 && cur % map->width == 0)
 		{
 			crds[X] = 0;

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:43:07 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/15 12:43:24 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 05:30:00 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,31 @@ void	sort_tris(int tris[3][3])
 		}
 		s_j = 0;
 		s_x++;
-	}		
+	}
+}
+
+void	sort_map_z(t_map *map)
+{
+	int		i;
+	int		c;
+	float	temp[3];
+
+	i = 0;
+	c = 0;
+	while (i < map->length - 1)
+	{
+		while (c < map->length - 1 - i)
+		{
+			if (map->points[c][Z] < map->points[c + 1][Z])
+			{
+				ft_memcpy(temp, map->points[c], sizeof(float [3]));
+				ft_memcpy(map->points[c], map->points[c + 1] \
+										, sizeof(float [3]));
+				ft_memcpy(map->points[c + 1], temp, sizeof(float [3]));
+			}
+			c++;
+		}
+		c = 0;
+		i++;
+	}
 }
