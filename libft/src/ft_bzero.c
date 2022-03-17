@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 16:06:39 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 09:34:00 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:05:44 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	while (n > sizeof(long))
+	/*while (n > sizeof(long))
 	{
-		*(long *) s = (long)0;
+		*(long *) s = 0L;
 		s += sizeof(long);
 		n -= sizeof(long);
 	}
@@ -25,7 +25,7 @@ void	ft_bzero(void *s, size_t n)
 		*(int *) s = 0;
 		s += sizeof(int);
 		n -= sizeof(int);
-	}
+	}*/
 	while (n-- > 0)
 		*(char *)s++ = 0;
 }

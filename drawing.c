@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 09:24:36 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 09:53:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 
 	pop_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = b.local[Z] + (b.local[Z] << 8) + (120 << 16);
+	color = b.local[Z] + (0 << 8) + (0 << 16);
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
