@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/17 11:33:49 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/17 13:49:40 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 #
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
-CC=gcc -g -fstack-protector-all -Wall -Werror -Wextra -pthread
+CC=gcc -g -pthread -Wall #-Werror -Wextra -pthread
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c freedom.c z_buffer.c	\

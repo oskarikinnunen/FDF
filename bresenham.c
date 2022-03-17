@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:09:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 04:15:16 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:39:09 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	step_bresenham_x(t_bresenham *b, int target[3])
 {
 	if (b->error * 2 <= b->diff[X] && b->local[Y] != target[Y])
 	{
-		b->error += b->diff[X];
-		b->local[Y] += b->add[Y];
+		b->error += (b->local[Y] += b->add[Y], b->diff[X]);
+		//b->local[Y] += b->add[Y];
 	}
 }
 
@@ -25,8 +25,8 @@ void	step_bresenham_y(t_bresenham *b, int target[3])
 {
 	if (b->error * 2 >= b->diff[Y] && b->local[X] != target[X])
 	{
-		b->error += b->diff[Y];
-		b->local[X] += b->add[X];
+		b->error += (b->local[X] += b->add[X], b->diff[Y]);
+		//b->local[X] += b->add[X];
 	}
 }
 
@@ -34,13 +34,15 @@ void	step_bresenham(t_bresenham *b, int target[3])
 {
 	if (b->error * 2 <= b->diff[X] && b->local[Y] != target[Y])
 	{
-		b->error += b->diff[X];
-		b->local[Y] += b->add[Y];
+		b->error += (b->local[Y] += b->add[Y], b->diff[X]);
+		/*b->error += b->diff[X];
+		b->local[Y] += b->add[Y];*/
 	}
 	if (b->error * 2 >= b->diff[Y] && b->local[X] != target[X])
 	{
-		b->error += b->diff[Y];
-		b->local[X] += b->add[X];
+		b->error += (b->local[X] += b->add[X], b->diff[Y]);
+		/*b->error += b->diff[Y];
+		b->local[X] += b->add[X];*/
 	}
 }
 

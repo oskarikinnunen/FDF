@@ -6,12 +6,22 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 13:24:35 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:21:40 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <pthread.h>
+
+void	*thread_bzero(void *args)
+{
+	t_thread_args	t_arg;
+
+	t_arg = *(t_thread_args *)args;
+	//ft_bzero(&(t_arg.addr[t_arg.index * WSZ * WSZ]), (WSZ * WSZ));
+	//printf("thread %i bzeroing index %i\n", t_arg.index, (t_arg.index * WSZ * 4));
+	return (NULL);
+}
 
 void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
 {
@@ -29,18 +39,27 @@ void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
 		t_args[i].start = i * (map.length / corecount);
 		t_args[i].stop =  (i + 1) * (map.length / corecount);
 		//printf("Thread: %i Start: %i Stop: %i\n", i, t_args[i].start, t_args[i].stop);
+		t_args[i].index = i;
 		t_args[i].addr = addr;
 		t_args[i].map = map;
 		t_args[i].img = img;
 		pthread_create(&(threads[i]), NULL, thread_drawmap, &(t_args[i]));
+		//ft_bzero(&(addr[i * WSZ * WSZ]), (WSZ * WSZ));
 		i++;
 	}
 	i = 0;
 	while (i < corecount)
 	{
 		pthread_join(threads[i], NULL);
+		//pthread_create(&(threads[i]), NULL, thread_drawmap, &(t_args[i]));
 		i++;
 	}
+	/*i = 0;
+	while (i < corecount)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}*/
 }
 
 void	*thread_drawmap(void *args)
@@ -51,7 +70,6 @@ void	*thread_drawmap(void *args)
 	int				vert_z;
 
 	t_arg = *(t_thread_args *)args;
-
 	cur = t_arg.start;
 	while ((cur + t_arg.map.width + 1) <= t_arg.map.length && cur < t_arg.stop)
 	{

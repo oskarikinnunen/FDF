@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 13:05:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:45:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_thread_args
 	char *addr;
 	t_map map;
 	t_image_info img;
+	int	index;
 	int	start;
 	int	stop;
 }	t_thread_args;

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 13:18:27 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:31:53 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	loop(void *p)
 	ft_bzero(addr, WSZ * WSZ * 4);
 	threads_start(cpy, img, addr, 4);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
-	
 	i->tick++;
 	if (i->tick == 1000)
 		exit(0);
