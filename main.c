@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 09:22:05 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 09:34:27 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	loop(void *p)
 	map_to_image(addr, cpy, img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
 	i->tick++;
-	if (i->tick == 100000)
+	if (i->tick == 1000)
 		exit(0);
 	return (1);
 }
@@ -80,7 +80,6 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_UP) * 5;
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
 	i->y_angle = ft_clamp(i->y_angle, -30, 40);
-	printf("Pressed button %i \n", keycode);
 	if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_map(&(i->maps[1]));
