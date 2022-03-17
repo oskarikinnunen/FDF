@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 11:48:44 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:18:27 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	loop(void *p)
 	t_image_info	img;
 	t_map			cpy;
 	char			*addr;
-	pthread_t		thread[2];
-	t_thread_args	thr_arg[2];
 
 	i = (t_mlx_i *)p;
 	img = *(i->img);
@@ -43,21 +41,10 @@ int	loop(void *p)
 	map_animate(&cpy, i->time);
 	save_z(&cpy, &img, 0);
 	map_preprocess(&cpy, *i);
-	/* THREADING */
-	thr_arg[0].addr = addr + (WSZ * WSZ);
-	thr_arg[0].count = (WSZ * WSZ);
-	//thr_arg[1].addr = addr + (WSZ * WSZ * 2);
-	//thr_arg[1].count = WSZ * WSZ * 2;
-	pthread_create(&(thread[0]), NULL, thread_bzero, (void *)&(thr_arg[0]));
-	//pthread_create(&(thread[1]), NULL, thread_bzero, (void *)&(thr_arg[1]));
-	pthread_join(thread[0], NULL);
-	//pthread_join(thread[1], NULL);
-	
-	//ft_bzero(addr, WSZ * WSZ * 4);
-
-	/* */
-	map_to_image(addr, cpy, img);
+	ft_bzero(addr, WSZ * WSZ * 4);
+	threads_start(cpy, img, addr, 4);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
+	
 	i->tick++;
 	if (i->tick == 1000)
 		exit(0);

@@ -6,13 +6,13 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 07:38:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:05:05 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	collect_square(float **v3, int i3[4][3], int width, int z)
+void	collect_square(float **v3, int i3[4][3], int width, int z)
 {
 	int	i;
 
@@ -69,14 +69,15 @@ void	map_preprocess(t_map *map, t_mlx_i i)
 	v3listadd(map->points, add, map->length);
 }
 
-void	map_to_image(char *addr, t_map map, t_image_info img)
+void	map_to_image(char *addr, t_map map, t_image_info img,
+	int start, int stop)
 {
 	int		cur;
 	int		v3_integers[4][3];
 	int		vert_z;
 
-	cur = 0;
-	while ((cur + map.width + 1) <= map.length)
+	cur = start;
+	while ((cur + map.width + 1) <= map.length && (cur + map.width + 1) <= stop)
 	{
 		vert_z = (char)img.z_values[cur] + (char)img.z_values[cur + 1]
 			+ (char)img.z_values[cur + map.width]

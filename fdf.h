@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 11:31:39 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:05:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ typedef struct s_map
 	int		width;
 }	t_map;
 
-typedef struct s_thread_args
-{
-	void	*addr;
-	size_t	count;
-}	t_thread_args;
-
 typedef struct s_bresenham
 {
 	int	diff[2];
@@ -69,6 +63,15 @@ typedef struct s_image_info
 	int		endian;
 	int		*z_values;
 }	t_image_info;
+
+typedef struct s_thread_args
+{
+	char *addr;
+	t_map map;
+	t_image_info img;
+	int	start;
+	int	stop;
+}	t_thread_args;
 
 typedef struct s_mlx_info
 {
@@ -103,9 +106,11 @@ void	setmatrix_iso_x(float matrix[3][3], double angle);
 void	setmatrix_iso_y(float matrix[3][3], double angle);
 
 /* MAP_OPERATIONS.C */
+void	collect_square(float **v3, int i3[4][3], int width, int z);
 void	map_animate(t_map *map, double time);
 void	map_preprocess(t_map *map, t_mlx_i i);
-void	map_to_image(char *da, t_map map, t_image_info img);
+void	map_to_image(char *addr, t_map map, t_image_info img, int start
+	, int stop);
 void	map_cpy(t_map *src, t_map *dst);
 
 /* DRAWING.C */
@@ -113,7 +118,8 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
 void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 
 /* THREADING.C */
-void	*thread_bzero(void *args);
+void	threads_start(t_map map, t_image_info img, char *addr, int corecount);
+void	*thread_drawmap(void *args);
 
 /* Z_BUFFER.C */
 void	save_z(t_map *map, t_image_info *info, int index);
