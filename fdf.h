@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 10:10:05 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/17 11:31:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ typedef struct s_map
 	int		length;
 	int		width;
 }	t_map;
+
+typedef struct s_thread_args
+{
+	void	*addr;
+	size_t	count;
+}	t_thread_args;
 
 typedef struct s_bresenham
 {
@@ -105,6 +111,9 @@ void	map_cpy(t_map *src, t_map *dst);
 /* DRAWING.C */
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
 void	fill_tri(int tris[3][3], char *addr, t_image_info img);
+
+/* THREADING.C */
+void	*thread_bzero(void *args);
 
 /* Z_BUFFER.C */
 void	save_z(t_map *map, t_image_info *info, int index);
