@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 20:24:25 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:33:01 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,33 @@ void	map_animate(t_map *map, double time)
 	{0, 0, 1}
 	};
 
-	add[Z][Z] = fabs(1 * sin(time / 1000));
-	add[Z][X] = 0.04 * sin(time / 1300);
-	add[Z][Y] = 0.04 * sin(time / 1300);
+	add[Z][Z] = fabs(ANIM_SCALE * 25 * sin(time / 1000));
+	add[Z][X] = ANIM_SCALE * sin(time / 1300);
+	add[Z][Y] = ANIM_SCALE * sin(time / 1300);
 	v3listmul(add, map->points, map->length);
 }
 #endif
 
 void	map_preprocess(t_map *map, t_mlx_i i)
 {
-	float	add[3];
+	//float	add[3];
 	float	matrix[3][3];
 
-	add[X] = WSZ / 4;
-	add[Y] = WSZ / 4;
-	add[Z] = 20;
+	//add[X] = 0 /*WSZ / 4*/;
+	//add[Y] = WSZ / 2;
+	//add[Z] = 20;
+	
 	setmatrix_scale(matrix);
 	v3listmul(matrix, map->points, map->length);
+
+	v3listadd(map->points, (float [3]) {-WSZ / 4, -WSZ / 4, 0}, map->length);
+
 	setmatrix_iso_y(matrix, i.x_angle);
 	v3listmul(matrix, map->points, map->length);
+
 	setmatrix_iso_x(matrix, i.y_angle);
 	v3listmul(matrix, map->points, map->length);
-	v3listadd(map->points, add, map->length);
+	
+	v3listadd(map->points, (float [3]) {(WSZ / 4) * 2, (WSZ / 4) * 2, 0}, map->length);
+	//v3listadd(map->points, add, map->length);
 }

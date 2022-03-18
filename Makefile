@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/18 21:01:33 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/18 21:16:30 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,3 +60,5 @@ fclean	: clean
 	rm -f $(NAME)
 
 re	: fclean all
+
+.PHONY: clean fclean extra re all warning

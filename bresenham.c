@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:09:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 14:39:09 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:44:03 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	step_bresenham(t_bresenham *b, int target[3])
 	}
 }
 
-void	pop_bresenham(t_bresenham *b, int *from, int *to)
+void	populate_bresenham(t_bresenham *b, int *from, int *to)
 {
 	ft_memcpy(b->local, from, sizeof(int) * 3);
 	b->diff[X] = ft_abs(b->local[X] - to[X]);

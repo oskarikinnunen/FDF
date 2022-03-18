@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 21:08:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:55:59 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@
 # define KEY_RGHT 65363
 # define KEY_DOWN 65364
 # define KEY_UP 65362
-# define KEY_TILDE 167
 # define KEY_ESC 53
-# define KEY_ENTER 65293
-# define KEY_LEFTSHIFT 65505
 /*	OTHER DEFINES	*/
 # define Z_CLRMASK 0X7F
 # define Z_CLRMUL 2
+# define ANIM_SCALE 0.04
 # define WSZ 720
+# define INT_MAX 2147483647
 # define X 0
 # define Y 1
 # define Z 2
@@ -63,7 +62,7 @@ typedef struct s_image_info
 	int		bpp;
 	int		size_line;
 	int		endian;
-	int		*z_values;
+	int		*depthlayer;
 }	t_image_info;
 
 typedef struct s_draw_args
@@ -118,7 +117,7 @@ void	v3listadd(float **v3s, float *add, int len);
 void	read_inputmap(char *filename, t_map *map);
 
 /* BRESENHAM.C */
-void	pop_bresenham(t_bresenham *b, int *from, int *to);
+void	populate_bresenham(t_bresenham *b, int *from, int *to);
 void	step_bresenham(t_bresenham *b, int target[3]);
 void	step_bresenham_x(t_bresenham *b, int target[3]);
 void	step_bresenham_y(t_bresenham *b, int target[3]);

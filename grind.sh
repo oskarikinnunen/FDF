@@ -1,1 +1,1 @@
-valgrind --tool=callgrind --dump-instr=yes ./mlx-test input/42
+valgrind --tool=callgrind --dump-instr=yes ./mlx-test_Linux input/42

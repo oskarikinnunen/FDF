@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 21:08:10 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:46:57 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	loop(void *p)
 	map_preprocess(&cpy, *i);
 	ft_bzero(addr, WSZ * WSZ * 4);
 	threads_start(cpy, img, addr, i->threads);
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 25);
 	i->tick++;
 	return (1);
 }
@@ -74,7 +74,7 @@ int	loop(void *p)
 	draw_args.start = 0;
 	draw_args.stop = cpy.length;
 	drawmap((void *)&draw_args);
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 0);
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 25);
 	return (1);
 }
 #endif
@@ -89,7 +89,7 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
-	i->y_angle = ft_clamp(i->y_angle, -45, 45);
+	i->y_angle = ft_clamp(i->y_angle, -30, 30);
 	if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_map(&(i->maps[1]));
