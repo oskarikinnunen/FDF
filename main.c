@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 23:07:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 00:12:10 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
 	i.img = &img;
 	stage_mlxi_values(&i);
-	mlx_string_put(i.mlx, i.win, 5, 25, INT_MAX, "ARROW KEYS = ROTATE VIEW ; W/S = SCALE ANIMATION");
+	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, "ARROW KEYS = ROTATE VIEW ; W/S = SCALE ANIMATION");
 	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop(i.mlx);
@@ -44,27 +44,21 @@ static void	announce_threadcount(t_mlx_i *i)
 {
 	char	announcement_str[64];
 	char	*threadcount_str;
-	char	*ghz_str;
 
 	threadcount_str = ft_itoa(i->threads);
-	ghz_str = ft_ftoa((float)CLOCKS_PER_SEC / 1000000, 2);
-	
 	ft_bzero(announcement_str, 64);
 	ft_strcat(announcement_str, "Utilising ");
 	ft_strcat(announcement_str, threadcount_str);
-	ft_strcat(announcement_str, " logical processors. Processor base speed in ghz: ");
-	ft_strcat(announcement_str, ghz_str);
-	ft_strcat(announcement_str, "ghz.");
+	ft_strcat(announcement_str, " logical processors.");
 	mlx_string_put(i->mlx, i->win, 5, 10, 255 << 16, announcement_str);
 	free(threadcount_str);
-	free(ghz_str);
 }
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	i->img->depthlayer = ft_memalloc(sizeof(int) * WSZ);
-	i->x_angle = 45;
-	i->y_angle = 30;
+	i->x_angle = -30;
+	i->y_angle = 45;
 	i->threads = sysconf(_SC_NPROCESSORS_ONLN);
 	//printf("Clockspeed = %li", sysconf(_SC_CLK_TCK));
 	//printf("SOMethinngggg");
@@ -78,7 +72,7 @@ static void	stage_mlxi_values(t_mlx_i *i)
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	i->img->depthlayer = ft_memalloc(sizeof(int) * WSZ);
-	i->x_angle = 45;
-	i->y_angle = 30;
+	i->x_angle = -30;
+	i->y_angle = 45;
 }
 #endif

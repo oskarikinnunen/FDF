@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 22:19:40 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 00:31:30 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #ifdef EXTRA
 
+/* TODO: Make start and stop values dividible by 4 */
 void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
 {
 	static pthread_t		*threads;

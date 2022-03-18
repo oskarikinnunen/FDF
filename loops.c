@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 22:46:57 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 00:11:21 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	get_time(t_mlx_i *i)
 	gettimeofday(&t2, NULL);
 	i->time = (t2.tv_sec - i->t1.tv_sec) * 1000.0
 		+ (t2.tv_usec - i->t1.tv_usec) / 1000.0;
-	i->p_time = i->time;
 }
 
 int	loop(void *p)
@@ -36,15 +35,14 @@ int	loop(void *p)
 	cpy = i->maps[1];
 	addr = mlx_get_data_addr
 		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
-	map_cpy(i->maps, &cpy);
+	cpy_map(i->maps, &cpy);
 	get_time(i);
-	map_animate(&cpy, i->time);
+	animate_map(&cpy, i->time);
 	save_z(&cpy, &img);
-	map_preprocess(&cpy, *i);
+	preprocess_map(&cpy, *i);
 	ft_bzero(addr, WSZ * WSZ * 4);
 	threads_start(cpy, img, addr, i->threads);
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 25);
-	i->tick++;
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
 #else
@@ -64,9 +62,9 @@ int	loop(void *p)
 	cpy = i->maps[1];
 	addr = mlx_get_data_addr
 		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
-	map_cpy(i->maps, &cpy);
+	cpy_map(i->maps, &cpy);
 	save_z(&cpy, &img);
-	map_preprocess(&cpy, *i);
+	preprocess_map(&cpy, *i);
 	ft_bzero(addr, WSZ * WSZ * 4);
 	draw_args.addr = addr;
 	draw_args.img = img;
@@ -74,7 +72,7 @@ int	loop(void *p)
 	draw_args.start = 0;
 	draw_args.stop = cpy.length;
 	drawmap((void *)&draw_args);
-	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, 25);
+	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
 #endif
@@ -89,7 +87,8 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
-	i->y_angle = ft_clamp(i->y_angle, -30, 30);
+	i->y_angle = ft_clamp(i->y_angle, -45, 45);
+	
 	if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_map(&(i->maps[1]));

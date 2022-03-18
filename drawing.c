@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 21:50:41 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 00:26:07 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,16 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(int *)pen = color;
+		*(int *)pen = (*(int *)pen) | color;
 		if (b.error * 2 <= b.diff[X] && b.local[Y] != i2[Y])
 			b.error += (b.local[Y] += b.add[Y], b.diff[X]);
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(int *)pen = color;
+		*(int *)pen = (*(int *)pen) | color;
 		if (b.error * 2 >= b.diff[Y] && b.local[X] != i2[X])
 			b.error += (b.local[X] += b.add[X], b.diff[Y]);
 	}
 	pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-	*(int *)pen = color;
+	*(int *)pen = (*(int *)pen) | color;
 }
 
 /*void	draw_line_z_pass(int *i1, int *i2, char *addr, t_image_info img)

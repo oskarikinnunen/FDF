@@ -3,4 +3,4 @@
 *.a
 *.gch
 callgrind.out*
-mlx-test
+mlx-test*
