@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 15:34:09 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 13:46:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	read_inputmap(char *filename, t_map *map)
 	unsigned char	*data;
 	int				cur;
 
+	ft_bzero(map, sizeof(t_map));
 	fd = open(filename, O_RDONLY);
 	data = get_mapdata(map, fd);
 	ft_bzero(crds, sizeof(int) * 2);

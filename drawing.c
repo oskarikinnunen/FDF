@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 15:02:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 15:08:44 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	fill_topflat(int *tris[3], char *addr, t_image_info img)
 		while (b[1].local[Y] != b[0].local[Y])
 			step_bresenham(&(b[1]), tris[2]);
 	}
-	//draw_line_img(b[0].local, b[1].local, addr, img);
+	draw_line_img(b[0].local, b[1].local, addr, img);
 }
 
 /*	tris[0] 		=	highest point
@@ -81,7 +81,7 @@ void	fill_bottomflat(int *tris[3], char *addr, t_image_info img)
 		while (b[1].local[Y] != b[0].local[Y])
 			step_bresenham(&(b[1]), tris[2]);
 	}
-	//draw_line_img(b[0].local, b[1].local, addr, img);
+	draw_line_img(b[0].local, b[1].local, addr, img);
 }
 
 void	fill_tri(int tris[3][3], char *addr, t_image_info img)
@@ -100,7 +100,7 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
 	fill_bottomflat((int *[3]){(int *)&(sorted[2]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	//draw_line_img(sorted[0], sorted[2], addr, img);
+	draw_line_img(sorted[0], sorted[2], addr, img);
 }
 
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
@@ -112,7 +112,7 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 
 	pop_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = b.local[Z] + (0 << 8) + (0 << 16);
+	color = b.local[Z] + (b.local[Z] << 8) + (0 << 16);
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;

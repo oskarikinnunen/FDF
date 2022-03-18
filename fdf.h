@@ -6,23 +6,23 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 13:45:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:08:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 /*	INCLUDES */
-# include "libft/libft.h"
-# if defined(__APPLE__)
-#  include <mlx.h>
-# elif defined (__unix__)
-#  include "mlx/Linux/mlx.h"
-# endif
+# include "libft.h"
+# include "mlx.h"
 # include <math.h>
-# include <limits.h>
 # include <fcntl.h>
-# include <sys/time.h>
+
+# ifdef EXTRA
+#  include <sys/time.h>
+#  include <pthread.h>
+# endif
+
 # include <stdio.h>
 /*	KEYCODES */
 # define KEY_LEFT 65361
@@ -34,6 +34,8 @@
 # define KEY_ENTER 65293
 # define KEY_LEFTSHIFT 65505
 /*	OTHER DEFINES	*/
+# define Z_CLRMASK 0X7F
+# define Z_CLRMUL 2
 # define WSZ 720
 # define X 0
 # define Y 1
@@ -64,15 +66,17 @@ typedef struct s_image_info
 	int		*z_values;
 }	t_image_info;
 
-typedef struct s_thread_args
+typedef struct s_draw_args
 {
-	char *addr;
-	t_map map;
-	t_image_info img;
-	int	index;
-	int	start;
-	int	stop;
-}	t_thread_args;
+	char			*addr;
+	t_map			map;
+	t_image_info	img;
+	int				index;
+	int				start;
+	int				stop;
+}	t_draw_args;
+
+# ifdef EXTRA
 
 typedef struct s_mlx_info
 {
@@ -84,9 +88,27 @@ typedef struct s_mlx_info
 	double				p_time;
 	double				x_angle;
 	double				y_angle;
+	int					threads;
 	t_image_info		*img;
 	t_map				*maps;
 }	t_mlx_i;
+# else
+
+typedef struct s_mlx_info
+{
+	void				*mlx;
+	void				*win;
+	int					tick;
+	double				x_angle;
+	double				y_angle;
+	t_image_info		*img;
+	t_map				*maps;
+}	t_mlx_i;
+# endif
+
+/* LOOPS.C */
+int		loop(void *p);
+int		key_loop(int keycode, void *p);
 
 /* VECTORS.C */
 float	*v3new(float x, float y, float z);
@@ -110,8 +132,6 @@ void	setmatrix_iso_y(float matrix[3][3], double angle);
 void	collect_square(float **v3, int i3[4][3], int width, int z);
 void	map_animate(t_map *map, double time);
 void	map_preprocess(t_map *map, t_mlx_i i);
-void	map_to_image(char *addr, t_map map, t_image_info img, int start
-	, int stop);
 void	map_cpy(t_map *src, t_map *dst);
 
 /* DRAWING.C */
@@ -120,10 +140,10 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 
 /* THREADING.C */
 void	threads_start(t_map map, t_image_info img, char *addr, int corecount);
-void	*thread_drawmap(void *args);
+void	*drawmap(void *args);
 
 /* Z_BUFFER.C */
-void	save_z(t_map *map, t_image_info *info, int index);
+void	save_z(t_map *map, t_image_info *info);
 
 /* SORTING.C */
 void	sort_tris(int tris[3][3]);

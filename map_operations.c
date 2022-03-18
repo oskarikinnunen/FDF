@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 13:05:05 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:24:25 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	map_cpy(t_map *src, t_map *dst)
 	}
 }
 
+#ifdef EXTRA
+
 void	map_animate(t_map *map, double time)
 {
 	static float	add[3][3] = {
@@ -48,9 +50,12 @@ void	map_animate(t_map *map, double time)
 	{0, 0, 1}
 	};
 
-	add[Z][Z] = 1 * sin(time / 1000);
+	add[Z][Z] = fabs(1 * sin(time / 1000));
+	add[Z][X] = 0.04 * sin(time / 1300);
+	add[Z][Y] = 0.04 * sin(time / 1300);
 	v3listmul(add, map->points, map->length);
 }
+#endif
 
 void	map_preprocess(t_map *map, t_mlx_i i)
 {
@@ -67,30 +72,4 @@ void	map_preprocess(t_map *map, t_mlx_i i)
 	setmatrix_iso_x(matrix, i.y_angle);
 	v3listmul(matrix, map->points, map->length);
 	v3listadd(map->points, add, map->length);
-}
-
-void	map_to_image(char *addr, t_map map, t_image_info img,
-	int start, int stop)
-{
-	int		cur;
-	int		v3_integers[4][3];
-	int		vert_z;
-
-	cur = start;
-	while ((cur + map.width + 1) <= map.length && (cur + map.width + 1) <= stop)
-	{
-		vert_z = (char)img.z_values[cur] + (char)img.z_values[cur + 1]
-			+ (char)img.z_values[cur + map.width]
-			+ (char)img.z_values[cur + map.width + 1];
-		vert_z = ft_clamp(vert_z / 4, -128, 127) + 128;
-		//move z buff to "real" coordinate
-		collect_square(&(map.points[cur]), v3_integers, map.width, vert_z);
-		fill_tri(v3_integers, addr, img);
-		fill_tri(&(v3_integers[1]), addr, img);
-		draw_line_img(v3_integers[0], v3_integers[1], addr, img);
-		draw_line_img(v3_integers[1], v3_integers[2], addr, img);
-		draw_line_img(v3_integers[0], v3_integers[2], addr, img);
-		cur++;
-		cur += ((cur + 1) % map.width == 0);
-	}
 }
