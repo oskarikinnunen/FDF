@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 00:05:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 20:40:27 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 /*	OTHER DEFINES	*/
 # define Z_CLRMASK 0X7F
 # define Z_CLRMUL 2
-
+# define USAGE_MSG "ARROW KEYS = ROTATE VIEW ; W/S = SCALE ANIMATION"
 # define IMAGE_Y 50
 # define WSZ 720
 # define INT_MAX 2147483647
@@ -147,6 +147,6 @@ void	save_z(t_map *map, t_image_info *info);
 void	sort_tris(int tris[3][3]);
 
 /* FREEDOM.C */
-void	free_map(t_map *map);
+void	free_maps(t_map *map);
 
 #endif

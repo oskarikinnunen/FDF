@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/18 21:16:30 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/19 18:26:48 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c freedom.c z_buffer.c	\
 	map_operations.c matrices.c threading.c \
-	loops.c
+	loops.c errors.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 

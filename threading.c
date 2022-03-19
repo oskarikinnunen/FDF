@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 00:31:30 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 21:45:50 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
 		int y = cur / ta.map.width;
 		assert(x + (y * ta.map.width) == cur);*/
 
-void	*z_pass(void *args)
+/*void	*z_pass(void *args)
 {
 	t_draw_args		ta;
 	int				cur;
@@ -61,12 +61,6 @@ void	*z_pass(void *args)
 	while ((cur + ta.map.width + 1) <= ta.map.length && cur < ta.stop)
 	{
 		vert_z = 0;
-		//ta.img.depthlayer[]
-		/*vert_z = (ta.img.z_values[cur] & Z_CLRMASK)
-			+ (ta.img.z_values[cur + 1] & Z_CLRMASK)
-			+ (ta.img.z_values[cur + ta.map.width] & Z_CLRMASK)
-			+ (ta.img.z_values[cur + ta.map.width + 1] & Z_CLRMASK);
-		vert_z = ft_clamp((vert_z / 4) * Z_CLRMUL, -128, 127) + 128;*/
 		collect_square(&(ta.map.points[cur]), v3_integers, ta.map.width,
 			vert_z);
 		fill_tri(v3_integers, ta.addr, ta.img);
@@ -78,7 +72,7 @@ void	*z_pass(void *args)
 		cur += ((cur + 1) % ta.map.width == 0);
 	}
 	return (NULL);
-}
+}*/
 
 void	*drawmap(void *draw_args)
 {

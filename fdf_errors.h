@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freedom.c                                          :+:      :+:    :+:   */
+/*   fdf_errors.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/15 13:19:42 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 20:32:41 by okinnune         ###   ########.fr       */
+/*   Created: 2022/03/19 18:14:24 by okinnune          #+#    #+#             */
+/*   Updated: 2022/03/19 20:44:11 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#ifndef FDF_ERRORS_H
+# define FDF_ERRORS_H
 
-void	free_maps(t_map *maps)
-{
-	int	i;
-
-	i = 0;
-	while (i <= maps->length)
-	{
-		free((&(maps[0]))->points[i]);
-		if (maps + (sizeof (t_map)) != NULL)
-			free((&(maps[1]))->points[i]);
-		i++;
-	}
-	free(maps->points);
-}
+void	error_exit_free_map(char *str, t_map *map);
+void	error_exit(char *str);
+#endif

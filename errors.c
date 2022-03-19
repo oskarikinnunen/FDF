@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freedom.c                                          :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/15 13:19:42 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 20:32:41 by okinnune         ###   ########.fr       */
+/*   Created: 2022/03/19 18:02:57 by okinnune          #+#    #+#             */
+/*   Updated: 2022/03/19 20:42:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	free_maps(t_map *maps)
+void	error_exit(char *str)
 {
-	int	i;
+	ft_putendl_fd("ERROR: ", 2);
+	ft_putendl_fd(str, 2);
+	ft_putendl_fd("EXITING PROGRAM", 2);
+	exit(-1);
+}
 
-	i = 0;
-	while (i <= maps->length)
-	{
-		free((&(maps[0]))->points[i]);
-		if (maps + (sizeof (t_map)) != NULL)
-			free((&(maps[1]))->points[i]);
-		i++;
-	}
-	free(maps->points);
+void	error_exit_free_map(char *str, t_map *map)
+{
+	free_maps(map);
+	error_exit(str);
 }

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 12:47:59 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/18 22:24:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/19 21:45:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	v3mul(float matrix[3][3], float *v3)
 		index++;
 	}
 	v3[X] = t[X];
-	v3[Y] =	t[Y];
+	v3[Y] = t[Y];
 	v3[Z] = t[Z];
 }
 
