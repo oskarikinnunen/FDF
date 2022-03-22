@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 21:48:38 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/22 12:12:25 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,23 @@ void	collect_square(float **v3, int i3[4][3], int width, int z)
 		i3[i][X] = ft_clamp(i3[i][X], 0, WSZ);
 		i3[i][Y] = v3[((i >= 2) * width) + !((i + 1) % 2)][Y];
 		i3[i][Y] = ft_clamp(i3[i][Y], 0, WSZ);
-		i3[i][Z] = z;
+		i3[i][Z] = (unsigned int)z;
+		i++;
+	}
+}
+
+void	collect_square_z_pass(float **v3, int i3[4][3], int width)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		i3[i][X] = v3[((i >= 2) * width) + !((i + 1) % 2)][X];
+		i3[i][X] = ft_clamp(i3[i][X], 0, WSZ);
+		i3[i][Y] = v3[((i >= 2) * width) + !((i + 1) % 2)][Y];
+		i3[i][Y] = ft_clamp(i3[i][Y], 0, WSZ);
+		i3[i][Z] = (int)(v3[i][Z]);
 		i++;
 	}
 }
@@ -49,10 +65,13 @@ void	animate_map(t_map *map, double time)
 	{0, 1, 0},
 	{0, 0, 1}
 	};
+	float	jitter;
 
-	add[Z][Z] = fabs(ANIM_SCALE * 25 * sin(time / 1000));
-	add[Z][X] = ANIM_SCALE * sin(time / 600);
-	add[Z][Y] = ANIM_SCALE * sin(time / 1200);
+	jitter = (ANIM_SCALE * 0.4 * cos(time / 100) * sin(time / 120));
+	add[Z][Z] = 0.2 + fabs(ANIM_SCALE * 25 * sin(time / 1000))
+		+ jitter;
+	add[Z][X] = ANIM_SCALE * sin(time / 600) + jitter * 0.25;
+	add[Z][Y] = ANIM_SCALE * sin(time / 1200) + jitter * 0.25;
 	v3listmul(add, map->points, map->length);
 }
 #endif

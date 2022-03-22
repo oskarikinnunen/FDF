@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawing.c                                          :+:      :+:    :+:   */
+/*   z_drawing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:13:26 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/22 11:52:36 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*	tris[0] 		=	lowest point
 	tris[1]/tris[2] =	highest points	*/
-void	fill_topflat(int *tris[3], char *addr, t_image_info img)
+static void	fill_z_topflat(int *tris[3], char *addr, t_image_info img)
 {
 	t_bresenham	b[2];
 
@@ -23,18 +23,18 @@ void	fill_topflat(int *tris[3], char *addr, t_image_info img)
 	populate_bresenham(&(b[1]), tris[0], tris[2]);
 	while (b[0].local[Y] != tris[1][Y])
 	{
-		draw_line_img(b[0].local, b[1].local, addr, img);
+		draw_z_line_img(b[0].local, b[1].local, addr, img);
 		while (b[0].local[Y] == b[1].local[Y])
 			step_bresenham(&(b[0]), tris[1]);
 		while (b[1].local[Y] != b[0].local[Y])
 			step_bresenham(&(b[1]), tris[2]);
 	}
-	draw_line_img(b[0].local, b[1].local, addr, img);
+	draw_z_line_img(b[0].local, b[1].local, addr, img);
 }
 
 /*	tris[0] 		=	highest point
 	tris[1]/tris[2] =	lowest points	*/
-void	fill_bottomflat(int *tris[3], char *addr, t_image_info img)
+static void	fill_z_bottomflat(int *tris[3], char *addr, t_image_info img)
 {
 	t_bresenham	b[2];
 
@@ -42,16 +42,16 @@ void	fill_bottomflat(int *tris[3], char *addr, t_image_info img)
 	populate_bresenham(&(b[1]), tris[0], tris[2]);
 	while (b[0].local[Y] != tris[1][Y])
 	{
-		draw_line_img(b[0].local, b[1].local, addr, img);
+		draw_z_line_img(b[0].local, b[1].local, addr, img);
 		while (b[0].local[Y] == b[1].local[Y])
 			step_bresenham(&(b[0]), tris[1]);
 		while (b[1].local[Y] != b[0].local[Y])
 			step_bresenham(&(b[1]), tris[2]);
 	}
-	draw_line_img(b[0].local, b[1].local, addr, img);
+	draw_z_line_img(b[0].local, b[1].local, addr, img);
 }
 
-void	fill_tri(int tris[3][3], char *addr, t_image_info img)
+void	fill_z_tri(int tris[3][3], char *addr, t_image_info img)
 {
 	int		split[3];
 	int		sorted[3][3];
@@ -63,32 +63,33 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
 	split[Y] = sorted[1][Y];
 	split[Z] = sorted[1][Z];
-	fill_topflat((int *[3]){(int *)&(sorted[0]),
+	fill_z_topflat((int *[3]){(int *)&(sorted[0]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	fill_bottomflat((int *[3]){(int *)&(sorted[2]),
+	fill_z_bottomflat((int *[3]){(int *)&(sorted[2]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	draw_line_img(sorted[0], sorted[2], addr, img);
+	draw_z_line_img(sorted[0], sorted[2], addr, img);
 }
 
 //step_bresenham_x(&b, i2);
 //step_bresenham_y(&b, i2);
-void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
+void	draw_z_line_img(int *i1, int *i2, t_image_info img)
 {
 	t_bresenham		b;
 	unsigned int	color;
-	char			*pen;
+	int				*z_pen;
 	int				x_step;
 
 	populate_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = b.local[Z] + (b.local[Z] << 8) + (10 << 16);
+	z_pen = img.depthlayer;
+	//Step z bresenham on it's own
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
-		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(unsigned int *)pen = (*(unsigned int *)pen) | color;
+		z_pen = img.depthlayer + (b.local * 4) + b.local[Y] * img.size_line;
+		//z_pen Flip second byte to correspond to real z value
+		//pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
 		step_bresenham_x(&b, i2);
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(unsigned int *)pen = (*(unsigned int *)pen) | color;
 		step_bresenham_y(&b, i2);
 	}
 	pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 20:40:27 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/22 12:14:46 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@
 # define KEY_UP 65362
 # define KEY_ESC 53
 /*	OTHER DEFINES	*/
-# define Z_CLRMASK 0X7F
-# define Z_CLRMUL 2
-# define USAGE_MSG "ARROW KEYS = ROTATE VIEW ; W/S = SCALE ANIMATION"
+# define Z_CLRMASK 255
+# define Z_CLRMUL 0.666
+# define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
 # define IMAGE_Y 50
 # define WSZ 720
+/* Max number of points the map can have */
+# define MAPSIZE_MAX 1024
 # define INT_MAX 2147483647
 # define X 0
 # define Y 1
@@ -52,8 +54,8 @@ typedef struct s_map
 
 typedef struct s_bresenham
 {
-	int	diff[2];
-	int	add[2];
+	int	diff[3];
+	int	add[3];
 	int	local[3];
 	int	error;
 }	t_bresenham;
@@ -113,7 +115,10 @@ float	*v3new(float x, float y, float z);
 void	v3mul(float matrix[3][3], float *v3);
 void	v3listmul(float matrix[3][3], float **v3s, int len);
 void	v3listadd(float **v3s, float *add, int len);
+
+/*	FILE_MAPPING */
 void	read_inputmap(char *filename, t_map *map);
+void	read_mapnode(int fd, char *buf, int *result, int negative_flag);
 
 /* BRESENHAM.C */
 void	populate_bresenham(t_bresenham *b, int *from, int *to);
@@ -138,9 +143,10 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 
 /* THREADING.C */
 void	threads_start(t_map map, t_image_info img, char *addr, int corecount);
-void	*drawmap(void *args);
+void	*draw_map(void *args);
 
 /* Z_BUFFER.C */
+void	collect_square_z_pass(float **v3, int i3[4][3], int width);
 void	save_z(t_map *map, t_image_info *info);
 
 /* SORTING.C */

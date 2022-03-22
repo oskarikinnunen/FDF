@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/19 18:26:48 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/22 09:31:48 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -g -Wall -Werror -Wextra -Ilibft
+override CFLAGS+= -Wall -Werror -Wextra -Ilibft -g #-O2 -flto
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c freedom.c z_buffer.c	\
 	map_operations.c matrices.c threading.c \
-	loops.c errors.c
+	loops.c errors.c file_nodereader.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 

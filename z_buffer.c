@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 14:45:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 21:44:10 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/22 10:28:50 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	save_z(t_map *map, t_image_info *img)
 	i = 0;
 	while (i <= map->length)
 	{
-		img->depthlayer[i] = (signed char)(map->points[i][Z]);
+		img->depthlayer[i] = (unsigned char)(map->points[i][Z] + 127);
 		i++;
 	}
 }

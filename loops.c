@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 20:41:51 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/22 11:37:05 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@ static void	get_time(t_mlx_i *i)
 {
 	struct timeval	t2;
 
+	gettimeofday(&(t2), NULL);
 	if (gettimeofday(&(t2), NULL) <= -1)
 		error_exit_free_map("Gettimeofday call failed (get_time)", i->maps);
 	i->time = (t2.tv_sec - i->t1.tv_sec) * 1000.0
 		+ (t2.tv_usec - i->t1.tv_usec) / 1000.0;
+}
+
+void	debug_zvalues(t_map map, t_mlx_i *mlx_i)
+{
+	for (int i = 0; i < map.length; i++)
+		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ft_itoa(map.points[i][Z]));
 }
 
 int	loop(void *p)
@@ -44,6 +51,8 @@ int	loop(void *p)
 	animate_map(&cpy, i->time);
 	save_z(&cpy, &img);
 	preprocess_map(&cpy, *i);
+	//mlx_clear_window(i->mlx, i->win);
+	//debug_zvalues(cpy, i);
 	ft_bzero(addr, WSZ * WSZ * 4);
 	threads_start(cpy, img, addr, i->threads);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
@@ -67,7 +76,7 @@ int	loop(void *p)
 	addr = mlx_get_data_addr
 		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
 	if (addr == NULL)
-		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->map);
+		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);
 	cpy_map(i->maps, &cpy);
 	save_z(&cpy, &img);
 	preprocess_map(&cpy, *i);
@@ -77,7 +86,7 @@ int	loop(void *p)
 	draw_args.map = cpy;
 	draw_args.start = 0;
 	draw_args.stop = cpy.length;
-	drawmap((void *)&draw_args);
+	draw_map((void *)&draw_args);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
