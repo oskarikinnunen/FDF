@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:53:43 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 21:46:18 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 04:43:05 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@ void	scale_with_size_matrix(t_map *map)
 	{0, 22, 0},
 	{0, 0, 3}
 	};
+	int				scale_by;
 
+	scale_by = ft_max(map->width, map->length / map->width);
+	scale[X][X] *= (scale_by / 10);
+	scale[Y][Y] *= (scale_by / 10);
+	//scale[X][X] *= map->length / 
+	//GEt width get height <- take bigger one and scale by that
+	//printf("map height is %i \n", map->length / map->width);
 	v3listmul(scale, map->points, map->length);
 }
 

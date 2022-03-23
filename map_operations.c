@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:12:25 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 04:42:25 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	cpy_map(t_map *src, t_map *dst)
 	int	i;
 
 	i = 0;
-	while (i <= src->length)
+	while (i < src->length - 1)
 	{
-		ft_memcpy(dst->points[i], src->points[i], sizeof(float) * 3);
+		ft_memcpy(dst->points[i], src->points[i], sizeof(float *) * 3);
 		i++;
 	}
 }

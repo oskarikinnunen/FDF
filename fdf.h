@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:14:46 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 05:55:49 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define IMAGE_Y 50
 # define WSZ 720
 /* Max number of points the map can have */
-# define MAPSIZE_MAX 1024
+# define MAPSIZE_MAX 4096
 # define INT_MAX 2147483647
 # define X 0
 # define Y 1
@@ -88,7 +88,7 @@ typedef struct s_mlx_info
 	double				x_angle;
 	double				y_angle;
 	t_image_info		*img;
-	t_map				*maps;
+	t_map				maps[2];
 	struct timeval		t1;
 	int					threads;
 }	t_mlx_i;
@@ -101,7 +101,7 @@ typedef struct s_mlx_info
 	double				x_angle;
 	double				y_angle;
 	t_image_info		*img;
-	t_map				*maps;
+	t_map				*maps[2];
 	int					wireframe_toggle;
 }	t_mlx_i;
 # endif

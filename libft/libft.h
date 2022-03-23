@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:57:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/17 07:31:31 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 02:48:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ int				ft_pow(int n, int p);/*extra*/
 int				ft_abs(int n);/*extra*/
 int				ft_sqrt(int nb);/*extra*/
 int				ft_clamp(int val, int min, int max);
+int				ft_min(int i1, int i2);
+int				ft_max(int i1, int i2);
 float			ft_clampf(float val, float min, float max);
+
 
 /* lists */
 typedef struct s_list

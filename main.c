@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/20 18:42:44 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 06:23:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (-1);
+	//ft_bzero(&(maps[0]), sizeof(t_map));
+	//ft_bzero(&(maps[1]), sizeof(t_map));
 	read_inputmap(argv[1], maps);
-	i.maps = (t_map *)(&maps);
+	i.maps[0] = maps[0];
+	i.maps[1] = maps[1];
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);

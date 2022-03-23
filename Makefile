@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/22 09:31:48 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/23 05:46:30 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Wall -Werror -Wextra -Ilibft -g #-O2 -flto
+override CFLAGS+=  -Ilibft -g #-O2 -flto -Wall -Werror -Wextra
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c freedom.c z_buffer.c	\

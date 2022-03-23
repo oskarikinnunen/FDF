@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:14:37 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/23 01:28:10 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,10 @@ void	*draw_map(void *draw_args)
 		z_color = ft_clamp((z_color / 4) * Z_CLRMUL, 0, 255);
 		collect_square(&(arg.map.points[i]),
 			v3_integers, arg.map.width, z_color);
-		fill_tri(v3_integers, arg.addr, arg.img);
-		fill_tri(&(v3_integers[1]), arg.addr, arg.img);
+		/*fill_tri(v3_integers, arg.addr, arg.img);
+		fill_tri(&(v3_integers[1]), arg.addr, arg.img);*/
 		draw_line_img(v3_integers[0], v3_integers[1], arg.addr, arg.img);
-		draw_line_img(v3_integers[1], v3_integers[2], arg.addr, arg.img);
+		//draw_line_img(v3_integers[1], v3_integers[2], arg.addr, arg.img);
 		draw_line_img(v3_integers[0], v3_integers[2], arg.addr, arg.img);
 		i++;
 		i += ((i + 1) % arg.map.width == 0);
