@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_min_max.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/05 17:31:53 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 04:40:51 by okinnune         ###   ########.fr       */
+/*   Created: 2022/03/23 02:41:42 by okinnune          #+#    #+#             */
+/*   Updated: 2022/03/23 02:46:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putchar(char c)
+int	ft_min (int i1, int i2)
 {
-	(void)!write(1, &c, 1);
+	if (i1 < i2)
+		return(i1);
+	return(i2);
+}
+
+int	ft_max (int i1, int i2)
+{
+	if (i1 > i2)
+		return(i1);
+	return(i2);
 }

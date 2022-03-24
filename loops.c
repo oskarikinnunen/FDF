@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 11:37:05 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:42:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,15 @@ int	loop(void *p)
 		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);
 	cpy_map(i->maps, &cpy);
 	get_time(i);
-	animate_map(&cpy, i->time);
+	//animate_map(&cpy, i->time);
 	save_z(&cpy, &img);
 	preprocess_map(&cpy, *i);
 	//mlx_clear_window(i->mlx, i->win);
 	//debug_zvalues(cpy, i);
 	ft_bzero(addr, WSZ * WSZ * 4);
-	threads_start(cpy, img, addr, i->threads);
+	i->threads = 1;
+	//threads_start(cpy, img, i->threads,	z_pass_map);
+	threads_start(cpy, img, i->threads, draw_map);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
@@ -73,15 +75,16 @@ int	loop(void *p)
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	addr = mlx_get_data_addr
+	//Get data addrs only once!!!
+	addr = img.addr;
+	/*addr = mlx_get_data_addr
 		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
 	if (addr == NULL)
-		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);
+		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);*/
 	cpy_map(i->maps, &cpy);
 	save_z(&cpy, &img);
 	preprocess_map(&cpy, *i);
-	ft_bzero(addr, WSZ * WSZ * 4);
-	draw_args.addr = addr;
+	ft_bzero(addr, WSZ * WSZ * sizeof(int));
 	draw_args.img = img;
 	draw_args.map = cpy;
 	draw_args.start = 0;

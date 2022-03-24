@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/18 09:45:14 by okinnune          #+#    #+#             */
-/*   Updated: 2021/12/08 19:20:10 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 04:41:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	ft_putchar_fd(char s, int fd)
 {
-	write(fd, &s, 1);
+	(void)!write(fd, &s, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/20 18:42:44 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 09:47:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	main(int argc, char **argv)
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
+	img.addr = mlx_get_data_addr(img.ptr, &(img.bpp),
+		&(img.size_line), &(img.endian));
 	i.img = &img;
 	stage_mlxi_values(&i);
 	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, USAGE_MSG);
@@ -57,7 +59,10 @@ static void	announce_threadcount(t_mlx_i *i)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	i->img->depthlayer = ft_memalloc(sizeof(int) * WSZ);
+	int	depthlayer_size;
+
+	depthlayer_size = ft_max((i->maps->length + 1), WSZ * WSZ);
+	i->img->depthlayer = ft_memalloc(depthlayer_size * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
@@ -73,7 +78,10 @@ static void	stage_mlxi_values(t_mlx_i *i)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	i->img->depthlayer = ft_memalloc(sizeof(int) * WSZ);
+	int	depthlayer_size;
+
+	depthlayer_size = ft_max((i->maps->length + 1), WSZ * WSZ);
+	i->img->depthlayer = ft_memalloc(depthlayer_size * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;

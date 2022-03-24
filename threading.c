@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:14:37 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:44:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 }*/
 
 /* TODO: Make start and stop values dividible by 4 */
-void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
+void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *))
 {
 	static pthread_t		*threads;
 	static t_draw_args		*t_args;
-	int						i;
+	signed int				i;
 
 	if (threads == NULL)
 		threads = ft_memalloc(sizeof(pthread_t) * corecount);
@@ -41,43 +41,48 @@ void	threads_start(t_map map, t_image_info img, char *addr, int corecount)
 	while (++i < corecount)
 	{
 		t_args[i].start = i * (map.length / corecount);
+		t_args[i].start -= t_args[i].start % 4;
 		t_args[i].stop = (i + 1) * (map.length / corecount);
-		t_args[i].addr = addr;
+		t_args[i].stop -= t_args[i].stop % 4;
 		t_args[i].map = map;
 		t_args[i].img = img;
-		pthread_create(&(threads[i]), NULL, draw_map, &(t_args[i]));
+		pthread_create(&(threads[i]), NULL, func, &(t_args[i]));
 	}
-	i = 0;
-	while (i < corecount)
-	{
+	i = -1;
+	while (++i < corecount)
 		pthread_join(threads[i], NULL);
-		i++;
-	}
 }
 #endif
 
-/*void	*z_pass_map(void *draw_args)
+void	*z_pass_map(void *draw_args)
 {
 	t_draw_args		arg;
 	int				i;
-	int				v3_integers[4][3];
-	unsigned int				z_color;
+	int				face_i3[4][3];
+	unsigned int	face_color;
 
 	arg = *(t_draw_args *)draw_args;
 	i = arg.start;
+	printf("points range %i to %i map length %i \n", arg.start, arg.stop, arg.map.length);
 	while ((i + arg.map.width + 1) <= arg.map.length && i < arg.stop)
 	{
-		collect_square_z_pass(arg.map.points[i], v3_integers, arg.map.width);
-		fill_tri(v3_integers, arg.addr, arg.img);
-		fill_tri(&(v3_integers[1]), arg.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[1], arg.addr, arg.img);
-		draw_line_img(v3_integers[1], v3_integers[2], arg.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[2], arg.addr, arg.img);
+		//printf("z_buffer val INDEX: %i VALUE: %i \n", img.)
+		
+		collect_face_z_pass(&(arg.map.points[i]), face_i3, arg.map.width);
+		printf("z values for face %i, %i, %i, %i \n", face_i3[0][Z], face_i3[1][Z], face_i3[2][Z], face_i3[3][Z]);
+		face_color = calc_face_color(arg.img.depthlayer, i, arg.map.width);
+		fill_z_tri(face_i3, arg.img.addr, arg.img, face_color);
+		fill_z_tri(&(face_i3[1]), arg.img.addr, arg.img, face_color);
+		
+		/*fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
+		draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
+		draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);
+		draw_line_img(v3_integers[0], v3_integers[2], arg.img.addr, arg.img);*/
 		i++;
 		i += ((i + 1) % arg.map.width == 0);
 	}
 	return (NULL);
-}*/
+}
 
 void	*draw_map(void *draw_args)
 {
@@ -94,17 +99,14 @@ void	*draw_map(void *draw_args)
 			+ (arg.img.depthlayer[i + 1] & Z_CLRMASK)
 			+ (arg.img.depthlayer[i + arg.map.width] & Z_CLRMASK)
 			+ (arg.img.depthlayer[i + arg.map.width + 1] & Z_CLRMASK);
-		/*printf("dl 0 %i \n", arg.img.depthlayer[i]);
-		printf("dl 1 %i \n", arg.img.depthlayer[i + 1]);
-		printf("i %i color is %i \n", i, z_color);*/
 		z_color = ft_clamp((z_color / 4) * Z_CLRMUL, 0, 255);
 		collect_square(&(arg.map.points[i]),
 			v3_integers, arg.map.width, z_color);
-		fill_tri(v3_integers, arg.addr, arg.img);
-		fill_tri(&(v3_integers[1]), arg.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[1], arg.addr, arg.img);
-		draw_line_img(v3_integers[1], v3_integers[2], arg.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[2], arg.addr, arg.img);
+		fill_tri(v3_integers, arg.img.addr, arg.img);
+		fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
+		//draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
+		//draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);
+		//draw_line_img(v3_integers[0], v3_integers[2], arg.img.addr, arg.img);
 		i++;
 		i += ((i + 1) % arg.map.width == 0);
 	}

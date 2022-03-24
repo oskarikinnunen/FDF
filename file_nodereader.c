@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 10:12:41 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 04:05:47 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@ void	read_mapnode(int fd, char *buf, int *result, int negative_flag)
 		read(fd, buf, 1);
 	while (ft_isdigit(*buf)) //Aint working
 	{
-		printf("reading digit %i \n", *result);
 		*result = (ft_isdigit(*buf)) * ((*result * 10) + (*buf - '0'));
 		if (read(fd, buf, 1) <= 0)
 			break ;
 	}
 	*result = *result * (1 - (negative_flag * 2));
-	printf("read mapnode result is %i \n", *result);
 }

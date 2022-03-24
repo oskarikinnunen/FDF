@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 17:57:56 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/17 07:31:48 by okinnune         ###   ########.fr        #
+#    Updated: 2022/03/24 04:49:13 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ FILES= ft_abs.c ft_atoi.c ft_bzero.c ft_digitcount.c ft_isalnum.c ft_isalpha.c\
 	ft_strmapi.c ft_strncat.c ft_strncmp.c ft_strncpy.c ft_strnequ.c \
 	ft_strnew.c ft_strnstr.c ft_strrchr.c ft_strsplit.c ft_strstr.c \
 	ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c ft_isspace.c \
-	ft_ftoa.c ft_memdup.c ft_clamp.c ft_clampf.c
-FLAGS= -Wall -Wextra -Werror -c
+	ft_ftoa.c ft_memdup.c ft_clamp.c ft_clampf.c ft_min_max.c
+FLAGS= -Wall -Wextra -Werror -O2 -c
 SRCS= $(addprefix src/, $(FILES))
 SRCS+=$(V_SRCS)
 OBJS= $(FILES:.c=.o)
@@ -33,7 +33,7 @@ OBJS= $(FILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(SRCS) $(OBJS)
-	ar rc $(NAME) $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 $(OBJS):
 	gcc $(FLAGS) $(HEADER) $(SRCS) -I.

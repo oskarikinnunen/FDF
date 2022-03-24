@@ -6,14 +6,13 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 16:06:39 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 06:11:15 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 04:45:12 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-#ifdef __APPLE__
-
+/*
 void	ft_bzero(void *s, size_t n)
 {
 	while (n > sizeof(long))
@@ -30,13 +29,10 @@ void	ft_bzero(void *s, size_t n)
 	}
 	while (n-- > 0)
 		*(char *)s++ = 0;
-}
-
-#else
+}*/
 
 void	ft_bzero(void *s, size_t n)
 {
 	while (n-- > 0)
 		*(char *)s++ = 0;
 }
-#endif

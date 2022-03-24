@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/22 12:14:46 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:15:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 #  define ANIM_SCALE 0.04
 # endif
 
+/* REMOVE! */
 # include <stdio.h>
+
 /*	KEYCODES */
 # define KEY_LEFT 65361
 # define KEY_RGHT 65363
@@ -32,14 +34,17 @@
 # define KEY_UP 65362
 # define KEY_ESC 53
 /*	OTHER DEFINES	*/
-# define Z_CLRMASK 255
-# define Z_CLRMUL 0.666
+# define Z_CLRMASK 0xFF
+# define Z_HGHTMASK 0xFF00
+# define Z_CLRMUL 1
+# define Z_SCALE 0.2
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
 # define IMAGE_Y 50
 # define WSZ 720
 /* Max number of points the map can have */
-# define MAPSIZE_MAX 1024
+# define MAPSIZE_MAX 10000
 # define INT_MAX 2147483647
+# define PI 3.14159265359
 # define X 0
 # define Y 1
 # define Z 2
@@ -63,6 +68,7 @@ typedef struct s_bresenham
 typedef struct s_image_info
 {
 	void	*ptr;
+	char	*addr;
 	int		bpp;
 	int		size_line;
 	int		endian;
@@ -71,7 +77,7 @@ typedef struct s_image_info
 
 typedef struct s_draw_args
 {
-	char			*addr;
+//	char			*addr;
 	t_map			map;
 	t_image_info	img;
 	int				start;
@@ -140,14 +146,19 @@ void	cpy_map(t_map *src, t_map *dst);
 /* DRAWING.C */
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
 void	fill_tri(int tris[3][3], char *addr, t_image_info img);
+/* Z_DRAWING.C */
+void	fill_z_tri(int tris[3][3], char *addr, t_image_info img, int color);
+void	draw_z_line_img(int *i1, int *i2, t_image_info img, int color);
 
 /* THREADING.C */
-void	threads_start(t_map map, t_image_info img, char *addr, int corecount);
+void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *));
 void	*draw_map(void *args);
+void	*z_pass_map(void *draw_args);
 
 /* Z_BUFFER.C */
-void	collect_square_z_pass(float **v3, int i3[4][3], int width);
+void	collect_face_z_pass(float **v3, int i3[4][3], int width);
 void	save_z(t_map *map, t_image_info *info);
+int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */
 void	sort_tris(int tris[3][3]);
