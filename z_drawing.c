@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 15:07:31 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/25 08:09:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ void	fill_z_tri(int tris[3][3], char *addr, t_image_info img, int color)
 	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
 	split[Y] = sorted[1][Y];
 	split[Z] = sorted[2][Z] + (lerp * (sorted[0][Z] - sorted[2][Z]));
-	printf("lerp %f \n", lerp);
-	printf("0 z %i 2 z %i \n", sorted[0][Z], sorted[2][Z]);
-	printf("calculated z %i original 0 z %i \n", split[Z], sorted[2][Z]);
 	fill_z_topflat((int *[3]){(int *)&(sorted[0]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img, color);
 	/*fill_z_bottomflat((int *[3]){(int *)&(sorted[2]),

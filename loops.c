@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 15:42:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/25 11:17:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ static void	get_time(t_mlx_i *i)
 void	debug_zvalues(t_map map, t_mlx_i *mlx_i)
 {
 	for (int i = 0; i < map.length; i++)
-		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ft_itoa(map.points[i][Z]));
+	{
+		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ".");
+	}
+		
 }
 
 int	loop(void *p)
@@ -56,6 +59,7 @@ int	loop(void *p)
 	ft_bzero(addr, WSZ * WSZ * 4);
 	i->threads = 1;
 	//threads_start(cpy, img, i->threads,	z_pass_map);
+	sort_map_faces_z(&cpy);
 	threads_start(cpy, img, i->threads, draw_map);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);

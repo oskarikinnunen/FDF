@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 15:42:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/25 09:14:43 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,16 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
 	fill_bottomflat((int *[3]){(int *)&(sorted[2]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	/*draw_line_img(sorted[0], sorted[2], addr, img);*/
+	draw_line_img(sorted[0], sorted[2], addr, img);
 }
 
+void	assign_color(char *pen, int color)
+{
+	if (color > *(signed int *)pen)
+		*(signed int *)pen += color * 0.25;
+}
+
+//TODO: Make this better!!
 //step_bresenham_x(&b, i2);
 //step_bresenham_y(&b, i2);
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
@@ -81,20 +88,19 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 
 	populate_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = b.local[Z] + (b.local[Z] << 8) + (10 << 16);
+	color = b.local[Z] + (0 << 8) + (0 << 16);
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		//printf("found color %i in depthlayer \n", *color_pen & Z_CLRMASK);
-		*(unsigned int *)pen = *(unsigned int *)pen | color;
+		*(unsigned int *)pen = color;
 		step_bresenham_x(&b, i2);
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(unsigned int *)pen = *(unsigned int *)pen | color;
+		*(unsigned int *)pen = color;
 		step_bresenham_y(&b, i2);
 	}
-	//*(unsigned int *)pen = color;
-	/*pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-	*(unsigned int *)pen = color;*/
+	pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
+	*(unsigned int *)pen = color;
+	//assign_color(pen, color);
 }
 
 /*void	draw_line_z_pass(int *i1, int *i2, char *addr, t_image_info img)

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 09:47:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/25 13:53:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	stage_mlxi_values(t_mlx_i *i)
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
-	i->y_angle = 45;
+	i->y_angle = -45;
 	i->threads = sysconf(_SC_NPROCESSORS_ONLN);
 	if (i->threads <= 0)
 		error_exit("Sysconf found no logical processors (stage_mlxi_values)");
@@ -85,6 +85,6 @@ static void	stage_mlxi_values(t_mlx_i *i)
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
-	i->y_angle = 45;
+	i->y_angle = -45;
 }
 #endif

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 15:15:32 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/03/25 14:32:12 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define Z_CLRMASK 0xFF
 # define Z_HGHTMASK 0xFF00
 # define Z_CLRMUL 1
-# define Z_SCALE 0.2
+# define Z_SCALE 0.05
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
 # define IMAGE_Y 50
 # define WSZ 720
@@ -72,6 +72,7 @@ typedef struct s_image_info
 	int		bpp;
 	int		size_line;
 	int		endian;
+	long	*tri_64s;
 	int		*depthlayer;
 }	t_image_info;
 
@@ -162,6 +163,7 @@ int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */
 void	sort_tris(int tris[3][3]);
+void	sort_map_faces_z(t_map *map);
 
 /* FREEDOM.C */
 void	free_maps(t_map *map);
