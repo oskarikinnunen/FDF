@@ -40,9 +40,9 @@
 # define Z_SCALE 0.05
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
 # define IMAGE_Y 50
-# define WSZ 720
+# define WSZ 500
 /* Max number of points the map can have */
-# define MAPSIZE_MAX 10000
+# define MAPSIZE_MAX 100000
 # define INT_MAX 2147483647
 # define PI 3.14159265359
 # define X 0
@@ -53,6 +53,7 @@
 typedef struct s_map
 {
 	float	**points;
+	int		tri_count;
 	int		length;
 	int		width;
 }	t_map;
@@ -147,23 +148,20 @@ void	cpy_map(t_map *src, t_map *dst);
 /* DRAWING.C */
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
 void	fill_tri(int tris[3][3], char *addr, t_image_info img);
-/* Z_DRAWING.C */
-void	fill_z_tri(int tris[3][3], char *addr, t_image_info img, int color);
-void	draw_z_line_img(int *i1, int *i2, t_image_info img, int color);
 
 /* THREADING.C */
 void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *));
 void	*draw_map(void *args);
-void	*z_pass_map(void *draw_args);
+void	*draw_map_from_tri64s(void *draw_args);
 
 /* Z_BUFFER.C */
 void	collect_face_z_pass(float **v3, int i3[4][3], int width);
-void	save_z(t_map *map, t_image_info *info);
+void	depth_save(t_map *map, t_image_info *img, int mask);
 int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */
-void	sort_tris(int tris[3][3]);
-void	sort_map_faces_z(t_map *map);
+void		sort_tris(int tris[3][3]);
+long int	*sorted_tri64s(t_map *map, t_image_info *img);
 
 /* FREEDOM.C */
 void	free_maps(t_map *map);

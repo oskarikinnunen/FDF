@@ -23,7 +23,7 @@ NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c freedom.c z_buffer.c	\
 	map_operations.c matrices.c threading.c \
-	loops.c errors.c file_nodereader.c z_drawing.c
+	loops.c errors.c file_nodereader.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 

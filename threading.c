@@ -54,36 +54,6 @@ void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void
 }
 #endif
 
-void	*z_pass_map(void *draw_args)
-{
-	t_draw_args		arg;
-	int				i;
-	int				face_i3[4][3];
-	unsigned int	face_color;
-
-	arg = *(t_draw_args *)draw_args;
-	i = arg.start;
-	printf("points range %i to %i map length %i \n", arg.start, arg.stop, arg.map.length);
-	while ((i + arg.map.width + 1) <= arg.map.length && i < arg.stop)
-	{
-		//printf("z_buffer val INDEX: %i VALUE: %i \n", img.)
-		
-		collect_face_z_pass(&(arg.map.points[i]), face_i3, arg.map.width);
-		printf("z values for face %i, %i, %i, %i \n", face_i3[0][Z], face_i3[1][Z], face_i3[2][Z], face_i3[3][Z]);
-		face_color = calc_face_color(arg.img.depthlayer, i, arg.map.width);
-		fill_z_tri(face_i3, arg.img.addr, arg.img, face_color);
-		fill_z_tri(&(face_i3[1]), arg.img.addr, arg.img, face_color);
-		
-		/*fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
-		draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);
-		draw_line_img(v3_integers[0], v3_integers[2], arg.img.addr, arg.img);*/
-		i++;
-		i += ((i + 1) % arg.map.width == 0);
-	}
-	return (NULL);
-}
-
 void	*draw_map(void *draw_args)
 {
 	t_draw_args		arg;
@@ -115,35 +85,33 @@ void	*draw_map(void *draw_args)
 
 static void	collect_tri64(int v3_int[3][3], long	tri64)
 {
-	v3_int[0][X] = (tri64 << 0) & 0x1FF;
-	v3_int[0][Y] = (tri64 << 9) & 0x1FF;
-	v3_int[1][X] = (tri64 << 18) & 0x1FF;
-	v3_int[1][Y] = (tri64 << 27) & 0x1FF;
-	v3_int[2][X] = (tri64 << 36) & 0x1FF;
-	v3_int[2][Y] = (tri64 << 45) & 0x1FF;
-	v3_int[0][Z] = (tri64 << 54);
-	v3_int[1][Z] = (tri64 << 54);
-	v3_int[2][Z] = (tri64 << 54);
+	v3_int[0][X] = (tri64 >> 0) & 0x1FF;
+	v3_int[0][Y] = (tri64 >> 9) & 0x1FF;
+	v3_int[1][X] = (tri64 >> 18) & 0x1FF;
+	v3_int[1][Y] = (tri64 >> 27) & 0x1FF;
+	v3_int[2][X] = (tri64 >> 36) & 0x1FF;
+	v3_int[2][Y] = (tri64 >> 45) & 0x1FF;
+	v3_int[0][Z] = ((unsigned long)tri64 >> 54);
+	//printf("v3 int color %i \n", v3_int[0][Z]);
+	v3_int[1][Z] = ((unsigned long)tri64 >> 54);
+	v3_int[2][Z] = ((unsigned long)tri64 >> 54);
 }
 
 void	*draw_map_from_tri64s(void *draw_args)
 {
 	t_draw_args		arg;
 	int				i;
-	int				v3_int[3][3];
+	int				v3_int[3][3]; //NEEDS TO BE LONG!
 	unsigned int	z_color;
 
 	arg = *(t_draw_args *)draw_args;
 	i = arg.start;
 	while (i < arg.stop)
 	{
-		z_color = (arg.img.depthlayer[i] & Z_CLRMASK)
-			+ (arg.img.depthlayer[i + 1] & Z_CLRMASK)
-			+ (arg.img.depthlayer[i + arg.map.width] & Z_CLRMASK)
-			+ (arg.img.depthlayer[i + arg.map.width + 1] & Z_CLRMASK);
-		z_color = ft_clamp((z_color / 4) * Z_CLRMUL, 0, 255);
-		arg.img.tri_64s[i];
-		//fill_tri(v3_integers, arg.img.addr, arg.img);
+		//z_color = arg.img.depthlayer[i / 2];
+		collect_tri64(v3_int, arg.img.tri_64s[i]);
+		
+		fill_tri(v3_int, arg.img.addr, arg.img);
 		//fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);

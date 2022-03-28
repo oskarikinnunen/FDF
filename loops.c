@@ -26,15 +26,6 @@ static void	get_time(t_mlx_i *i)
 		+ (t2.tv_usec - i->t1.tv_usec) / 1000.0;
 }
 
-void	debug_zvalues(t_map map, t_mlx_i *mlx_i)
-{
-	for (int i = 0; i < map.length; i++)
-	{
-		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ".");
-	}
-		
-}
-
 int	loop(void *p)
 {
 	t_mlx_i			*i;
@@ -51,21 +42,30 @@ int	loop(void *p)
 		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);
 	cpy_map(i->maps, &cpy);
 	get_time(i);
-	//animate_map(&cpy, i->time);
+	animate_map(&cpy, i->time);
 	save_z(&cpy, &img);
 	preprocess_map(&cpy, *i);
 	//mlx_clear_window(i->mlx, i->win);
 	//debug_zvalues(cpy, i);
 	ft_bzero(addr, WSZ * WSZ * 4);
-	i->threads = 1;
+	//i->threads = 1;
 	//threads_start(cpy, img, i->threads,	z_pass_map);
-	sort_map_faces_z(&cpy);
 	threads_start(cpy, img, i->threads, draw_map);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
 #else
 
+void	debug_zvalues(t_map map, t_mlx_i *mlx_i)
+{
+	for (int i = 0; i < map.length - map.width - 1; i++)
+	{
+		int color = map.points[i][Z] + map.points[i + 1][Z]+ map.points[i + map.width][Z];
+		color /= 3;
+		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ".");
+		mlx_string_put(mlx_i->mlx, mlx_i->win, map.points[i][X], map.points[i][Y], INT_MAX, ft_itoa(color));
+	}
+}
 //static void	populate_draw_args(t_draw_args *args) {}
 
 int	loop(void *p)
@@ -81,19 +81,20 @@ int	loop(void *p)
 	cpy = i->maps[1];
 	//Get data addrs only once!!!
 	addr = img.addr;
-	/*addr = mlx_get_data_addr
-		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
-	if (addr == NULL)
-		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);*/
 	cpy_map(i->maps, &cpy);
-	save_z(&cpy, &img);
+	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
+	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
-	ft_bzero(addr, WSZ * WSZ * sizeof(int));
+	
+	img.tri_64s = sorted_tri64s(&cpy, &img);
 	draw_args.img = img;
 	draw_args.map = cpy;
 	draw_args.start = 0;
-	draw_args.stop = cpy.length;
-	draw_map((void *)&draw_args);
+	draw_args.stop = i->wireframe_toggle;
+	ft_bzero(addr, WSZ * WSZ * sizeof(int));
+	//mlx_clear_window(i->mlx, i->win);
+	//debug_zvalues(cpy, i);
+	draw_map_from_tri64s((void *)&draw_args);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
@@ -109,11 +110,14 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
-	i->y_angle = ft_clamp(i->y_angle, -45, 45);
-	if (keycode == KEY_ESC || keycode == 65307)
+	i->y_angle = ft_clamp(i->y_angle, -44, 44);
+	i->wireframe_toggle += (keycode == 65307) * 2;
+	//i->wireframe_toggle = ft_min(i->wireframe_toggle, 360);
+	printf("wireframe toggle %i \n", keycode == 65307);
+	/*if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_maps(i->maps);
 		exit(0);
-	}
+	}*/
 	return (1);
 }

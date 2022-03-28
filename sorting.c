@@ -39,17 +39,15 @@ void	sort_tris(int tris[3][3])
 
 /*
 tri64
-	18 bits	|18 bits |18 bits | 	10 bits		   |
-	x0 y0	|x1 y1	 |x2 y2	  |	collective z_depth |
+	9x2bits+|9x2bits+|9x2bits+| 	10 bits		| = 64 bits
+	x0 y0	|x1 y1	 |x2 y2	  |	tri z_color		|
 */
-static void	face_to_tri64(float **v3, long *set_64, int width)
+static void	face_to_tri64(float **v3, long *set_64, int width, int color)
 {
 	int			i;
 	int			indx[2];
-	float		z;
 
 	i = 0;
-	z = 0.0;
 	ft_bzero(indx, sizeof(int [2]));
 	while (i < 3)
 	{
@@ -59,19 +57,17 @@ static void	face_to_tri64(float **v3, long *set_64, int width)
 					+ ((long)v3[indx[0]][Y] << (9 * i * 2) + 9);
 		set_64[1] += ((long)v3[indx[1]][X] << (9 * i * 2))
 					+ ((long)v3[indx[1]][Y] << (9 * i * 2) + 9);
-		z += v3[indx[1]][Z] + v3[indx[0]][Z];
 		i++;
 	}
-	z = z / 6.0;
-	set_64[0] += ((long)z << 9 * 6);
-	set_64[1] += ((long)z << 9 * 6);
+	set_64[0] += ((long)color << 9 * 6);
+	set_64[1] += ((long)color << 9 * 6);
 }
 
-static void	sort_face64s(long *list, int len)
+static void	sort_face64s(long *tri_list, int *depth_list, int len)
 {
 	int		i;
 	int		c;
-	long	temp[2];
+	long	temp;
 
 	i = 0;
 	c = 0;
@@ -79,13 +75,16 @@ static void	sort_face64s(long *list, int len)
 	{
 		while (c < len - 1 - i)
 		{
-			if ((signed long)list[c] >> 54 > (signed long)list[c + 2] >> 54)
+			if ((depth_list[c] >> 16) > (depth_list[c + 1] >> 16))
 			{
-				ft_memcpy(temp, &(list[c]), sizeof(long) * 2);
-				ft_memcpy(&(list[c]), &(list[c + 2]), sizeof(long) * 2);
-				ft_memcpy(&(list[c + 2]), temp, sizeof(long) * 2);
+				temp = tri_list[c];
+				tri_list[c] = tri_list[c + 1];
+				tri_list[c + 1] = temp;
+				temp = depth_list[c];
+				depth_list[c] = depth_list[c + 1];
+				depth_list[c + 1] = temp;
 			}
-			c += 2;
+			c++;
 		}
 		c = 0;
 		i++;
@@ -97,20 +96,30 @@ static void	print_face64_zvalues(long *tri_list, int len)
 	int	i;
 
 	i = 0;
-	while (i < len - 1)
+	while (i < len)
 	{
-		printf("collected face x0 %li y0 %li x1 %li y1 %li z0f %li z1f %li \n",
+		printf("collected face v0 %li %li \n v1 %li %li \n v2 %li %li \n z0f %li \n ENDOFVECTOR \n",
 			(tri_list[i])			& 0x1FF,
 			(tri_list[i] >> 9)		& 0x1FF,
 			(tri_list[i] >> 9 * 2)	& 0x1FF,
 			(tri_list[i] >> 9 * 3)	& 0x1FF,
-			((signed long)tri_list[i] >> 9 * 6),
-			((signed long)tri_list[i + 1] >> 9 * 6));
+			(tri_list[i] >> 9 * 4)	& 0x1FF,
+			(tri_list[i] >> 9 * 5)	& 0x1FF,
+			((signed long)tri_list[i] >> 9 * 6));
 		i++;
 	}
 }
 
-long int	*face64b_list(t_map *map)
+/*
+	tri[0][X] = list[i][X]
+	tri[0][X] = list[i+1][X]
+	tri[0][X] = list[i+1+w][X]
+	tri[1][X] = list[i+w][X]
+	tri[1][X] = list[i+1+w][X]
+	tri[1][X] = list[i+2+w][X]
+*/
+
+long int	*sorted_tri64s(t_map *map, t_image_info *img)
 {
 	long	*tri_list;
 	int		i;
@@ -118,21 +127,17 @@ long int	*face64b_list(t_map *map)
 
 	i = 0;
 	tri_i = 0;
-	tri_list = ft_memalloc(map->length * 2 * sizeof(long)); //TODO: PROTECT!
-	while (i < map->length - map->width - 1)
+	tri_list = ft_memalloc(map->tri_count * sizeof(long)); //TODO: PROTECT!
+	depth_save(map, img, 1);
+	while (i <= map->length - map->width - 1)
 	{
-		face_to_tri64(&(map->points[i]), &(tri_list[tri_i]), map->width);
+		face_to_tri64(&(map->points[i]), &(tri_list[tri_i]), map->width,
+			img->depthlayer[tri_i] & 0xFFFF);
 		i += (i++, (i + 1) % map->width == 0);
 		tri_i += 2;
 	}
-	sort_face64s(tri_list, (map->length * 2) - (map->width * 3));
-	//print_face64_zvalues(tri_list, (map->length * 2) - (map->width * 3));
+	sort_face64s(tri_list, img->depthlayer, map->tri_count);
 	return (tri_list);
-}
-
-void	sort_map_faces_z(t_map *map)
-{
-	face64b_list(map);
 }
 
 void	sort_map_z(t_map *map)

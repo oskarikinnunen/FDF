@@ -62,8 +62,12 @@ void	scale_with_x_matrix(t_map *map, double angle)
 
 	angle = angle * PI / 180;
 	iso[X][X] = cos(angle);
+	iso[X][Z] = -sin(angle);
+	iso[Z][X] = sin(angle);
+	iso[Z][Z] = cos(angle);
+	/*iso[X][X] = cos(angle);
 	iso[X][Y] = -sin(angle);
 	iso[Z][X] = sin(angle);
-	iso[Z][Y] = cos(angle);
+	iso[Z][Y] = cos(angle);*/
 	v3listmul(iso, map->points, map->length);
 }

@@ -34,8 +34,8 @@ static signed int	*get_mapdata(t_map *map, int fd)
 			map->width += (i++, (map->width == 0 && *buf == '\n') * i);
 		else
 			error_exit("Invalid character (get_mapdata)");
-		if (*buf == '\n' && map->width != 0 && i % map->width != 0)
-			error_exit("Invalid map shape (get_mapdata)");
+		/*if (*buf == '\n' && map->width != 0 && i % map->width != 0)
+			error_exit("Invalid map shape (get_mapdata)");*/
 	}
 	map->length = i;
 	return (str);
@@ -65,15 +65,16 @@ void	read_inputmap(char *filename, t_map *map)
 	fd = file_open(filename);
 	ft_bzero(map, sizeof(t_map) * 2);
 	data = get_mapdata(map, fd);
+	map->tri_count = (map->length - map->width
+		- ((map->length - map->width)/ map->width)) * 2;
 	(&(map[1]))->length = map->length;
 	(&(map[1]))->width = map->width;
+	map[1].tri_count = map->tri_count;
 	map->points = ft_memalloc((map->length + 1) * sizeof(float *));	
 	(&(map[1]))->points = ft_memalloc((map->length + 1) * sizeof(float *));
 	if (map->points == NULL || (&(map[1]))->points == NULL)
 		error_exit("Vector indexes malloc failed (read_inputmap)");
 	ft_bzero(cr, sizeof(int) * 3);
-	printf("map width is %i \n", map->width);
-	
 	while (cr[Z] <= map->length)
 	{
 		if (cr[Z] != 0 && cr[Z] % map->width == 0)
@@ -84,7 +85,6 @@ void	read_inputmap(char *filename, t_map *map)
 			error_exit_free_map("Vector malloc failed in read_input", map);
 		cr[Z] = (cr[X]++, cr[Z] + 1);
 	}
-	//exit(0);
 	free(data);
 }
 

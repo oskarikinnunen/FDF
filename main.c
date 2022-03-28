@@ -78,10 +78,8 @@ static void	stage_mlxi_values(t_mlx_i *i)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	int	depthlayer_size;
-
-	depthlayer_size = ft_max((i->maps->length + 1), WSZ * WSZ);
-	i->img->depthlayer = ft_memalloc(depthlayer_size * sizeof(int));
+	i->wireframe_toggle = i->maps->tri_count; //TODO: remove
+	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;

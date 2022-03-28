@@ -12,40 +12,55 @@
 
 #include "fdf.h"
 
-void	save_z(t_map *map, t_image_info *img)
+static void	collect_tri_colors(float **v3, int *color_ptr, int width, int mask)
 {
-	int	i;
+	int			i;
+	int			indx[2];
+	float		z;
 
 	i = 0;
-	while (i <= map->length)
+	z = 0.0;
+	if (mask)
+		z = 10000;
+	ft_bzero(indx, sizeof(int [2]));
+	while (i < 3)
 	{
-		img->depthlayer[i] = 0;
-		img->depthlayer[i] = map->points[i][Z] + 127;
-		//img->depthlayer[i] += (-1024 << 8);
-		//printf("saved depthlayer %i && %i \n", img->depthlayer[i] & Z_CLRMASK, img->depthlayer[i] >> 8);
+		indx[0] = ((i >= 2) * width) + !((i + 1) % 2);
+		indx[1] = ((i + 1 >= 2) * width) + !((i + 2) % 2);
+		if (!mask)
+			z += v3[indx[0]][Z] + v3[indx[1]][Z];
+		else
+		{
+			z = ft_min((int)z, v3[indx[0]][Z]);
+			z = ft_min((int)z, v3[indx[1]][Z]);
+		}
 		i++;
 	}
-	/*while (i <= WSZ * WSZ)
-	{
-		img->depthlayer[i] = 0;
-		img->depthlayer[i] += (-1024 << 8);
-		i++;
-	}*/
+	if (!mask) {
+		z = z / 6.0;
+		z += 127;
+	}
+		
+	color_ptr[0] += (int)z << (16 * mask);
+	color_ptr[1] += (int)z << (16 * mask);
+	//printf("saved tri color 1 %i \n", color_ptr[0]);
+	//printf("saved tri color 2 %i \n", color_ptr[1]);
 }
 
-int		calc_face_color(int *depthlayer, int index, int width)
+void	depth_save(t_map *map, t_image_info *img, int mask)
 {
-	int	color;
+	int	i;
+	int	tri_i;
 
-	color = 0;
-	color += (depthlayer[index] & Z_CLRMASK);
-	printf("READ FACE Z CLR value %i index %i\n", color, index);
-	color += (depthlayer[index + 1] & Z_CLRMASK);
-	printf("ADD  FACE Z CLR value %i index %i\n", color, index + 1);
-	color += (depthlayer[index + width] & Z_CLRMASK);
-	printf("ADD2 FACE Z CLR value %i index %i\n", color, index + 1 + width);
-	color += (depthlayer[index + width + 1] & Z_CLRMASK);
-	color = ft_clamp((color / 4) * Z_CLRMUL, 0, 255);
-	printf("calculated face color %i\n", color);
-	return (color);
+	i = 0;
+	tri_i = 0;
+	while (i <= map->length - map->width - 1)
+	{
+		collect_tri_colors(&(map->points[i]), &(img->depthlayer[tri_i]), map->width, mask);
+		i += (i++, (i + 1) % map->width == 0);
+		tri_i += 2;
+	}
+	//printf("saved %i tri colors \n", tri_i);
+	//exit(0);
+	
 }
