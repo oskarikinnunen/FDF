@@ -39,8 +39,8 @@
 # define Z_CLRMUL 1
 # define Z_SCALE 0.05
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
-# define IMAGE_Y 50
 # define WSZ 500
+# define IMAGE_Y 50
 /* Max number of points the map can have */
 # define MAPSIZE_MAX 100000
 # define INT_MAX 2147483647
@@ -53,7 +53,6 @@
 typedef struct s_map
 {
 	float	**points;
-	int		tri_count;
 	int		length;
 	int		width;
 }	t_map;
@@ -70,16 +69,16 @@ typedef struct s_image_info
 {
 	void	*ptr;
 	char	*addr;
+	int		*depthlayer;
+	long	*tri_64s;
+	int		tri_count;
 	int		bpp;
 	int		size_line;
 	int		endian;
-	long	*tri_64s;
-	int		*depthlayer;
 }	t_image_info;
 
 typedef struct s_draw_args
 {
-//	char			*addr;
 	t_map			map;
 	t_image_info	img;
 	int				start;
@@ -152,7 +151,7 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 /* THREADING.C */
 void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *));
 void	*draw_map(void *args);
-void	*draw_map_from_tri64s(void *draw_args);
+void	draw_img_from_tri64s(t_image_info img);
 
 /* Z_BUFFER.C */
 void	collect_face_z_pass(float **v3, int i3[4][3], int width);

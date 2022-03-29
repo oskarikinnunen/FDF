@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	i.maps = (t_map *)(&maps);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
-	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ);
+	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y);
 	img.addr = mlx_get_data_addr(img.ptr, &(img.bpp),
 		&(img.size_line), &(img.endian));
 	i.img = &img;
@@ -78,8 +78,10 @@ static void	stage_mlxi_values(t_mlx_i *i)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	i->wireframe_toggle = i->maps->tri_count; //TODO: remove
-	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
+	i->img->tri_count = (i->maps->length - i->maps->width
+		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
+	i->img->tri_64s = ft_memalloc(i->img->tri_count * sizeof(long)); // PRotec!!
+	i->img->depthlayer = ft_memalloc(i->img->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;

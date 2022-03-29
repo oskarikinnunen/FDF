@@ -97,26 +97,23 @@ static void	collect_tri64(int v3_int[3][3], long	tri64)
 	v3_int[2][Z] = ((unsigned long)tri64 >> 54);
 }
 
-void	*draw_map_from_tri64s(void *draw_args)
+void	draw_img_from_tri64s(t_image_info img)
 {
-	t_draw_args		arg;
 	int				i;
-	int				v3_int[3][3]; //NEEDS TO BE LONG!
+	int				v3_int[3][3];
 	unsigned int	z_color;
 
-	arg = *(t_draw_args *)draw_args;
-	i = arg.start;
-	while (i < arg.stop)
+	i = 0;
+	while (i < img.tri_count)
 	{
 		//z_color = arg.img.depthlayer[i / 2];
-		collect_tri64(v3_int, arg.img.tri_64s[i]);
+		collect_tri64(v3_int, img.tri_64s[i]);
 		
-		fill_tri(v3_int, arg.img.addr, arg.img);
+		fill_tri(v3_int, img.addr, img);
 		//fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[0], v3_integers[2], arg.img.addr, arg.img);
 		i++;
 	}
-	return (NULL);
 }

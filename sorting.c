@@ -48,6 +48,8 @@ static void	face_to_tri64(float **v3, long *set_64, int width, int color)
 	int			indx[2];
 
 	i = 0;
+	set_64[0] = 0L;
+	set_64[1] = 0L;
 	ft_bzero(indx, sizeof(int [2]));
 	while (i < 3)
 	{
@@ -121,23 +123,23 @@ static void	print_face64_zvalues(long *tri_list, int len)
 
 long int	*sorted_tri64s(t_map *map, t_image_info *img)
 {
-	long	*tri_list;
+	//long	*tri_list;
 	int		i;
 	long	tri_i;
 
 	i = 0;
 	tri_i = 0;
-	tri_list = ft_memalloc(map->tri_count * sizeof(long)); //TODO: PROTECT!
+	//tri_list = ft_memalloc(img->tri_count * sizeof(long)); //TODO: PROTECT!
 	depth_save(map, img, 1);
 	while (i <= map->length - map->width - 1)
 	{
-		face_to_tri64(&(map->points[i]), &(tri_list[tri_i]), map->width,
+		face_to_tri64(&(map->points[i]), &(img->tri_64s[tri_i]), map->width,
 			img->depthlayer[tri_i] & 0xFFFF);
 		i += (i++, (i + 1) % map->width == 0);
 		tri_i += 2;
 	}
-	sort_face64s(tri_list, img->depthlayer, map->tri_count);
-	return (tri_list);
+	sort_face64s(img->tri_64s, img->depthlayer, img->tri_count);
+	return (NULL);
 }
 
 void	sort_map_z(t_map *map)

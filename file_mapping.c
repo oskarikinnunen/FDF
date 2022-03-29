@@ -65,11 +65,8 @@ void	read_inputmap(char *filename, t_map *map)
 	fd = file_open(filename);
 	ft_bzero(map, sizeof(t_map) * 2);
 	data = get_mapdata(map, fd);
-	map->tri_count = (map->length - map->width
-		- ((map->length - map->width)/ map->width)) * 2;
 	(&(map[1]))->length = map->length;
 	(&(map[1]))->width = map->width;
-	map[1].tri_count = map->tri_count;
 	map->points = ft_memalloc((map->length + 1) * sizeof(float *));	
 	(&(map[1]))->points = ft_memalloc((map->length + 1) * sizeof(float *));
 	if (map->points == NULL || (&(map[1]))->points == NULL)

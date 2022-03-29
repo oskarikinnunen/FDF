@@ -73,7 +73,6 @@ int	loop(void *p)
 	t_mlx_i			*i;
 	t_image_info	img;
 	t_map			cpy;
-	t_draw_args		draw_args;
 	char			*addr;
 
 	i = (t_mlx_i *)p;
@@ -82,19 +81,15 @@ int	loop(void *p)
 	//Get data addrs only once!!!
 	addr = img.addr;
 	cpy_map(i->maps, &cpy);
-	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
+	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
 	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
 	
-	img.tri_64s = sorted_tri64s(&cpy, &img);
-	draw_args.img = img;
-	draw_args.map = cpy;
-	draw_args.start = 0;
-	draw_args.stop = i->wireframe_toggle;
-	ft_bzero(addr, WSZ * WSZ * sizeof(int));
+	/*img.tri_64s = */sorted_tri64s(&cpy, &img);
+	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
 	//mlx_clear_window(i->mlx, i->win);
 	//debug_zvalues(cpy, i);
-	draw_map_from_tri64s((void *)&draw_args);
+	draw_img_from_tri64s(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
@@ -111,13 +106,11 @@ int	key_loop(int keycode, void *p)
 	i->y_angle += (keycode == KEY_UP) * 5;
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
 	i->y_angle = ft_clamp(i->y_angle, -44, 44);
-	i->wireframe_toggle += (keycode == 65307) * 2;
 	//i->wireframe_toggle = ft_min(i->wireframe_toggle, 360);
-	printf("wireframe toggle %i \n", keycode == 65307);
-	/*if (keycode == KEY_ESC || keycode == 65307)
+	if (keycode == KEY_ESC || keycode == 65307)
 	{
 		free_maps(i->maps);
 		exit(0);
-	}*/
+	}
 	return (1);
 }
