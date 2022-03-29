@@ -39,7 +39,8 @@ int	loop(void *p)
 	addr = img.addr;
 	cpy_map(i->maps, &cpy);
 	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
-	animate_map(&cpy);
+	get_time(i);
+	animate_map(&cpy, i->time);
 	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
 	sorted_tri64s(&cpy, &img);

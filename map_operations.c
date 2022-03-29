@@ -80,9 +80,9 @@ void	animate_map(t_map *map, double time)
 void	preprocess_map(t_map *map, t_mlx_i i)
 {
 	scale_with_size_matrix(map);
-	v3listadd(map->points, (float [3]){-WSZ / 4, -WSZ / 4, 0}, map->length);
+	v3listadd(map->points, (float [3]){-512 / 4, -512 / 4, 0}, map->length);
 	scale_with_y_matrix(map, i.y_angle);
 	scale_with_x_matrix(map, i.x_angle);
-	v3listadd(map->points, (float [3]){(WSZ / 4)*2, (WSZ / 4) * 2, 0},
+	v3listadd(map->points, (float [3]){(512 / 4)*2, (512 / 4) * 2, 0},
 		map->length);
 }

@@ -119,13 +119,11 @@ static void	print_face64_zvalues(long *tri_list, int len)
 
 long int	*sorted_tri64s(t_map *map, t_image_info *img)
 {
-	//long	*tri_list;
 	int		i;
 	long	tri_i;
 
 	i = 0;
 	tri_i = 0;
-	//tri_list = ft_memalloc(img->tri_count * sizeof(long)); //TODO: PROTECT!
 	depth_save(map, img, 1);
 	while (i <= map->length - map->width - 1)
 	{
@@ -135,7 +133,6 @@ long int	*sorted_tri64s(t_map *map, t_image_info *img)
 		tri_i += 2;
 	}
 	sort_face64s(img->tri_64s, img->depthlayer, img->tri_count);
-	//exit(0);
 	return (NULL);
 }
 

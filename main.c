@@ -41,36 +41,18 @@ int	main(int argc, char **argv)
 
 #ifdef EXTRA
 
-static void	announce_threadcount(t_mlx_i *i)
-{
-	char	announcement_str[64];
-	char	*threadcount_str;
-
-	threadcount_str = ft_itoa(i->threads);
-	if (threadcount_str == NULL)
-		error_exit("Threadcount_str malloc failed (announce_threadcount)");
-	ft_bzero(announcement_str, 64);
-	ft_strcat(announcement_str, "Utilising ");
-	ft_strcat(announcement_str, threadcount_str);
-	ft_strcat(announcement_str, " logical processors.");
-	mlx_string_put(i->mlx, i->win, 5, 10, 255 << 16, announcement_str);
-	free(threadcount_str);
-}
-
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	int	depthlayer_size;
-
-	depthlayer_size = ft_max((i->maps->length + 1), WSZ * WSZ);
-	i->img->depthlayer = ft_memalloc(depthlayer_size * sizeof(int));
+	i->img->scaler = (float)WSZ / 512.0;
+	i->img->tri_count = (i->maps->length - i->maps->width
+		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
+	printf("TRICOUNT: %i \n", i->img->tri_count);
+	i->img->tri_64s = ft_memalloc(i->img->tri_count * sizeof(long)); // PRotec!!
+	i->img->depthlayer = ft_memalloc(i->img->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
 	i->y_angle = -45;
-	i->threads = sysconf(_SC_NPROCESSORS_ONLN);
-	if (i->threads <= 0)
-		error_exit("Sysconf found no logical processors (stage_mlxi_values)");
-	announce_threadcount(i);
 	if (gettimeofday(&(i->t1), NULL) <= -1)
 		error_exit("Gettimeofday call failed (stage_mlxi_values)");
 }
@@ -78,6 +60,7 @@ static void	stage_mlxi_values(t_mlx_i *i)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
+	i->img->scaler = (float)WSZ / 512.0;
 	i->img->tri_count = (i->maps->length - i->maps->width
 		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
 	printf("TRICOUNT: %i \n", i->img->tri_count);

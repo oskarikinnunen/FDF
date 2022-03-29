@@ -22,7 +22,7 @@ void	scale_with_size_matrix(t_map *map)
 	float			scale_by;
 
 	scale_by = ft_max(map->width, map->length / map->width);
-	scale_by = (WSZ / scale_by) * 0.55;
+	scale_by = (512 / scale_by) * 0.55;
 	scale[X][X] = scale_by;
 	scale[Y][Y] = scale_by;
 	scale[Z][Z] = scale_by * Z_SCALE;

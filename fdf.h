@@ -20,7 +20,6 @@
 
 # ifdef EXTRA
 #  include <sys/time.h>
-#  include <pthread.h>
 #  define ANIM_SCALE 0.04
 # endif
 
@@ -39,7 +38,7 @@
 # define Z_CLRMUL 1
 # define Z_SCALE 0.05
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW"
-# define WSZ 500
+# define WSZ 720
 # define IMAGE_Y 50
 /* Max number of points the map can have */
 # define MAPSIZE_MAX 100000
@@ -72,6 +71,7 @@ typedef struct s_image_info
 	int		*depthlayer;
 	long	*tri_64s;
 	int		tri_count;
+	float	scaler;
 	int		bpp;
 	int		size_line;
 	int		endian;
@@ -91,13 +91,13 @@ typedef struct s_mlx_info
 {
 	void				*mlx;
 	void				*win;
-	double				time;
 	double				x_angle;
 	double				y_angle;
 	t_image_info		*img;
 	t_map				*maps;
+	int					wireframe_toggle;
 	struct timeval		t1;
-	int					threads;
+	double				time;
 }	t_mlx_i;
 # else
 
