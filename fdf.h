@@ -149,8 +149,6 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
 void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 
 /* THREADING.C */
-void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *));
-void	*draw_map(void *args);
 void	draw_img_from_tri64s(t_image_info img);
 
 /* Z_BUFFER.C */

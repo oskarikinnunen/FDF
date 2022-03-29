@@ -12,49 +12,7 @@
 
 #include "fdf.h"
 
-//#define EXTRA
-
-#ifdef EXTRA
-
-/*static	void	*bzero_image(void	*args)
-{
-	t_draw_args	*draw_args;
-
-	draw_args = ((t_draw_args *)args);
-	ft_bzero(draw_args->addr + (draw_args->start * 4), (draw_args->stop - draw_args->start) * 1024);
-	printf("Should have bzeroed! %i to %i \n", draw_args->start, draw_args->stop);
-	return (NULL);
-}*/
-
-/* TODO: Make start and stop values dividible by 4 */
-void	threads_start(t_map map, t_image_info img, int corecount, void (*func)(void *))
-{
-	static pthread_t		*threads;
-	static t_draw_args		*t_args;
-	signed int				i;
-
-	if (threads == NULL)
-		threads = ft_memalloc(sizeof(pthread_t) * corecount);
-	if (t_args == NULL)
-		t_args = ft_memalloc(sizeof(t_draw_args) * corecount);
-	i = -1;
-	while (++i < corecount)
-	{
-		t_args[i].start = i * (map.length / corecount);
-		t_args[i].start -= t_args[i].start % 4;
-		t_args[i].stop = (i + 1) * (map.length / corecount);
-		t_args[i].stop -= (i != corecount - 1) * (t_args[i].stop % 4);
-		t_args[i].map = map;
-		t_args[i].img = img;
-		pthread_create(&(threads[i]), NULL, func, &(t_args[i]));
-	}
-	i = -1;
-	while (++i < corecount)
-		pthread_join(threads[i], NULL);
-}
-#endif
-
-void	*draw_map(void *draw_args)
+/*void	*draw_map(void *draw_args)
 {
 	t_draw_args		arg;
 	int				i;
@@ -81,7 +39,7 @@ void	*draw_map(void *draw_args)
 		i += ((i + 1) % arg.map.width == 0);
 	}
 	return (NULL);
-}
+}*/
 
 static void	collect_tri64(int v3_int[3][3], long	tri64)
 {
@@ -92,7 +50,6 @@ static void	collect_tri64(int v3_int[3][3], long	tri64)
 	v3_int[2][X] = (tri64 >> 36) & 0x1FF;
 	v3_int[2][Y] = (tri64 >> 45) & 0x1FF;
 	v3_int[0][Z] = ((unsigned long)tri64 >> 54);
-	//printf("v3 int color %i \n", v3_int[0][Z]);
 	v3_int[1][Z] = ((unsigned long)tri64 >> 54);
 	v3_int[2][Z] = ((unsigned long)tri64 >> 54);
 }
@@ -106,9 +63,7 @@ void	draw_img_from_tri64s(t_image_info img)
 	i = 0;
 	while (i < img.tri_count)
 	{
-		//z_color = arg.img.depthlayer[i / 2];
 		collect_tri64(v3_int, img.tri_64s[i]);
-		
 		fill_tri(v3_int, img.addr, img);
 		//fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
 		//draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);

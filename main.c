@@ -80,6 +80,7 @@ static void	stage_mlxi_values(t_mlx_i *i)
 {
 	i->img->tri_count = (i->maps->length - i->maps->width
 		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
+	printf("TRICOUNT: %i \n", i->img->tri_count);
 	i->img->tri_64s = ft_memalloc(i->img->tri_count * sizeof(long)); // PRotec!!
 	i->img->depthlayer = ft_memalloc(i->img->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL)

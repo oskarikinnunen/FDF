@@ -36,21 +36,15 @@ int	loop(void *p)
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	addr = mlx_get_data_addr
-		(img.ptr, &(img.bpp), &(img.size_line), &(img.endian));
-	if (addr == NULL)
-		error_exit_free_map("mlx_get_data_addr rtn NULL value (loop)", i->maps);
+	addr = img.addr;
 	cpy_map(i->maps, &cpy);
-	get_time(i);
-	animate_map(&cpy, i->time);
-	save_z(&cpy, &img);
+	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
+	animate_map(&cpy);
+	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
-	//mlx_clear_window(i->mlx, i->win);
-	//debug_zvalues(cpy, i);
-	ft_bzero(addr, WSZ * WSZ * 4);
-	//i->threads = 1;
-	//threads_start(cpy, img, i->threads,	z_pass_map);
-	threads_start(cpy, img, i->threads, draw_map);
+	sorted_tri64s(&cpy, &img);
+	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	draw_img_from_tri64s(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);
 }
@@ -78,17 +72,13 @@ int	loop(void *p)
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	//Get data addrs only once!!!
 	addr = img.addr;
 	cpy_map(i->maps, &cpy);
 	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
 	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
-	
-	/*img.tri_64s = */sorted_tri64s(&cpy, &img);
+	sorted_tri64s(&cpy, &img);
 	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
-	//mlx_clear_window(i->mlx, i->win);
-	//debug_zvalues(cpy, i);
 	draw_img_from_tri64s(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	return (1);

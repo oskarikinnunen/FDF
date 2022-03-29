@@ -21,7 +21,7 @@ static void	collect_tri_colors(float **v3, int *color_ptr, int width, int mask)
 	i = 0;
 	z = 0.0;
 	if (mask)
-		z = 10000;
+		z = 10000.0;
 	ft_bzero(indx, sizeof(int [2]));
 	while (i < 3)
 	{

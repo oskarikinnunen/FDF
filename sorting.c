@@ -72,23 +72,19 @@ static void	sort_face64s(long *tri_list, int *depth_list, int len)
 	long	temp;
 
 	i = 0;
-	c = 0;
-	while (i < len - 1)
+	while (i < len)
 	{
-		while (c < len - 1 - i)
+		c = i;
+		while (c > 0 && (depth_list[c - 1] >> 16) > (depth_list[c] >> 16))
 		{
-			if ((depth_list[c] >> 16) > (depth_list[c + 1] >> 16))
-			{
-				temp = tri_list[c];
-				tri_list[c] = tri_list[c + 1];
-				tri_list[c + 1] = temp;
-				temp = depth_list[c];
-				depth_list[c] = depth_list[c + 1];
-				depth_list[c + 1] = temp;
-			}
-			c++;
+			temp = tri_list[c];
+			tri_list[c] = tri_list[c - 1];
+			tri_list[c - 1] = temp;
+			temp = depth_list[c];
+			depth_list[c] = depth_list[c - 1];
+			depth_list[c - 1] = temp;
+			c--;
 		}
-		c = 0;
 		i++;
 	}
 }
@@ -139,6 +135,7 @@ long int	*sorted_tri64s(t_map *map, t_image_info *img)
 		tri_i += 2;
 	}
 	sort_face64s(img->tri_64s, img->depthlayer, img->tri_count);
+	//exit(0);
 	return (NULL);
 }
 
