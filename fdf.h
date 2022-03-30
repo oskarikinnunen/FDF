@@ -54,6 +54,7 @@ typedef struct s_map
 	float	**points;
 	int		length;
 	int		width;
+	int		decimation_factor;
 }	t_map;
 
 typedef struct s_bresenham
@@ -153,7 +154,7 @@ void	draw_img_from_tri64s(t_image_info img);
 
 /* Z_BUFFER.C */
 void	collect_face_z_pass(float **v3, int i3[4][3], int width);
-void	depth_save(t_map *map, t_image_info *img, int mask);
+void	depth_save(t_map *map, t_image_info *img, int shift);
 int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */

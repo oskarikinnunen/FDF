@@ -70,6 +70,20 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 	draw_line_img(sorted[0], sorted[2], addr, img);
 }
 
+static int get_color(int z)
+{
+	int	b;
+	int	g;
+	int	r;
+	int color;
+
+	b = ft_min(z * 2, 255);
+	g = ft_max((z - 127) * 2, 0);
+	r = ft_max(z - 180, 0);
+	color = b + (g << 8) + (r << 16);
+	return (color);
+}
+
 //TODO: Make this better!!
 //step_bresenham_x(&b, i2);
 //step_bresenham_y(&b, i2);
@@ -82,7 +96,7 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 
 	populate_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = b.local[Z] + (0 << 8) + (0 << 16);
+	color = get_color(b.local[Z]);
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;

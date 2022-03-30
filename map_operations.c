@@ -71,8 +71,8 @@ void	animate_map(t_map *map, double time)
 	jitter = (ANIM_SCALE * 0.4 * cos(time / 100) * sin(time / 120));
 	add[Z][Z] = 0.2 + fabs(ANIM_SCALE * 25 * sin(time / 1000))
 		+ jitter;
-	add[Z][X] = ANIM_SCALE * sin(time / 600) + jitter * 0.25;
-	add[Z][Y] = ANIM_SCALE * sin(time / 1200) + jitter * 0.25;
+	//add[Z][X] = ANIM_SCALE * sin(time / 600) + jitter * 0.25;
+	//add[Z][Y] = ANIM_SCALE * sin(time / 1200) + jitter * 0.25;
 	v3listmul(add, map->points, map->length);
 }
 #endif
