@@ -73,13 +73,20 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 static int get_color(int z)
 {
 	int	b;
+	int	r_range;
+	int	g_range;
+	int	b_range;
 	int	g;
 	int	r;
 	int color;
 
-	b = ft_min(z * 2, 255);
-	g = ft_max((z - 127) * 2, 0);
-	r = ft_max(z - 180, 0);
+	//b = ft_min(z * 2, 255);
+	r_range = 100;
+	b_range = 100;
+	g_range = 100;
+	r = ft_max(0, r_range - ft_abs(z - 0));
+	g = ft_max(0, g_range - ft_abs(z - 127));
+	b = ft_max(0, b_range - ft_abs(z - 255));
 	color = b + (g << 8) + (r << 16);
 	return (color);
 }

@@ -43,6 +43,7 @@ int	main(int argc, char **argv)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
+
 	i->img->scaler = (float)WSZ / 512.0;
 	i->img->tri_count = (i->maps->length - i->maps->width
 		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
@@ -52,23 +53,60 @@ static void	stage_mlxi_values(t_mlx_i *i)
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
-	i->y_angle = -45;
+	i->y_angle = -40;
+	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
 	if (gettimeofday(&(i->t1), NULL) <= -1)
 		error_exit("Gettimeofday call failed (stage_mlxi_values)");
 }
 #else
+
+static void set_decimated_tricount(t_map map, t_image_info *img)
+{
+	int	tricount;
+	int	i;
+	int	target;
+
+	tricount = 0;
+	i = 0;
+	while(i < map.length - (map.width * (map.decimation_factor + 2)))
+	{
+		
+		target = i + map.decimation_factor + 1;
+		while (i < target)
+		{
+			i++;
+			if ((i + 1) % map.width == 0)
+			{
+				i += (map.decimation_factor * map.width) + 1;
+				break ;
+			}
+		}
+		tricount += 2 * (i == target);
+	}
+	printf("decim tricount function went through %i points \n", i);
+	img->tri_count = tricount;
+	printf("decimated tricount %i\n", tricount);
+	exit(0);
+}
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	i->img->scaler = (float)WSZ / 512.0;
 	i->img->tri_count = (i->maps->length - i->maps->width
 		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
+	i->maps->decimation_factor = 0;
+	//printf("decimation factor %i \n", i->maps->decimation_factor);
 	printf("TRICOUNT: %i \n", i->img->tri_count);
+	//set_decimated_tricount(*i->maps, i->img);
+	//printf("TRICOUNT AFTER DECIMATE STEP: %i \n", i->img->tri_count);
+	//tricount_decimate(2, *(i->maps));
+	//exit(0);
 	i->img->tri_64s = ft_memalloc(i->img->tri_count * sizeof(long)); // PRotec!!
 	i->img->depthlayer = ft_memalloc(i->img->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL)
 		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
 	i->x_angle = -30;
-	i->y_angle = -45;
+	i->y_angle = -40;
+	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
 }
 #endif

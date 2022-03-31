@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	scale_with_size_matrix(t_map *map)
+void	scale_with_size_matrix(t_map *map, double z_scale)
 {
 	static float	scale[3][3] = {
 	{1, 0, 0},
@@ -25,7 +25,7 @@ void	scale_with_size_matrix(t_map *map)
 	scale_by = (512 / scale_by) * 0.55;
 	scale[X][X] = scale_by;
 	scale[Y][Y] = scale_by;
-	scale[Z][Z] = scale_by * Z_SCALE;
+	scale[Z][Z] = z_scale;
 	v3listmul(scale, map->points, map->length);
 }
 
