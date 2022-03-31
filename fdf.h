@@ -47,6 +47,7 @@
 # define MAPSIZE_MAX 64000
 # define INT_MAX 2147483647
 # define PI 3.14159265359
+# define TRI_RES 512
 # define X 0
 # define Y 1
 # define Z 2

@@ -51,9 +51,9 @@ void	preprocess_map(t_map *map, t_mlx_i i)
 {
 	//scale_with_size_matrix(map, i.z_scale);
 	//scale_with_global_z(map);
-	v3listadd(map->points, (float [3]){-512 / 4, -512 / 4, 0}, map->length);
+	v3listadd(map->points, (float [3]){-TRI_RES / 4, -512 / 4, 0}, map->length);
 	scale_with_y_matrix(map, i.y_angle);
 	scale_with_x_matrix(map, i.x_angle);
-	v3listadd(map->points, (float [3]){(512 / 4)*2, (512 / 4) * 2, 0},
+	v3listadd(map->points, (float [3]){(TRI_RES / 4)*2, (512 / 4) * 2, 0},
 		map->length);
 }

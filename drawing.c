@@ -15,26 +15,7 @@
 
 /*	tris[0] 		=	lowest point
 	tris[1]/tris[2] =	highest points	*/
-void	fill_topflat(int *tris[3], char *addr, t_image_info img)
-{
-	t_bresenham	b[2];
-
-	populate_bresenham(&(b[0]), tris[0], tris[1]);
-	populate_bresenham(&(b[1]), tris[0], tris[2]);
-	while (b[0].local[Y] != tris[1][Y])
-	{
-		draw_line_img(b[0].local, b[1].local, addr, img);
-		while (b[0].local[Y] == b[1].local[Y])
-			step_bresenham(&(b[0]), tris[1]);
-		while (b[1].local[Y] != b[0].local[Y])
-			step_bresenham(&(b[1]), tris[2]);
-	}
-	draw_line_img(b[0].local, b[1].local, addr, img);
-}
-
-/*	tris[0] 		=	highest point
-	tris[1]/tris[2] =	lowest points	*/
-void	fill_bottomflat(int *tris[3], char *addr, t_image_info img)
+void	fill_sub_tri(int *tris[3], char *addr, t_image_info img)
 {
 	t_bresenham	b[2];
 
@@ -63,24 +44,23 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
 	split[Y] = sorted[1][Y];
 	split[Z] = sorted[1][Z];
-	fill_topflat((int *[3]){(int *)&(sorted[0]),
+	fill_sub_tri((int *[3]){(int *)&(sorted[0]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	fill_bottomflat((int *[3]){(int *)&(sorted[2]),
+	fill_sub_tri((int *[3]){(int *)&(sorted[2]),
 		(int *)&(sorted[1]), (int *)&split}, addr, img);
 	draw_line_img(sorted[0], sorted[2], addr, img);
 }
 
 static int get_color(int z)
 {
+	int	r;
+	int	g;
 	int	b;
 	int	r_range;
 	int	g_range;
 	int	b_range;
-	int	g;
-	int	r;
 	int color;
 
-	//b = ft_min(z * 2, 255);
 	r_range = 100;
 	b_range = 100;
 	g_range = 100;
