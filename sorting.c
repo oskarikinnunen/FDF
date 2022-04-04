@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sorting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:43:07 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/25 14:56:11 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/04 21:37:24 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,40 @@ tri64
 	9x2bits+|9x2bits+|9x2bits+| 	10 bits		| = 64 bits
 	x0 y0	|x1 y1	 |x2 y2	  |	tri z_color		|
 */
-static void	face_to_tri64(float **v3, long *set_64, int width, int color)
+static void	tri_to_tri64(float **v3, long *set_64, int color)
 {
 	int			i;
-	int			indx[2];
 
 	i = 0;
-	set_64[0] = 0L;
-	set_64[1] = 0L;
-	ft_bzero(indx, sizeof(int [2]));
+	*set_64 = 0L;
 	while (i < 3)
 	{
-		indx[0] = ((i >= 2) * width) + !((i + 1) % 2);
-		indx[1] = ((i + 1 >= 2) * width) + !((i + 2) % 2);
-		set_64[0] += ((long)v3[indx[0]][X] << (9 * i * 2))
-					+ ((long)v3[indx[0]][Y] << (9 * i * 2) + 9);
-		set_64[1] += ((long)v3[indx[1]][X] << (9 * i * 2))
-					+ ((long)v3[indx[1]][Y] << (9 * i * 2) + 9);
+		*set_64 += ((long)v3[i][X] << (9 * i * 2))
+					+ ((long)v3[i][Y] << (9 * i * 2) + 9);
+		/*set_64[1] += ((long)v3[indx[1]][X] << (9 * i * 2))
+					+ ((long)v3[indx[1]][Y] << (9 * i * 2) + 9);*/
 		i++;
 	}
-	set_64[0] += ((long)color << 9 * 6);
-	set_64[1] += ((long)color << 9 * 6);
+	*set_64 += ((long)color << 9 * 6);
+	//set_64[1] += ((long)color << 9 * 6);
 }
 
-static void	sort_face64s(long *tri_list, int *depth_list, int len)
+static void	swap_tris (float **tri1, float **tri2)
+{
+	int		i;
+	float	tempv3[3];
+
+	i = 0;
+	while(i < 3)
+	{
+		ft_memcpy(tempv3, tri1[i], sizeof(float [3]));
+		ft_memcpy(tri1[i], tri2[i], sizeof(float [3]));
+		ft_memcpy(tri2[i], tempv3, sizeof(float [3]));
+		i++;
+	}
+}
+
+static void	sort_face64s(t_tri_map map, long *tri_list, int *depth_list, int len)
 {
 	int		i;
 	int		c;
@@ -77,16 +87,20 @@ static void	sort_face64s(long *tri_list, int *depth_list, int len)
 		c = i;
 		while (c > 0 && (depth_list[c - 1] >> 16) > (depth_list[c] >> 16))
 		{
+			//printf("depth list value masked %i \n", depth_list[c - 1] & 0xFFFF);
 			temp = tri_list[c];
 			tri_list[c] = tri_list[c - 1];
 			tri_list[c - 1] = temp;
 			temp = depth_list[c];
 			depth_list[c] = depth_list[c - 1];
 			depth_list[c - 1] = temp;
+			swap_tris(map.tri_list[c], map.tri_list[c - 1]);
+			//printf("swaps %i \n", swaps);
 			c--;
 		}
 		i++;
 	}
+	//exit(0);
 }
 
 static void	print_face64_zvalues(long *tri_list, int len)
@@ -106,58 +120,68 @@ static void	print_face64_zvalues(long *tri_list, int len)
 			((signed long)tri_list[i] >> 9 * 6));
 		i++;
 	}
+	//exit(0);
 }
 
-/*
-	tri[0][X] = list[i][X]
-	tri[0][X] = list[i+1][X]
-	tri[0][X] = list[i+1+w][X]
-	tri[1][X] = list[i+w][X]
-	tri[1][X] = list[i+1+w][X]
-	tri[1][X] = list[i+2+w][X]
-*/
-
-long int	*sorted_tri64s(t_map *map, t_image_info *img)
-{
-	int		i;
-	long	tri_i;
-
-	i = 0;
-	tri_i = 0;
-	depth_save(map, img, 1);
-	while (i <= map->length - map->width - 1)
+/*while (i <= map->length - map->width - 1)
 	{
 		face_to_tri64(&(map->points[i]), &(img->tri_64s[tri_i]), map->width,
 			img->depthlayer[tri_i] & 0xFFFF);
 		i += (i++, (i + 1) % map->width == 0);
 		tri_i += 2;
 	}
-	sort_face64s(img->tri_64s, img->depthlayer, img->tri_count);
-	return (NULL);
-}
+*/
 
-void	sort_map_z(t_map *map)
+void	sort_simple(t_tri_map map, int *depthlayer)
 {
 	int		i;
 	int		c;
-	float	temp[3];
+	int		swaps;
+	int		temp;
 
 	i = 0;
-	c = 0;
-	while (i < map->length - 1)
+	swaps = 0;
+	while (i < map.tri_count)
 	{
-		while (c < map->length - 1 - i)
+		c = i;
+		while (c > 0 && (depthlayer[c - 1] >> 16) > (depthlayer[c] >> 16))
 		{
-			if (map->points[c][Z] < map->points[c + 1][Z])
-			{
-				ft_memcpy(temp, map->points[c], sizeof(float [3]));
-				ft_memcpy(map->points[c], map->points[c + 1] \
-										, sizeof(float [3]));
-				ft_memcpy(map->points[c + 1], temp, sizeof(float [3]));
-			}
-			c++;
+			swap_tris(map.tri_list[c], map.tri_list[c - 1]);
+			temp = depthlayer[c];
+			depthlayer[c] = depthlayer[c - 1];
+			depthlayer[c - 1] = temp;
+			swaps++;
+			printf("swaps %i \n", swaps);
+			//swap_tris(map->tri_list[c], map->tri_list[c - 1]);
+			c--;
 		}
-		c = 0;
+		i++;
+		//printf("swapping index %i \n", i);
+	}
+}
+
+void	sorted_tri64s(t_tri_map *map, t_tri_map *orig, t_image_info *img)
+{
+	int		i;
+
+	
+	depth_save(map, img, 1);
+	i = 0;
+	while (i < map->tri_count)
+	{
+		tri_to_tri64(map->tri_list[i], &(img->tri_64s[i]), img->depthlayer[i] & 0xFFFF);
 		i++;
 	}
+	sort_face64s(*orig, img->tri_64s, img->depthlayer, img->tri_count);
+	//sort_simple(*map, img->depthlayer);
+	
+	/*while (i < map->tri_count)
+	{
+		map->tri_list[i][0][Z] = (float)(img->depthlayer[i] & 0xFFFF);
+		map->tri_list[i][1][Z] = (float)(img->depthlayer[i] & 0xFFFF);
+		map->tri_list[i][2][Z] = (float)(img->depthlayer[i] & 0xFFFF);
+		i++;
+	}*/
+	//printf("sort end \n");
+	//exit(0);
 }

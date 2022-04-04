@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   map_operations.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/24 12:45:09 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/04 22:57:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	cpy_map(t_map *src, t_map *dst)
+void	cpy_map(t_tri_map *src, t_tri_map *dst)
 {
 	int	i;
 
 	i = 0;
-	while (i <= src->length)
+	while (i < src->tri_count)
 	{
-		ft_memcpy(dst->points[i], src->points[i], sizeof(float) * 3);
+		ft_memcpy(dst->tri_list[i][0], src->tri_list[i][0], sizeof(int [3]));
+		ft_memcpy(dst->tri_list[i][1], src->tri_list[i][1], sizeof(int [3]));
+		ft_memcpy(dst->tri_list[i][2], src->tri_list[i][2], sizeof(int [3]));
 		i++;
 	}
 }
@@ -46,14 +48,28 @@ void	animate_map(t_map *map, double time)
 	v3listmul(add, map->points, map->length);
 }
 #endif
+//t_map 
+static void add_tri_map(t_tri_map *map, float add[3])
+{
+	int	i;
 
-void	preprocess_map(t_map *map, t_mlx_i i)
+	i = 0;
+	while (i < map->tri_count)
+	{
+		v3add(map->tri_list[i][0], add);
+		v3add(map->tri_list[i][1], add);
+		v3add(map->tri_list[i][2], add);
+		i++;
+	}
+}
+
+void	preprocess_map(t_tri_map *map, t_mlx_i i)
 {
 	//scale_with_size_matrix(map, i.z_scale);
 	//scale_with_global_z(map);
-	v3listadd(map->points, (float [3]){-TRI_RES / 4, -512 / 4, 0}, map->length);
+	// ^Actually commented out
+	add_tri_map(map, (float [3]){-TRI_RES / 4, -TRI_RES / 4, 0});
 	scale_with_y_matrix(map, i.y_angle);
 	scale_with_x_matrix(map, i.x_angle);
-	v3listadd(map->points, (float [3]){(TRI_RES / 4)*2, (512 / 4) * 2, 0},
-		map->length);
+	add_tri_map(map, (float [3]){TRI_RES / 2, TRI_RES / 2, 0});
 }

@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_x.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 11:15:35 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/04 18:30:47 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/04 17:02:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*#include "libft.h"
+#include "libft.h"
 
-void	ft_free_x(void *p, size_t size, size_t amount)
+void	ft_free_x(void **p, size_t size, size_t count)
 {
-	while (amount >= 0)
+	while (count >= 0)
 	{
-		free(p + );
-		size--;
+		free(*p);
+		p += size;
+		count--;
 	}
-}*/
+	free(p);
+}

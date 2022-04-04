@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/25 14:32:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/04 22:25:03 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 /* REMOVE! */
 # include <stdio.h>
+# include <assert.h>
 
 /*	KEYCODES FOR LINUX*/
 # define KEY_LEFT 65361
@@ -59,8 +60,15 @@ typedef struct s_map
 	int		length;
 	int		z_extreme;
 	int		width;
-	int		decimation_factor;
 }	t_map;
+
+typedef struct s_tri_map
+{
+	float	***tri_list;
+	int		tri_count;
+	int		dimensions[2];
+	int		z_extreme;
+}	t_tri_map;
 
 typedef struct s_bresenham
 {
@@ -76,8 +84,8 @@ typedef struct s_image_info
 	char	*addr;
 	int		*depthlayer;
 	long	*tri_64s;
-	int		tri_count;
 	float	scaler;
+	int		tri_count;
 	int		bpp;
 	int		size_line;
 	int		endian;
@@ -93,7 +101,8 @@ typedef struct s_mlx_info
 	double				y_angle;
 	double				z_scale;
 	t_image_info		*img;
-	t_map				*maps;
+	t_tri_map			*tri_maps;f
+	//t_map				*maps;
 	int					wireframe_toggle;
 	struct timeval		t1;
 	double				time;
@@ -108,10 +117,13 @@ typedef struct s_mlx_info
 	double				y_angle;
 	double				z_scale;
 	t_image_info		*img;
-	t_map				*maps;
+	t_tri_map			*maps;
 	int					wireframe_toggle;
 }	t_mlx_i;
 # endif
+
+/* TODO: Name */
+void	map_to_tri_map(t_map *map, t_tri_map *trimap);
 
 /* LOOPS.C */
 int		loop(void *p);
@@ -119,12 +131,13 @@ int		key_loop(int keycode, void *p);
 
 /* VECTORS.C */
 float	*v3new(float x, float y, float z);
+void	v3add(float *v3, float *add);
 void	v3mul(float matrix[3][3], float *v3);
 void	v3listmul(float matrix[3][3], float **v3s, int len);
 void	v3listadd(float **v3s, float *add, int len);
 
 /*	FILE_MAPPING */
-void	read_inputmap(char *filename, t_map *map);
+void	read_inputmap(char *filename, t_tri_map *map);
 void	read_mapnode(int fd, char *buf, int *result, int negative_flag);
 
 /* BRESENHAM.C */
@@ -134,15 +147,15 @@ void	step_bresenham_x(t_bresenham *b, int target[3]);
 void	step_bresenham_y(t_bresenham *b, int target[3]);
 
 /* MATRICES.C */
-void	scale_with_size_matrix(t_map *map, double z_scale);
-void	scale_with_x_matrix(t_map *map, double angle);
-void	scale_with_y_matrix(t_map *map, double angle);
+void	scale_with_size_matrix(t_tri_map *map, double z_scale);
+void	scale_with_x_matrix(t_tri_map *map, double angle);
+void	scale_with_y_matrix(t_tri_map *map, double angle);
 void	scale_with_global_z(t_map *map);
 
 /* MAP_OPERATIONS.C */
 void	animate_map(t_map *map, double time);
-void	preprocess_map(t_map *map, t_mlx_i i);
-void	cpy_map(t_map *src, t_map *dst);
+void	preprocess_map(t_tri_map *map, t_mlx_i i);
+void	cpy_map(t_tri_map *src, t_tri_map *dst);
 
 /* DRAWING.C */
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
@@ -150,14 +163,16 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img);
 
 /* THREADING.C */
 void	draw_img_from_tri64s(t_image_info img);
+void	draw_img_from_trimap(t_tri_map map, t_image_info img);
 
 /* Z_BUFFER.C */
-void	depth_save(t_map *map, t_image_info *img, int shift);
+void	apply_z_from_depth(t_tri_map *map, int *depthlayer);
+void	depth_save(t_tri_map *map, t_image_info *img, int shift);
 int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */
 void		sort_tris(int tris[3][3]);
-long int	*sorted_tri64s(t_map *map, t_image_info *img);
+void		sorted_tri64s(t_tri_map *map, t_tri_map *orig, t_image_info *img);
 
 /* FREEDOM.C */
 void	free_maps(t_map *map);

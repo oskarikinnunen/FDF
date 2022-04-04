@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
+#    By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/24 06:19:05 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/04 17:06:37 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,10 @@ CC=gcc
 override CFLAGS+= -Ilibft -g -O2 # -Wall -Werror -Wextra
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
-	bresenham.c sorting.c freedom.c z_buffer.c	\
+	bresenham.c sorting.c z_buffer.c	\
 	map_operations.c matrices.c threading.c \
-	loops.c errors.c file_nodereader.c
+	loops.c errors.c file_nodereader.c \
+	trimap.c
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 

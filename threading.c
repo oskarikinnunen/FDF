@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threading.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/25 14:54:28 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/04 22:57:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,43 @@ static int is_inside_image(int v3_int[3][3])
 	return (1);
 }
 
+static void	collect_v3_int(int v3int[3][3], float **tri)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		v3int[i][X] = (int)(tri[i][X]);
+		v3int[i][Y] = (int)(tri[i][Y]);
+		v3int[i][Z] = (int)(tri[i][Z]);
+		i++;
+	}
+}
+
+void	draw_img_from_trimap(t_tri_map map, t_image_info img)
+{
+	int				i;
+	int				v3_int[3][3];
+	unsigned int	z_color;
+
+	i = 0;
+	while (i < map.tri_count)
+	{
+		collect_v3_int(v3_int, map.tri_list[i]);
+		//collect_tri64(v3_int, img.tri_64s[i], img.scaler);
+		if (is_inside_image(v3_int))
+		{
+			draw_line_img(v3_int[0], v3_int[1], img.addr, img);
+			draw_line_img(v3_int[1], v3_int[2], img.addr, img);
+			draw_line_img(v3_int[0], v3_int[2], img.addr, img);
+			//fill_tri(v3_int, img.addr, img);
+		}
+		i++;
+	}
+}
+
+//TODO: add wireframe toggle..
 void	draw_img_from_tri64s(t_image_info img)
 {
 	int				i;
