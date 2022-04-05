@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 23:07:04 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 00:34:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,12 @@ static void check_z_pass(int offset, t_image_info img, int z)
 
 	color = z & 0xFFFF;
 	depth = z >> 16;
-	if (*(unsigned int *)(img.z_buffer + offset) >> 16 < (unsigned int)depth)
+	*(unsigned int *)(img.addr + (offset * sizeof(int))) = get_color(color);
+	/*if (*(unsigned int *)(img.z_buffer + offset) < (unsigned int)depth)
 	{
-		*(img.z_buffer + offset) = z;
-		*(unsigned int *)(img.addr + (offset * sizeof(int))) = get_color(color);
-	}
+		*(img.z_buffer + offset) = depth;
+		
+	}*/
 }
 
 void	draw_line_img(int *i1, int *i2, t_image_info img)

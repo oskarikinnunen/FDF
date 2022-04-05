@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 22:42:06 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 00:36:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ int	loop(void *p)
 	cpy_map(i->maps, &cpy);
 	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
 	preprocess_map(&cpy, *i);
-	ft_bzero(img.addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
-	ft_bzero(img.z_buffer, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
 	draw_img_from_trimap(cpy, img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
+	mlx_do_sync(i->mlx);
 	return (1);
 }
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threading.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 22:48:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 00:36:42 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	draw_img_from_trimap(t_tri_map map, t_image_info img)
 	unsigned int	z_color;
 
 	i = 0;
+	ft_bzero(img.addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	ft_bzero(img.z_buffer, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
 	while (i < map.tri_count)
 	{
 		collect_v3_int(v3_int, map.tri_list[i]);

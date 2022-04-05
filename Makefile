@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+         #
+#    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/04 17:06:37 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/06 00:29:48 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Ilibft -g -O2 # -Wall -Werror -Wextra
+override CFLAGS+= -Ilibft # -O2 -g -Wall -Werror -Wextra
 NAME= mlx-test
 SRC = main.c drawing.c vectors.c file_mapping.c \
 	bresenham.c sorting.c z_buffer.c	\
