@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:52:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 21:07:16 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,15 @@ int	loop(void *p)
 	scale_with_size_matrix(&cpy, i->z_scale);
 	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
+	depth_save(&cpy, &img, 1);
 	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
-	if (cpy.tri_count < 10000)
-	{
-		sorted_tri64s(&cpy, i->maps, &img);
-		draw_img_from_tri64s(img);
-	}
-	else
-	{
-		depth_save(&cpy, &img, 1);
-		apply_z_from_depth(&cpy, img.depthlayer);
-		draw_img_from_trimap(cpy, img);
-	}
-	//draw_img_from_trimap(cpy, img);
+	ft_bzero(img.z_buffer, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	//sorted_tri64s(&cpy, i->maps, &img);
+	//draw_img_from_tri64s(img);
+	draw_img_from_trimap(cpy, img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	printf("end of loop \n");
+	usleep(1000);
 	return (1);
 }
 #endif

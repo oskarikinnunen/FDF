@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 19:15:02 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 22:17:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,43 @@ static int get_color(int z)
 //TODO: Make this better!!
 //step_bresenham_x(&b, i2);
 //step_bresenham_y(&b, i2);
+static void check_z_pass(int offset, t_image_info img, int z)
+{
+	int	depth;
+	int	color;
+
+	color = z & 0xFFFF;
+	depth = z >> 16;
+	//printf("depth %i \n", depth);
+	if (*(unsigned int *)(img.z_buffer + offset) >> 16 < (unsigned int)depth)
+	{
+		*(img.z_buffer + offset) = z;
+		*(unsigned int *)(img.addr + (offset * sizeof(int))) = get_color(color);
+	}
+}
+
 void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 {
 	t_bresenham		b;
 	int				color;
-	char			*pen;
+	//char			*pen;
+	int				offset;
 	int				x_step;
 
 	populate_bresenham(&b, i1, i2);
 	x_step = img.bpp / 8;
-	color = get_color(b.local[Z]);
+	 //= b.local[Z] & 0xFFFF;
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
-		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(unsigned int *)pen = color;
+		offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
+		check_z_pass(offset, img, b.local[Z]);
 		step_bresenham_x(&b, i2);
-		pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-		*(unsigned int *)pen = color;
+		offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
+		check_z_pass(offset, img, b.local[Z]);
 		step_bresenham_y(&b, i2);
 	}
-	pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-	*(unsigned int *)pen = color;
+	offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
+	check_z_pass(offset, img, b.local[Z]);
+	/*pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
+	*(unsigned int *)pen = color;*/
 }

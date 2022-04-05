@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:57:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 20:12:01 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,15 @@ void	draw_img_from_trimap(t_tri_map map, t_image_info img)
 	{
 		collect_v3_int(v3_int, map.tri_list[i]);
 		//collect_tri64(v3_int, img.tri_64s[i], img.scaler);
+		v3_int[0][Z] = img.depthlayer[i];
+		v3_int[1][Z] = img.depthlayer[i];
+		v3_int[2][Z] = img.depthlayer[i];
 		if (is_inside_image(v3_int))
 		{
 			draw_line_img(v3_int[0], v3_int[1], img.addr, img);
 			draw_line_img(v3_int[1], v3_int[2], img.addr, img);
 			draw_line_img(v3_int[0], v3_int[2], img.addr, img);
-			//fill_tri(v3_int, img.addr, img);
+			fill_tri(v3_int, img.addr, img);
 		}
 		i++;
 	}
@@ -124,6 +127,35 @@ void	draw_img_from_tri64s(t_image_info img)
 	{
 		//printf("scaler is %f \n", img.scaler);
 		//exit(0);
+		
+		collect_tri64(v3_int, img.tri_64s[i], img.scaler);
+		v3_int[0][Z] = img.depthlayer[i];
+		v3_int[1][Z] = img.depthlayer[i];
+		v3_int[2][Z] = img.depthlayer[i];
+		
+		/*if (is_inside_image(v3_int))
+		{*/
+		draw_line_img(v3_int[0], v3_int[1], img.addr, img);
+		draw_line_img(v3_int[1], v3_int[2], img.addr, img);
+		draw_line_img(v3_int[0], v3_int[2], img.addr, img);
+		fill_tri(v3_int, img.addr, img);
+		//}
+		i++;
+	}
+}
+
+/*void	draw_zpass_from_tri64s(t_image_info img)
+{
+	int				i;
+	int				v3_int[3][3];
+	unsigned int	z_color;
+
+	i = 0;
+	img.z_pass = 1;
+	while (i < img.tri_count)
+	{
+		//printf("scaler is %f \n", img.scaler);
+		//exit(0);
 		collect_tri64(v3_int, img.tri_64s[i], img.scaler);
 		if (is_inside_image(v3_int))
 		{
@@ -132,11 +164,6 @@ void	draw_img_from_tri64s(t_image_info img)
 			draw_line_img(v3_int[0], v3_int[2], img.addr, img);
 			fill_tri(v3_int, img.addr, img);
 		}
-			
-		//fill_tri(&(v3_integers[1]), arg.img.addr, arg.img);
-		//draw_line_img(v3_integers[0], v3_integers[1], arg.img.addr, arg.img);
-		//draw_line_img(v3_integers[1], v3_integers[2], arg.img.addr, arg.img);
-		//draw_line_img(v3_integers[0], v3_integers[2], arg.img.addr, arg.img);
 		i++;
 	}
-}
+}*/

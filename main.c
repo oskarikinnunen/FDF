@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:52:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 18:59:06 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static void	stage_mlxi_values(t_mlx_i *i)
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	printf("TRICOUNT: %i \n", i->maps->tri_count);
+	i->img->z_buffer = ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
 	i->img->scaler = (float)WSZ / 512.0;
 	i->img->tri_count = i->maps->tri_count;
 	i->img->tri_64s = ft_memalloc(i->maps->tri_count * sizeof(long)); // PRotec!!

@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:43:07 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 21:37:24 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 19:01:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,8 @@ void	sorted_tri64s(t_tri_map *map, t_tri_map *orig, t_image_info *img)
 		tri_to_tri64(map->tri_list[i], &(img->tri_64s[i]), img->depthlayer[i] & 0xFFFF);
 		i++;
 	}
-	sort_face64s(*orig, img->tri_64s, img->depthlayer, img->tri_count);
+	//sort_face64s(*orig, img->tri_64s, img->depthlayer, img->tri_count);
+	
 	//sort_simple(*map, img->depthlayer);
 	
 	/*while (i < map->tri_count)

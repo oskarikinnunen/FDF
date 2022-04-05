@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:25:03 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 18:57:45 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,10 @@ typedef struct s_image_info
 	char	*addr;
 	int		*depthlayer;
 	long	*tri_64s;
+	int		*z_buffer;
 	float	scaler;
 	int		tri_count;
+	int		z_pass;
 	int		bpp;
 	int		size_line;
 	int		endian;

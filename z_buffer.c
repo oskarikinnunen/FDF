@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 14:45:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:24:53 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 20:19:00 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ static void	collect_tri_colors(float **v3, int *color_ptr, int shift)
 	{
 		z = (z / 3.0) + 127;
 		//printf("og face color %f \n", z);
-	}	
+	}
+	else
+	{
+		z += 1000.0;
+	}
 	*color_ptr += (int)z << (16 * shift);
 }
 
