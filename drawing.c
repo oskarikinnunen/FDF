@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 22:17:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 23:06:22 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*	tris[0] 		=	lowest point
 	tris[1]/tris[2] =	highest points	*/
-void	fill_sub_tri(int *tris[3], char *addr, t_image_info img)
+void	fill_sub_tri(int *tris[3], t_image_info img)
 {
 	t_bresenham	b[2];
 
@@ -23,16 +23,16 @@ void	fill_sub_tri(int *tris[3], char *addr, t_image_info img)
 	populate_bresenham(&(b[1]), tris[0], tris[2]);
 	while (b[0].local[Y] != tris[1][Y])
 	{
-		draw_line_img(b[0].local, b[1].local, addr, img);
+		draw_line_img(b[0].local, b[1].local, img);
 		while (b[0].local[Y] == b[1].local[Y])
 			step_bresenham(&(b[0]), tris[1]);
 		while (b[1].local[Y] != b[0].local[Y])
 			step_bresenham(&(b[1]), tris[2]);
 	}
-	draw_line_img(b[0].local, b[1].local, addr, img);
+	draw_line_img(b[0].local, b[1].local, img);
 }
 
-void	fill_tri(int tris[3][3], char *addr, t_image_info img)
+void	fill_tri(int tris[3][3], t_image_info img)
 {
 	int		split[3];
 	int		sorted[3][3];
@@ -45,10 +45,10 @@ void	fill_tri(int tris[3][3], char *addr, t_image_info img)
 	split[Y] = sorted[1][Y];
 	split[Z] = sorted[1][Z];
 	fill_sub_tri((int *[3]){(int *)&(sorted[0]),
-		(int *)&(sorted[1]), (int *)&split}, addr, img);
+		(int *)&(sorted[1]), (int *)&split}, img);
 	fill_sub_tri((int *[3]){(int *)&(sorted[2]),
-		(int *)&(sorted[1]), (int *)&split}, addr, img);
-	draw_line_img(sorted[0], sorted[2], addr, img);
+		(int *)&(sorted[1]), (int *)&split}, img);
+	draw_line_img(sorted[0], sorted[2], img);
 }
 
 static int get_color(int z)
@@ -81,7 +81,6 @@ static void check_z_pass(int offset, t_image_info img, int z)
 
 	color = z & 0xFFFF;
 	depth = z >> 16;
-	//printf("depth %i \n", depth);
 	if (*(unsigned int *)(img.z_buffer + offset) >> 16 < (unsigned int)depth)
 	{
 		*(img.z_buffer + offset) = z;
@@ -89,17 +88,13 @@ static void check_z_pass(int offset, t_image_info img, int z)
 	}
 }
 
-void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
+void	draw_line_img(int *i1, int *i2, t_image_info img)
 {
 	t_bresenham		b;
 	int				color;
-	//char			*pen;
 	int				offset;
-	int				x_step;
 
 	populate_bresenham(&b, i1, i2);
-	x_step = img.bpp / 8;
-	 //= b.local[Z] & 0xFFFF;
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
 	{
 		offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
@@ -111,6 +106,4 @@ void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img)
 	}
 	offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
 	check_z_pass(offset, img, b.local[Z]);
-	/*pen = addr + (b.local[X] * x_step) + b.local[Y] * img.size_line;
-	*(unsigned int *)pen = color;*/
 }

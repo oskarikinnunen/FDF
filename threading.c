@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 20:12:01 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 22:48:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,6 @@
 	}
 	return (NULL);
 }*/
-
-static void	collect_tri64(int v3_int[3][3], long	tri64, float scaler)
-{
-	v3_int[0][X] = ((tri64 >> 0) & 0x1FF) * scaler;
-	v3_int[0][Y] = ((tri64 >> 9) & 0x1FF) * scaler;
-	v3_int[1][X] = ((tri64 >> 18) & 0x1FF) * scaler;
-	v3_int[1][Y] = ((tri64 >> 27) & 0x1FF) * scaler;
-	v3_int[2][X] = ((tri64 >> 36) & 0x1FF) * scaler;
-	v3_int[2][Y] = ((tri64 >> 45) & 0x1FF) * scaler;
-	v3_int[0][Z] = ((unsigned long)tri64 >> 54);
-	v3_int[1][Z] = ((unsigned long)tri64 >> 54);
-	v3_int[2][Z] = ((unsigned long)tri64 >> 54);
-}
 
 static int is_inside_image(int v3_int[3][3])
 {
@@ -100,70 +87,16 @@ void	draw_img_from_trimap(t_tri_map map, t_image_info img)
 	while (i < map.tri_count)
 	{
 		collect_v3_int(v3_int, map.tri_list[i]);
-		//collect_tri64(v3_int, img.tri_64s[i], img.scaler);
 		v3_int[0][Z] = img.depthlayer[i];
 		v3_int[1][Z] = img.depthlayer[i];
 		v3_int[2][Z] = img.depthlayer[i];
 		if (is_inside_image(v3_int))
 		{
-			draw_line_img(v3_int[0], v3_int[1], img.addr, img);
-			draw_line_img(v3_int[1], v3_int[2], img.addr, img);
-			draw_line_img(v3_int[0], v3_int[2], img.addr, img);
-			fill_tri(v3_int, img.addr, img);
+			draw_line_img(v3_int[0], v3_int[1], img);
+			draw_line_img(v3_int[1], v3_int[2], img);
+			draw_line_img(v3_int[0], v3_int[2], img);
+			fill_tri(v3_int, img);
 		}
 		i++;
 	}
 }
-
-//TODO: add wireframe toggle..
-void	draw_img_from_tri64s(t_image_info img)
-{
-	int				i;
-	int				v3_int[3][3];
-	unsigned int	z_color;
-
-	i = 0;
-	while (i < img.tri_count)
-	{
-		//printf("scaler is %f \n", img.scaler);
-		//exit(0);
-		
-		collect_tri64(v3_int, img.tri_64s[i], img.scaler);
-		v3_int[0][Z] = img.depthlayer[i];
-		v3_int[1][Z] = img.depthlayer[i];
-		v3_int[2][Z] = img.depthlayer[i];
-		
-		/*if (is_inside_image(v3_int))
-		{*/
-		draw_line_img(v3_int[0], v3_int[1], img.addr, img);
-		draw_line_img(v3_int[1], v3_int[2], img.addr, img);
-		draw_line_img(v3_int[0], v3_int[2], img.addr, img);
-		fill_tri(v3_int, img.addr, img);
-		//}
-		i++;
-	}
-}
-
-/*void	draw_zpass_from_tri64s(t_image_info img)
-{
-	int				i;
-	int				v3_int[3][3];
-	unsigned int	z_color;
-
-	i = 0;
-	img.z_pass = 1;
-	while (i < img.tri_count)
-	{
-		//printf("scaler is %f \n", img.scaler);
-		//exit(0);
-		collect_tri64(v3_int, img.tri_64s[i], img.scaler);
-		if (is_inside_image(v3_int))
-		{
-			draw_line_img(v3_int[0], v3_int[1], img.addr, img);
-			draw_line_img(v3_int[1], v3_int[2], img.addr, img);
-			draw_line_img(v3_int[0], v3_int[2], img.addr, img);
-			fill_tri(v3_int, img.addr, img);
-		}
-		i++;
-	}
-}*/

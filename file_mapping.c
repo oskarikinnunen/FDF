@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:23:07 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 23:02:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static signed int	*get_mapdata(t_map *map, int fd)
 			map->width += (i++, (map->width == 0 && *buf == '\n') * i);
 		else
 			error_exit("Invalid character (get_mapdata)");
-		/*if (*buf == '\n' && map->width != 0 && i % map->width != 0)
-			error_exit("Invalid map shape (get_mapdata)");*/
+		if (*buf == '\n' && map->width != 0 && i % map->width != 0)
+			error_exit("Invalid map shape (get_mapdata)");
 	}
 	map->length = i;
 	return (str);

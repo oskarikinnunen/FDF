@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 18:57:45 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 23:05:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 # define MAPSIZE_MAX 64000
 # define INT_MAX 2147483647
 # define PI 3.14159265359
-# define TRI_RES 512
 # define X 0
 # define Y 1
 # define Z 2
@@ -160,21 +159,17 @@ void	preprocess_map(t_tri_map *map, t_mlx_i i);
 void	cpy_map(t_tri_map *src, t_tri_map *dst);
 
 /* DRAWING.C */
-void	draw_line_img(int *i1, int *i2, char *addr, t_image_info img);
-void	fill_tri(int tris[3][3], char *addr, t_image_info img);
+void	draw_line_img(int *i1, int *i2, t_image_info img);
+void	fill_tri(int tris[3][3], t_image_info img);
 
 /* THREADING.C */
-void	draw_img_from_tri64s(t_image_info img);
 void	draw_img_from_trimap(t_tri_map map, t_image_info img);
 
 /* Z_BUFFER.C */
-void	apply_z_from_depth(t_tri_map *map, int *depthlayer);
 void	depth_save(t_tri_map *map, t_image_info *img, int shift);
-int		calc_face_color(int *depthlayer, int index, int width);
 
 /* SORTING.C */
 void		sort_tris(int tris[3][3]);
-void		sorted_tri64s(t_tri_map *map, t_tri_map *orig, t_image_info *img);
 
 /* FREEDOM.C */
 void	free_maps(t_map *map);

@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 21:07:16 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 22:42:06 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,17 @@ int	loop(void *p)
 	t_mlx_i			*i;
 	t_image_info	img;
 	t_tri_map		cpy;
-	char			*addr;
 
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	addr = img.addr;
 	cpy_map(i->maps, &cpy);
 	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
-	scale_with_size_matrix(&cpy, i->z_scale);
-	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
-	depth_save(&cpy, &img, 1);
-	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	ft_bzero(img.addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
 	ft_bzero(img.z_buffer, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
-	//sorted_tri64s(&cpy, i->maps, &img);
-	//draw_img_from_tri64s(img);
 	draw_img_from_trimap(cpy, img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
-	printf("end of loop \n");
-	usleep(1000);
 	return (1);
 }
 #endif

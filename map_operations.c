@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 22:57:02 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/05 22:57:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ static void add_tri_map(t_tri_map *map, float add[3])
 
 void	preprocess_map(t_tri_map *map, t_mlx_i i)
 {
-	//scale_with_size_matrix(map, i.z_scale);
-	//scale_with_global_z(map);
-	// ^Actually commented out
-	add_tri_map(map, (float [3]){-TRI_RES / 4, -TRI_RES / 4, 0});
+	scale_with_size_matrix(map, i.z_scale);
+	depth_save(map, i.img, 0);
+	add_tri_map(map, (float [3]){-WSZ / 4, -WSZ / 4, 0});
 	scale_with_y_matrix(map, i.y_angle);
 	scale_with_x_matrix(map, i.x_angle);
-	add_tri_map(map, (float [3]){TRI_RES / 2, TRI_RES / 2, 0});
+	add_tri_map(map, (float [3]){WSZ / 2, WSZ / 2, 0});
+	depth_save(map, i.img, 1);
 }
