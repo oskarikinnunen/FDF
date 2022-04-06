@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:35:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:09:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	v3listadd(float **v3s, float *add, int len);
 
 /*	FILE_MAPPING.C */
 void	read_inputmap(char *filename, t_tri_map *map);
-void	read_mapnode(int fd, char *buf, int *result, int negative_flag);
+void	read_mapnode(int fd, char *buf, int *result, t_map *map);
 
 /* BRESENHAM.C */
 void	populate_bresenham(t_bresenham *b, int *from, int *to);

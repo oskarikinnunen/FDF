@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:35:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:23:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 	str = &new;
 }*/
 
+/*if (i >= MAPSIZE_MAX)
+			error_exit("Map length exceeds MAPSIZE_MAX (get_mapdata)");*/
 static signed int	*get_mapdata(t_map *map, int fd)
 {
 	int				i;
@@ -38,15 +40,10 @@ static signed int	*get_mapdata(t_map *map, int fd)
 		error_exit("Str malloc failed (get_mapdata).");
 	ft_bzero(buf, 2);
 	i = 0;
-	while (read(fd, buf, 1) == 1)
+	while (read(fd, buf, 1) == 1 && i < MAPSIZE_MAX)
 	{
-		if (i >= MAPSIZE_MAX)
-			error_exit("Map length exceeds MAPSIZE_MAX (get_mapdata)");
 		if (ft_isdigit(*buf) || *buf == '-')
-		{
-			read_mapnode(fd, (char *)buf, &(str[i]), *buf == '-');
-			map->z_extreme = ft_max(ft_abs(str[i]), map->z_extreme);
-		}
+			read_mapnode(fd, (char *)buf, &(str[i]), map);
 		if (*buf == '\n' || *buf == '\t' || *buf == ' ')
 			map->width += (i++, (map->width == 0 && *buf == '\n') * i);
 		else

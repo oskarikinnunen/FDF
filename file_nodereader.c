@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:40:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:09:57 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@
 	
 */
 
+//void	nodereader(int fd, char *buf)
+
 // make new read_mapnode, takes map, fd and cur read char(or '-' sign) as params
-void	read_mapnode(int fd, char *buf, int *result, int negative_flag)
+void	read_mapnode(int fd, char *buf, int *result, t_map *map)
 {
+	int	negative_flag;
+
+	negative_flag = (*buf == '-');
 	if (negative_flag)
 		(void)!read(fd, buf, 1);
 	while (ft_isdigit(*buf))
@@ -35,4 +40,5 @@ void	read_mapnode(int fd, char *buf, int *result, int negative_flag)
 			break ;
 	}
 	*result = *result * (1 - (negative_flag * 2));
+	map->z_extreme = ft_max(ft_abs(*result), map->z_extreme);
 }

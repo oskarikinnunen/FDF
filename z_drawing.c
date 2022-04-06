@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:26:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:34:20 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void	z_fill_tri(int tris[3][3], t_image_info img)
 	z_draw_line(sorted[0], sorted[2], img);
 }
 
-static void z_draw_pixel(int offset, t_image_info img, int z)
+static void	z_draw_pixel(int offset, t_image_info img, int z)
 {
 	int	depth;
 
-	depth = z >> 16;	
+	depth = z >> 16;
 	if (*(unsigned int *)(img.z_buffer + offset) >> 16 < (unsigned int)depth)
 		*(img.z_buffer + offset) = z;
 }

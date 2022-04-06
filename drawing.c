@@ -6,18 +6,18 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:58:42 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:39:29 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int is_inside_image(int tri_int[3][3])
+static int	is_inside_image(int tri_int[3][3])
 {
 	int	tri;
 
 	tri = 0;
-	while(tri < 3)
+	while (tri < 3)
 	{
 		if (tri_int[tri][X] >= WSZ || tri_int[tri][Y] >= WSZ - IMAGE_Y ||
 			tri_int[tri][X] < 0 || tri_int[tri][Y] < 0)
@@ -41,13 +41,13 @@ static void	collect_v3_int(int tri_int[3][3], float **tri)
 	}
 }
 
-static int get_color(int z)
+static int	get_color(int z)
 {
 	int	r;
 	int	g;
 	int	b;
 	int	range;
-	int color;
+	int	color;
 
 	range = 100;
 	r = ft_max(0, range - ft_abs(z - 0));
@@ -59,13 +59,18 @@ static int get_color(int z)
 
 void	draw_from_z_buff(t_image_info img)
 {
-	int	i;
+	int				i;
+	unsigned int	faceheight;
 
 	i = 0;
-	while(i < (WSZ * (WSZ - IMAGE_Y)))
+	while (i < (WSZ * (WSZ - IMAGE_Y)))
 	{
-		if ((unsigned int)(img.z_buffer[i] & 0xFFFF) > 0)
-			*(unsigned int *)(img.addr + (i * sizeof(int))) = get_color(img.z_buffer[i] & 0xFFFF);
+		faceheight = (unsigned int)(img.z_buffer[i] & 0xFFFF);
+		if (faceheight > 0)
+		{
+			*(unsigned int *)(img.addr + (i * sizeof(int)))
+				= get_color(faceheight);
+		}
 		i++;
 	}
 }

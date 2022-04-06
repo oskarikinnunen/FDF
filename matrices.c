@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:53:43 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:03:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:33:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //TODO: no pointer needed?
 
-void mul_tri_map(float matrix[3][3], t_tri_map map)
+void	mul_tri_map(float matrix[3][3], t_tri_map map)
 {
 	int	i;
 
@@ -43,7 +43,6 @@ void	scale_with_size_matrix(t_tri_map map, double z_scale)
 	scale[Y][Y] = scale_by;
 	scale[Z][Z] = z_scale;
 	mul_tri_map(scale, map);
-	//v3listmul(scale, map->points, map->length);
 }
 
 void	scale_with_y_matrix(t_tri_map map, double angle)
@@ -61,7 +60,6 @@ void	scale_with_y_matrix(t_tri_map map, double angle)
 	iso[Z][Y] = -sin(angle);
 	iso[Z][Z] = cos(angle);
 	mul_tri_map(iso, map);
-	//v3listmul(iso, map->points, map->length);
 }
 
 /* Alternative pivot (z):
@@ -83,15 +81,5 @@ void	scale_with_x_matrix(t_tri_map map, double angle)
 	iso[X][Y] = -sin(angle);
 	iso[Y][X] = sin(angle);
 	iso[Y][Y] = cos(angle);
-	//iso[Y][Y] = -sin(angle);
-	//iso[X][Z] = -sin(angle);
-	//iso[Z][X] = sin(angle);
-	//iso[Z][Y] = cos(angle);
-	//iso[Z][Z] = cos(angle);
-	/*iso[X][X] = cos(angle);
-	iso[X][Y] = -sin(angle);
-	iso[Z][X] = sin(angle);
-	iso[Z][Y] = cos(angle);*/
 	mul_tri_map(iso, map);
-	//v3listmul(iso, map->points, map->length);
 }

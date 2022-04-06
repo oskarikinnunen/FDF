@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:15:24 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:33:04 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	loop(void *p)
 	return (1);
 }
 #else
-//static void	populate_draw_args(t_draw_args *args) {}
 
 int	loop(void *p)
 {
@@ -72,21 +71,18 @@ int	key_loop(int keycode, void *p)
 {
 	t_mlx_i		*i;
 
+	if (keycode == KEY_ESC || keycode == 65307)
+		exit(0);
 	i = (t_mlx_i *)p;
 	i->x_angle += (keycode == KEY_LEFT) * -5;
 	i->x_angle += (keycode == KEY_RGHT) * 5;
 	i->y_angle += (keycode == KEY_DOWN) * -5;
 	i->y_angle += (keycode == KEY_UP) * 5;
-	i->z_scale += (keycode == KEY_Z) * -0.05 * (127 / i->maps->z_extreme);
-	i->z_scale += (keycode == KEY_X) * 0.05 * (127 / i->maps->z_extreme);
+	i->z_scale += (keycode == KEY_Z) * -0.10 * (127 / i->maps->z_extreme);
+	i->z_scale += (keycode == KEY_X) * 0.10 * (127 / i->maps->z_extreme);
 	i->z_scale = ft_clampf(i->z_scale, (127 / i->maps->z_extreme) * -1,
 			(127 / i->maps->z_extreme));
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
 	i->y_angle = ft_clamp(i->y_angle, 0, 40);
-	if (keycode == KEY_ESC || keycode == 65307)
-	{
-		//free_maps(i->maps);
-		exit(0);
-	}
 	return (1);
 }

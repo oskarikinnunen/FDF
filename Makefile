@@ -19,7 +19,7 @@ INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
 override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g
-NAME= mlx-test
+NAME= FDF
 SRC = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
 	map_operations.c matrices.c drawing.c \
@@ -47,7 +47,7 @@ all	:
 
 $(NAME)	:$(OBJ)
 	make -C libft
-	$(CC) $(CFLAGS) -o $(NAME)_$(UNAME) $(OBJ) $(LIB) $(MLXFLAGS) -I. -I/libft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB) $(MLXFLAGS) -I. -I/libft
 
 extra	:
 	$(MAKE) fclean

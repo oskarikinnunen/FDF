@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:21:52 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 19:34:47 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	animate_map(t_tri_map map, double time)
 	mul_tri_map(add, map);
 }
 #endif
-//t_map 
-static void add_tri_map(t_tri_map map, float add[3])
+
+static void	add_tri_map(t_tri_map map, float add[3])
 {
 	int	i;
 
