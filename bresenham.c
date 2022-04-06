@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 12:09:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/19 17:53:19 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:46:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 void	step_bresenham_x(t_bresenham *b, int target[3])
 {
-	if (b->error * 2 <= b->diff[X] && b->local[Y] != target[Y])
-		b->error += (b->local[Y] += b->add[Y], b->diff[X]);
+	if (b->error * 2 < b->diff[X] && b->local[Y] != target[Y])
+	{
+		b->local[Y] += b->add[Y];
+		b->error += b->diff[X];
+	}
 }
 
 void	step_bresenham_y(t_bresenham *b, int target[3])
 {
-	if (b->error * 2 >= b->diff[Y] && b->local[X] != target[X])
-		b->error += (b->local[X] += b->add[X], b->diff[Y]);
+	if (b->error * 2 > b->diff[Y] && b->local[X] != target[X])
+	{
+		b->local[X] += b->add[X];
+		b->error += b->diff[Y];
+	}
 }
 
 void	step_bresenham(t_bresenham *b, int target[3])
 {
-	if (b->error * 2 <= b->diff[X] && b->local[Y] != target[Y])
-		b->error += (b->local[Y] += b->add[Y], b->diff[X]);
-	if (b->error * 2 >= b->diff[Y] && b->local[X] != target[X])
-		b->error += (b->local[X] += b->add[X], b->diff[Y]);
+	step_bresenham_x(b, target);
+	step_bresenham_y(b, target);
 }
 
 void	populate_bresenham(t_bresenham *b, int *from, int *to)

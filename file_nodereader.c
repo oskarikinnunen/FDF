@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_nodereader.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/25 07:40:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:22:07 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 void	read_mapnode(int fd, char *buf, int *result, int negative_flag)
 {
 	if (negative_flag)
-		read(fd, buf, 1);
+		(void)!read(fd, buf, 1);
 	while (ft_isdigit(*buf))
 	{
 		*result = (ft_isdigit(*buf)) * ((*result * 10) + (*buf - '0'));

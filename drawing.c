@@ -3,52 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 00:34:04 by okinnune         ###   ########.fr       */
+/*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
+/*   Updated: 2022/04/06 17:58:42 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <assert.h>
 
-/*	tris[0] 		=	lowest point
-	tris[1]/tris[2] =	highest points	*/
-void	fill_sub_tri(int *tris[3], t_image_info img)
+static int is_inside_image(int tri_int[3][3])
 {
-	t_bresenham	b[2];
+	int	tri;
 
-	populate_bresenham(&(b[0]), tris[0], tris[1]);
-	populate_bresenham(&(b[1]), tris[0], tris[2]);
-	while (b[0].local[Y] != tris[1][Y])
+	tri = 0;
+	while(tri < 3)
 	{
-		draw_line_img(b[0].local, b[1].local, img);
-		while (b[0].local[Y] == b[1].local[Y])
-			step_bresenham(&(b[0]), tris[1]);
-		while (b[1].local[Y] != b[0].local[Y])
-			step_bresenham(&(b[1]), tris[2]);
+		if (tri_int[tri][X] >= WSZ || tri_int[tri][Y] >= WSZ - IMAGE_Y ||
+			tri_int[tri][X] < 0 || tri_int[tri][Y] < 0)
+			return (0);
+		tri++;
 	}
-	draw_line_img(b[0].local, b[1].local, img);
+	return (1);
 }
 
-void	fill_tri(int tris[3][3], t_image_info img)
+static void	collect_v3_int(int tri_int[3][3], float **tri)
 {
-	int		split[3];
-	int		sorted[3][3];
-	float	lerp;
+	int	i;
 
-	sort_tris(ft_memcpy(sorted, tris, sizeof(int [3][3])));
-	lerp = (float)(sorted[1][Y] - sorted[2][Y])
-		/ (float)(sorted[0][Y] - sorted[2][Y]);
-	split[X] = sorted[2][X] + (lerp * (sorted[0][X] - sorted[2][X]));
-	split[Y] = sorted[1][Y];
-	split[Z] = sorted[1][Z];
-	fill_sub_tri((int *[3]){(int *)&(sorted[0]),
-		(int *)&(sorted[1]), (int *)&split}, img);
-	fill_sub_tri((int *[3]){(int *)&(sorted[2]),
-		(int *)&(sorted[1]), (int *)&split}, img);
-	draw_line_img(sorted[0], sorted[2], img);
+	i = 0;
+	while (i < 3)
+	{
+		tri_int[i][X] = (int)(tri[i][X]);
+		tri_int[i][Y] = (int)(tri[i][Y]);
+		tri_int[i][Z] = (int)(tri[i][Z]);
+		i++;
+	}
 }
 
 static int get_color(int z)
@@ -56,55 +46,51 @@ static int get_color(int z)
 	int	r;
 	int	g;
 	int	b;
-	int	r_range;
-	int	g_range;
-	int	b_range;
+	int	range;
 	int color;
 
-	r_range = 100;
-	b_range = 100;
-	g_range = 100;
-	r = ft_max(0, r_range - ft_abs(z - 0));
-	g = ft_max(0, g_range - ft_abs(z - 127));
-	b = ft_max(0, b_range - ft_abs(z - 255));
+	range = 100;
+	r = ft_max(0, range - ft_abs(z - 0));
+	g = ft_max(0, range - ft_abs(z - 127));
+	b = ft_max(0, range - ft_abs(z - 255));
 	color = b + (g << 8) + (r << 16);
 	return (color);
 }
 
-//TODO: Make this better!!
-//step_bresenham_x(&b, i2);
-//step_bresenham_y(&b, i2);
-static void check_z_pass(int offset, t_image_info img, int z)
+void	draw_from_z_buff(t_image_info img)
 {
-	int	depth;
-	int	color;
+	int	i;
 
-	color = z & 0xFFFF;
-	depth = z >> 16;
-	*(unsigned int *)(img.addr + (offset * sizeof(int))) = get_color(color);
-	/*if (*(unsigned int *)(img.z_buffer + offset) < (unsigned int)depth)
+	i = 0;
+	while(i < (WSZ * (WSZ - IMAGE_Y)))
 	{
-		*(img.z_buffer + offset) = depth;
-		
-	}*/
+		if ((unsigned int)(img.z_buffer[i] & 0xFFFF) > 0)
+			*(unsigned int *)(img.addr + (i * sizeof(int))) = get_color(img.z_buffer[i] & 0xFFFF);
+		i++;
+	}
 }
 
-void	draw_line_img(int *i1, int *i2, t_image_info img)
+void	z_pass(t_tri_map map, t_image_info img)
 {
-	t_bresenham		b;
-	int				color;
-	int				offset;
+	int				i;
+	int				tri_int[3][3];
 
-	populate_bresenham(&b, i1, i2);
-	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])
+	ft_bzero(img.addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	ft_bzero(img.z_buffer, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
+	i = 0;
+	while (i < map.tri_count)
 	{
-		offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
-		check_z_pass(offset, img, b.local[Z]);
-		step_bresenham_x(&b, i2);
-		offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
-		check_z_pass(offset, img, b.local[Z]);
-		step_bresenham_y(&b, i2);
+		collect_v3_int(tri_int, map.tri_list[i]);
+		tri_int[0][Z] = img.depthlayer[i];
+		tri_int[1][Z] = img.depthlayer[i];
+		tri_int[2][Z] = img.depthlayer[i];
+		if (is_inside_image(tri_int))
+		{
+			z_fill_tri(tri_int, img);
+			z_draw_line(tri_int[0], tri_int[1], img);
+			z_draw_line(tri_int[1], tri_int[2], img);
+			z_draw_line(tri_int[0], tri_int[2], img);
+		}
+		i++;
 	}
-	offset = b.local[X] + (b.local[Y] * (img.size_line / sizeof(int)));
-	check_z_pass(offset, img, b.local[Z]);
 }

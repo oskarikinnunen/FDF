@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:36:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 22:57:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:04:24 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,17 @@ void	cpy_map(t_tri_map *src, t_tri_map *dst)
 
 #ifdef EXTRA
 
-void	animate_map(t_map *map, double time)
+void	animate_map(t_tri_map *map, double time)
 {
 	static float	add[3][3] = {
 	{1,	0, 0},
 	{0, 1, 0},
 	{0, 0, 1}
 	};
-	//float	jitter;
-
-	//jitter = (ANIM_SCALE * 0.4 * cos(time / 100) * sin(time / 120));
 
 	add[Z][Z] = sin(time / 1000);
-	//printf("sin time %f \n", sin(time / 10000));
-	/*0.2 + fabs(ANIM_SCALE * 25 * sin(time / 1000))
-		+ jitter;*/
-	//add[Z][X] = ANIM_SCALE * sin(time / 600) + jitter * 0.25;
-	//add[Z][Y] = ANIM_SCALE * sin(time / 1200) + jitter * 0.25;
-	v3listmul(add, map->points, map->length);
+	mul_tri_map(add, map);
+	//v3listmul(add, map->points, map->length);
 }
 #endif
 //t_map 
@@ -63,13 +56,35 @@ static void add_tri_map(t_tri_map *map, float add[3])
 	}
 }
 
+static void	fit_to_screen(t_tri_map *map)
+{
+	int		min_x;
+	int		min_y;
+	int		i;
+
+	min_x = WSZ;
+	min_y = WSZ;
+	i = 0;
+	while (i < map->tri_count)
+	{
+		min_x = ft_min(min_x, (int)map->tri_list[i][0][X]);
+		min_x = ft_min(min_x, (int)map->tri_list[i][1][X]);
+		min_x = ft_min(min_x, (int)map->tri_list[i][2][X]);
+		min_y = ft_min(min_y, (int)map->tri_list[i][0][Y]);
+		min_y = ft_min(min_y, (int)map->tri_list[i][1][Y]);
+		min_y = ft_min(min_y, (int)map->tri_list[i][2][Y]);
+		i++;
+	}
+	add_tri_map(map, (float [3]){(float)-min_x, (float)-min_y, 0.0});
+}
+
 void	preprocess_map(t_tri_map *map, t_mlx_i i)
 {
 	scale_with_size_matrix(map, i.z_scale);
-	depth_save(map, i.img, 0);
-	add_tri_map(map, (float [3]){-WSZ / 4, -WSZ / 4, 0});
-	scale_with_y_matrix(map, i.y_angle);
+	save_face_color(map, i.img);
+	add_tri_map(map, (float [3]){-WSZ / 2, -WSZ / 2, 0});
 	scale_with_x_matrix(map, i.x_angle);
-	add_tri_map(map, (float [3]){WSZ / 2, WSZ / 2, 0});
-	depth_save(map, i.img, 1);
+	scale_with_y_matrix(map, i.y_angle);
+	save_depth(map, i.img);
+	fit_to_screen(map);
 }

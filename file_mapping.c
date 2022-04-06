@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 23:02:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:18:20 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	read_inputmap(char *filename, t_tri_map *trimap)
 {
 	int				fd;
 	int				cr[3];
-	float			**points;
 	t_map			map;
 	signed int		*data;
 

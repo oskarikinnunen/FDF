@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 00:36:04 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:30:45 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	get_time(t_mlx_i *i)
 
 	gettimeofday(&(t2), NULL);
 	if (gettimeofday(&(t2), NULL) <= -1)
-		//error_exit_free_map("Gettimeofday call failed (get_time)", i->maps);
+		error_exit("Gettimeofday call failed (get_time)");
 	i->time = (t2.tv_sec - i->t1.tv_sec) * 1000.0
 		+ (t2.tv_usec - i->t1.tv_usec) / 1000.0;
 }
@@ -30,24 +30,20 @@ int	loop(void *p)
 {
 	t_mlx_i			*i;
 	t_image_info	img;
-	t_map			cpy;
-	char			*addr;
+	t_tri_map		cpy;
 
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	addr = img.addr;
 	cpy_map(i->maps, &cpy);
-	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
+	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
 	get_time(i);
-	scale_with_size_matrix(&cpy, i->z_scale);
 	animate_map(&cpy, i->time);
-	depth_save(&cpy, &img, 0);
 	preprocess_map(&cpy, *i);
-	sorted_tri64s(&cpy, &img);
-	ft_bzero(addr, (WSZ * (WSZ - IMAGE_Y)) * sizeof(int));
-	draw_img_from_tri64s(img);
+	z_pass(cpy, img);
+	draw_from_z_buff(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
+	mlx_do_sync(i->mlx);
 	return (1);
 }
 #else
@@ -63,9 +59,10 @@ int	loop(void *p)
 	img = *(i->img);
 	cpy = i->maps[1];
 	cpy_map(i->maps, &cpy);
-	ft_bzero(img.depthlayer, img.tri_count * sizeof(int));
+	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
 	preprocess_map(&cpy, *i);
-	draw_img_from_trimap(cpy, img);
+	z_pass(cpy, img);
+	draw_from_z_buff(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	mlx_do_sync(i->mlx);
 	return (1);

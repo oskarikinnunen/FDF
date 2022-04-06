@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/05 23:05:39 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:19:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,7 @@ typedef struct s_image_info
 	void	*ptr;
 	char	*addr;
 	int		*depthlayer;
-	long	*tri_64s;
 	int		*z_buffer;
-	float	scaler;
-	int		tri_count;
-	int		z_pass;
 	int		bpp;
 	int		size_line;
 	int		endian;
@@ -102,8 +98,7 @@ typedef struct s_mlx_info
 	double				y_angle;
 	double				z_scale;
 	t_image_info		*img;
-	t_tri_map			*tri_maps;f
-	//t_map				*maps;
+	t_tri_map			*maps;
 	int					wireframe_toggle;
 	struct timeval		t1;
 	double				time;
@@ -123,7 +118,7 @@ typedef struct s_mlx_info
 }	t_mlx_i;
 # endif
 
-/* TODO: Name */
+/* TRIMAP.C */
 void	map_to_tri_map(t_map *map, t_tri_map *trimap);
 
 /* LOOPS.C */
@@ -137,7 +132,7 @@ void	v3mul(float matrix[3][3], float *v3);
 void	v3listmul(float matrix[3][3], float **v3s, int len);
 void	v3listadd(float **v3s, float *add, int len);
 
-/*	FILE_MAPPING */
+/*	FILE_MAPPING.C */
 void	read_inputmap(char *filename, t_tri_map *map);
 void	read_mapnode(int fd, char *buf, int *result, int negative_flag);
 
@@ -148,28 +143,31 @@ void	step_bresenham_x(t_bresenham *b, int target[3]);
 void	step_bresenham_y(t_bresenham *b, int target[3]);
 
 /* MATRICES.C */
+void	mul_tri_map(float matrix[3][3], t_tri_map *map);
 void	scale_with_size_matrix(t_tri_map *map, double z_scale);
 void	scale_with_x_matrix(t_tri_map *map, double angle);
 void	scale_with_y_matrix(t_tri_map *map, double angle);
 void	scale_with_global_z(t_map *map);
 
 /* MAP_OPERATIONS.C */
-void	animate_map(t_map *map, double time);
+void	animate_map(t_tri_map *map, double time);
 void	preprocess_map(t_tri_map *map, t_mlx_i i);
 void	cpy_map(t_tri_map *src, t_tri_map *dst);
 
+/* Z_DRAWING.C */
+void	z_draw_line(int *i1, int *i2, t_image_info img);
+void	z_fill_tri(int tris[3][3], t_image_info img);
+
 /* DRAWING.C */
-void	draw_line_img(int *i1, int *i2, t_image_info img);
-void	fill_tri(int tris[3][3], t_image_info img);
+void	draw_from_z_buff(t_image_info img);
+void	z_pass(t_tri_map map, t_image_info img);
 
-/* THREADING.C */
-void	draw_img_from_trimap(t_tri_map map, t_image_info img);
-
-/* Z_BUFFER.C */
-void	depth_save(t_tri_map *map, t_image_info *img, int shift);
+/* DEPTHBUFFER.C */
+void	save_face_color(t_tri_map *map, t_image_info *img);
+void	save_depth(t_tri_map *map, t_image_info *img);
 
 /* SORTING.C */
-void		sort_tris(int tris[3][3]);
+void	sort_tris(int tris[3][3]);
 
 /* FREEDOM.C */
 void	free_maps(t_map *map);

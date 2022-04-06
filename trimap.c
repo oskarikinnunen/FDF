@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 20:28:19 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/04 19:57:50 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:22:49 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	map_to_tri_map(t_map *map, t_tri_map *trimap) //Make copy aswell
 	{
 		face_to_tri(&(map->points[i]), &(trimap->tri_list[tri_i]), map->width);
 		face_to_tri(&(map->points[i]), &(trimap[1].tri_list[tri_i]), map->width);
-		i += (i++, (i + 1) % map->width == 0);
+		i++;
+		i += (i + 1) % map->width == 0;
 		tri_i += 2;
 	}
 }

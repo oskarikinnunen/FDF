@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 00:32:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 17:16:15 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (-1);
 	read_inputmap(argv[1], tmaps);
-	i.maps = (t_map *)(&tmaps);
+	i.maps = (t_tri_map *)(&tmaps);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y);
@@ -45,17 +45,13 @@ int	main(int argc, char **argv)
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-
-	i->img->scaler = (float)WSZ / 512.0;
-	i->img->tri_count = (i->maps->length - i->maps->width
-		- ((i->maps->length - i->maps->width)/ i->maps->width)) * 2;
-	printf("TRICOUNT: %i \n", i->img->tri_count);
-	i->img->tri_64s = ft_memalloc(i->img->tri_count * sizeof(long)); // PRotec!!
-	i->img->depthlayer = ft_memalloc(i->img->tri_count * sizeof(int));
-	if (i->img->depthlayer == NULL)
-		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
-	i->x_angle = -30;
-	i->y_angle = -40;
+	printf("TRICOUNT: %i \n", i->maps->tri_count);
+	i->img->z_buffer = ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
+	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
+		error_exit("Malloc failed (stage_mlxi_values)");
+	i->x_angle = 30;
+	i->y_angle = 40;
 	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
 	if (gettimeofday(&(i->t1), NULL) <= -1)
 		error_exit("Gettimeofday call failed (stage_mlxi_values)");
@@ -66,12 +62,9 @@ static void	stage_mlxi_values(t_mlx_i *i)
 {
 	printf("TRICOUNT: %i \n", i->maps->tri_count);
 	i->img->z_buffer = ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
-	i->img->scaler = (float)WSZ / 512.0;
-	i->img->tri_count = i->maps->tri_count;
-	i->img->tri_64s = ft_memalloc(i->maps->tri_count * sizeof(long)); // PRotec!!
 	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
-	if (i->img->depthlayer == NULL)
-		error_exit("Depthlayer malloc failed (stage_mlxi_values)");
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
+		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;
 	i->y_angle = 40;
 	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
