@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:33:04 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 20:53:20 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	key_loop(int keycode, void *p)
 {
 	t_mlx_i		*i;
 
-	if (keycode == KEY_ESC || keycode == 65307)
+	if (keycode == KEY_ESC)
 		exit(0);
 	i = (t_mlx_i *)p;
 	i->x_angle += (keycode == KEY_LEFT) * -5;

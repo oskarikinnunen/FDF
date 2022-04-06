@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:09:04 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 20:51:43 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,25 @@
 # include <stdio.h>
 # include <assert.h>
 
-/*	KEYCODES FOR LINUX*/
-# define KEY_LEFT 65361
-# define KEY_RGHT 65363
-# define KEY_DOWN 65364
-# define KEY_UP 65362
-# define KEY_Z 122
-# define KEY_X 120
-# define KEY_ESC 53
-/*	OTHER DEFINES	*/
-# define Z_CLRMASK 0xFF
-# define Z_HGHTMASK 0xFF00
-# define Z_CLRMUL 1
-# define Z_SCALE 0.05
-//# define GLOBAL_Z 
+/*	KEYCODES */
+# ifdef __APPLE__
+#  define KEY_LEFT 123
+#  define KEY_RGHT 124
+#  define KEY_DOWN 125
+#  define KEY_UP 126
+#  define KEY_Z 7
+#  define KEY_X 6
+#  define KEY_ESC 53
+# else
+/* ASSUMED LINUX */
+#  define KEY_LEFT 65361
+#  define KEY_RGHT 65363
+#  define KEY_DOWN 65364
+#  define KEY_UP 65362
+#  define KEY_Z 122
+#  define KEY_X 120
+#  define KEY_ESC 65307
+# endif
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH"
 # define WSZ 720
 # define IMAGE_Y 50

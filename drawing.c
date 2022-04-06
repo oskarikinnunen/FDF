@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:39:29 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 20:50:20 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ void	draw_from_z_buff(t_image_info img)
 			*(unsigned int *)(img.addr + (i * sizeof(int)))
 				= get_color(faceheight);
 		}
+		else if (i % 2 == 0)
+			*(unsigned int *)(img.addr + (i * sizeof(int)))
+				= INT_MAX / 1024;
 		i++;
 	}
 }
