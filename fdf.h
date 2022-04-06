@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:19:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:35:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ typedef struct s_mlx_info
 # endif
 
 /* TRIMAP.C */
-void	map_to_tri_map(t_map *map, t_tri_map *trimap);
+void	map_to_tri_maps(t_map *map, t_tri_map *trimap);
 
 /* LOOPS.C */
 int		loop(void *p);
@@ -143,16 +143,16 @@ void	step_bresenham_x(t_bresenham *b, int target[3]);
 void	step_bresenham_y(t_bresenham *b, int target[3]);
 
 /* MATRICES.C */
-void	mul_tri_map(float matrix[3][3], t_tri_map *map);
-void	scale_with_size_matrix(t_tri_map *map, double z_scale);
-void	scale_with_x_matrix(t_tri_map *map, double angle);
-void	scale_with_y_matrix(t_tri_map *map, double angle);
-void	scale_with_global_z(t_map *map);
+void	mul_tri_map(float matrix[3][3], t_tri_map map);
+void	scale_with_size_matrix(t_tri_map map, double z_scale);
+void	scale_with_x_matrix(t_tri_map map, double angle);
+void	scale_with_y_matrix(t_tri_map map, double angle);
+void	scale_with_global_z(t_map map);
 
 /* MAP_OPERATIONS.C */
-void	animate_map(t_tri_map *map, double time);
-void	preprocess_map(t_tri_map *map, t_mlx_i i);
-void	cpy_map(t_tri_map *src, t_tri_map *dst);
+void	animate_map(t_tri_map map, double time);
+void	preprocess_map(t_tri_map map, t_mlx_i i);
+void	cpy_map(t_tri_map src, t_tri_map dst);
 
 /* Z_DRAWING.C */
 void	z_draw_line(int *i1, int *i2, t_image_info img);
@@ -163,8 +163,8 @@ void	draw_from_z_buff(t_image_info img);
 void	z_pass(t_tri_map map, t_image_info img);
 
 /* DEPTHBUFFER.C */
-void	save_face_color(t_tri_map *map, t_image_info *img);
-void	save_depth(t_tri_map *map, t_image_info *img);
+void	save_face_colors(t_tri_map map, t_image_info img);
+void	save_depths(t_tri_map map, t_image_info img);
 
 /* SORTING.C */
 void	sort_tris(int tris[3][3]);

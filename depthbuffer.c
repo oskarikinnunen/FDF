@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 14:45:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:20:17 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:21:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,29 @@ static	int	face_color(float **tri)
 	return (color);
 }
 
-void	save_face_color(t_tri_map *map, t_image_info *img)
+void	save_face_colors(t_tri_map map, t_image_info img)
 {
 	int	i;
 	int	z;
 
 	i = 0;
-	while (i < map->tri_count)
+	while (i < map.tri_count)
 	{
-		z = (face_color(map->tri_list[i]) + face_color(map->tri_list[i + 1])) / 2;
-		img->depthlayer[i] = z;
-		img->depthlayer[i + 1] = z;
+		z = (face_color(map.tri_list[i]) + face_color(map.tri_list[i + 1])) / 2;
+		img.depthlayer[i] = z;
+		img.depthlayer[i + 1] = z;
 		i += 2;
 	}
 }
 
-void	save_depth(t_tri_map *map, t_image_info *img)
+void	save_depths(t_tri_map map, t_image_info img)
 {
 	int	i;
 
 	i = 0;
-	while (i < map->tri_count)
+	while (i < map.tri_count)
 	{
-		img->depthlayer[i] += face_depth(map->tri_list[i]) << 16;
+		img.depthlayer[i] += face_depth(map.tri_list[i]) << 16;
 		i++;
 	}
 }

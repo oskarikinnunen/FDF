@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:22:07 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:40:55 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 	
 */
+
+// make new read_mapnode, takes map, fd and cur read char(or '-' sign) as params
 void	read_mapnode(int fd, char *buf, int *result, int negative_flag)
 {
 	if (negative_flag)

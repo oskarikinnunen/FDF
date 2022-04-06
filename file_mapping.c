@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:18:20 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:35:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,6 @@ void	read_inputmap(char *filename, t_tri_map *trimap)
 		cr[Z] = (cr[X]++, cr[Z] + 1);
 	}
 	free(data);
-	map_to_tri_map(&map, trimap);
+	map_to_tri_maps(&map, trimap);
 	free_map(&map);
 }

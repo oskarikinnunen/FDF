@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:16:15 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:38:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	main(int argc, char **argv)
 	stage_mlxi_values(&i);
 	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, USAGE_MSG);
 	mlx_loop_hook(i.mlx, loop, &i);
-	mlx_do_sync(i.mlx);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop(i.mlx);
 	return (0);
@@ -46,8 +45,8 @@ int	main(int argc, char **argv)
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	printf("TRICOUNT: %i \n", i->maps->tri_count);
-	i->img->z_buffer = ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
-	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
+	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
+	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;
@@ -61,8 +60,8 @@ static void	stage_mlxi_values(t_mlx_i *i)
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	printf("TRICOUNT: %i \n", i->maps->tri_count);
-	i->img->z_buffer = ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
-	i->img->depthlayer = ft_memalloc(i->maps->tri_count * sizeof(int));
+	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
+	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
 	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;

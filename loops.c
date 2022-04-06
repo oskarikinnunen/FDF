@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:30:45 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:15:24 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ int	loop(void *p)
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	cpy_map(i->maps, &cpy);
+	cpy_map(*i->maps, cpy);
 	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
 	get_time(i);
-	animate_map(&cpy, i->time);
-	preprocess_map(&cpy, *i);
+	animate_map(cpy, i->time);
+	preprocess_map(cpy, *i);
 	z_pass(cpy, img);
 	draw_from_z_buff(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
@@ -58,9 +58,8 @@ int	loop(void *p)
 	i = (t_mlx_i *)p;
 	img = *(i->img);
 	cpy = i->maps[1];
-	cpy_map(i->maps, &cpy);
-	ft_bzero(img.depthlayer, cpy.tri_count * sizeof(int));
-	preprocess_map(&cpy, *i);
+	cpy_map(*i->maps, cpy);
+	preprocess_map(cpy, *i);
 	z_pass(cpy, img);
 	draw_from_z_buff(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);

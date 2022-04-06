@@ -6,11 +6,12 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 20:28:19 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 17:22:49 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:36:29 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "fdf_errors.h"
 
 static void	face_to_tri(float **v3, float ***tri, int width)
 {
@@ -18,16 +19,19 @@ static void	face_to_tri(float **v3, float ***tri, int width)
 	int			indx[2];
 
 	i = 0;
-	tri[0] = ft_memalloc(3 * sizeof(float *)); //Maybe could be done at the same time
-	tri[1] = ft_memalloc(3 * sizeof(float *)); //TODO: protec
+	tri[0] = (float **)ft_memalloc(3 * sizeof(float *));
+	tri[1] = (float **)ft_memalloc(3 * sizeof(float *));
+	if (tri[0] == NULL || tri[1] == NULL)
+		error_exit("Malloc failed (face_to_tri)");
 	ft_bzero(indx, sizeof(int [2]));
 	while (i < 3)
 	{
 		indx[0] = ((i >= 2) * width) + !((i + 1) % 2);
 		indx[1] = ((i + 1 >= 2) * width) + !((i + 2) % 2);
-		tri[0][i] = ft_memalloc(3 * sizeof(float));
-		tri[1][i] = ft_memalloc(3 * sizeof(float)); //PROTEC
-		//printf("copying v3 x%f y%f z%f \n", v3[indx[0]][X],v3[indx[0]][Y],v3[indx[0]][Z]);
+		tri[0][i] = (float *)ft_memalloc(3 * sizeof(float));
+		tri[1][i] = (float *)ft_memalloc(3 * sizeof(float));
+		if (tri[0][i] == NULL || tri[1][i] == NULL)
+			error_exit("Malloc failed (face_to_tri)");
 		ft_memcpy(tri[0][i], v3[indx[0]], sizeof(float [3]));
 		ft_memcpy(tri[1][i], v3[indx[1]], sizeof(float [3]));
 		i++;
@@ -37,31 +41,35 @@ static void	face_to_tri(float **v3, float ***tri, int width)
 static void	populate_simple_values(t_map *map, t_tri_map *trimap)
 {
 	trimap->tri_count = (map->length - map->width
-		- ((map->length - map->width) / map->width)) * 2;
+			- ((map->length - map->width) / map->width)) * 2;
 	trimap->z_extreme = map->z_extreme;
 	trimap->dimensions[X] = map->width;
 	trimap->dimensions[Y] = map->length / map->width;
 	ft_memcpy(&(trimap[1]), trimap, sizeof(t_tri_map));
 }
 
-void	map_to_tri_map(t_map *map, t_tri_map *trimap) //Make copy aswell
+void	map_to_tri_maps(t_map *map, t_tri_map *trimap)
 {
 	int		i;
 	long	tri_i;
-	
+
 	populate_simple_values(map, trimap);
 	trimap->tri_list = (float ***)
-		ft_memalloc(trimap->tri_count * sizeof (float **)); //TODO: protec
+		ft_memalloc(trimap->tri_count * sizeof (float **));
 	trimap[1].tri_list = (float ***)
-		ft_memalloc(trimap->tri_count * sizeof (float **)); //TODO: protec
+		ft_memalloc(trimap->tri_count * sizeof (float **));
+	if (trimap->tri_list == NULL || trimap[1].tri_list == NULL)
+		error_exit("Malloc failed (map_to_tri_map)");
 	i = 0;
 	tri_i = 0;
 	while (i <= map->length - map->width - 1)
 	{
-		face_to_tri(&(map->points[i]), &(trimap->tri_list[tri_i]), map->width);
-		face_to_tri(&(map->points[i]), &(trimap[1].tri_list[tri_i]), map->width);
+		face_to_tri(&(map->points[i]),
+			&(trimap->tri_list[tri_i]), map->width);
+		face_to_tri(&(map->points[i]),
+			&(trimap[1].tri_list[tri_i]), map->width);
+		tri_i += 2;
 		i++;
 		i += (i + 1) % map->width == 0;
-		tri_i += 2;
 	}
 }

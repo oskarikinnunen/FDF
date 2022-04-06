@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:53:43 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 18:02:17 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/06 18:03:56 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 //TODO: no pointer needed?
 
-void mul_tri_map(float matrix[3][3], t_tri_map *map)
+void mul_tri_map(float matrix[3][3], t_tri_map map)
 {
 	int	i;
 
 	i = 0;
-	while (i < map->tri_count)
+	while (i < map.tri_count)
 	{
-		v3mul(matrix, map->tri_list[i][0]);
-		v3mul(matrix, map->tri_list[i][1]);
-		v3mul(matrix, map->tri_list[i][2]);
+		v3mul(matrix, map.tri_list[i][0]);
+		v3mul(matrix, map.tri_list[i][1]);
+		v3mul(matrix, map.tri_list[i][2]);
 		i++;
 	}
 }
 
-void	scale_with_size_matrix(t_tri_map *map, double z_scale)
+void	scale_with_size_matrix(t_tri_map map, double z_scale)
 {
 	static float	scale[3][3] = {
 	{1, 0, 0},
@@ -37,7 +37,7 @@ void	scale_with_size_matrix(t_tri_map *map, double z_scale)
 	};
 	float			scale_by;
 
-	scale_by = ft_max(map->dimensions[X] - 1, map->dimensions[Y] - 1);
+	scale_by = ft_max(map.dimensions[X] - 1, map.dimensions[Y] - 1);
 	scale_by = (WSZ / scale_by) * 0.80;
 	scale[X][X] = scale_by;
 	scale[Y][Y] = scale_by;
@@ -46,7 +46,7 @@ void	scale_with_size_matrix(t_tri_map *map, double z_scale)
 	//v3listmul(scale, map->points, map->length);
 }
 
-void	scale_with_y_matrix(t_tri_map *map, double angle)
+void	scale_with_y_matrix(t_tri_map map, double angle)
 {
 	static float	iso[3][3] = {
 	{1, 0, 0},
@@ -70,7 +70,7 @@ void	scale_with_y_matrix(t_tri_map *map, double angle)
 	iso[Z][X] = sin(angle);
 	iso[Z][Z] = cos(angle)
 */
-void	scale_with_x_matrix(t_tri_map *map, double angle)
+void	scale_with_x_matrix(t_tri_map map, double angle)
 {
 	static float	iso[3][3] = {
 	{1, 0, 0},
