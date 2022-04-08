@@ -6,7 +6,7 @@
 #    By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/06 17:48:02 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/08 14:22:41 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g
 NAME= FDF
 SRC = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
-	map_operations.c matrices.c drawing.c \
+	map_operations.c matrices.c drawing.c mt_drawing.c \
 	loops.c errors.c file_nodereader.c \
 	trimap.c
 LIB = libft/libft.a

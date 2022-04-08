@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 13:41:57 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 14:23:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,19 @@ static void	stage_mlxi_values(t_mlx_i *i)
 	printf("TRICOUNT: %i \n", i->maps->tri_count);
 	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
 	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
-	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
-		error_exit("Malloc failed (stage_mlxi_values)");
+	
 	i->x_angle = 30;
 	i->y_angle = 40;
-	if (i->maps->z_extreme == 0)
-	{
-		i->maps->z_extreme = 1;
-		i->maps[1].z_extreme = 1;
-	}
 	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
 	if (gettimeofday(&(i->t1), NULL) <= -1)
 		error_exit("Gettimeofday call failed (stage_mlxi_values)");
+	i->thread_count = (int)sysconf(_SC_NPROCESSORS_ONLN);
+	if (i->thread_count > 0)
+		i->threads = (pthread_t *)malloc(i->thread_count * sizeof(pthread_t));
+	printf("found %i logical processors! \n", i->thread_count);
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL
+		|| i->threads == NULL)
+		error_exit("Malloc failed (stage_mlxi_values)");
 }
 #else
 

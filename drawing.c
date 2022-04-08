@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/07 16:23:54 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 14:35:19 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	collect_v3_int(int tri_int[3][3], float **tri)
 	}
 }
 
-static int	get_color(int z)
+int	get_pixel_color(int z)
 {
 	int	r;
 	int	g;
@@ -69,7 +69,7 @@ void	draw_from_z_buff(t_image_info img)
 		if (faceheight > 0)
 		{
 			*(unsigned int *)(img.addr + (i * sizeof(int)))
-				= get_color(faceheight);
+				= get_pixel_color(faceheight);
 		}
 		i++;
 	}

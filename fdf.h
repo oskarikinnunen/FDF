@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/07 12:51:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 14:34:59 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
 
 # ifdef EXTRA
 #  include <sys/time.h>
+#  include <pthread.h>
 #  define ANIM_SCALE 0.04
 # endif
 
 /* REMOVE! */
+
 # include <stdio.h>
 # include <assert.h>
 
@@ -57,7 +59,6 @@
 # define Y 1
 # define Z 2
 
-/*	STRUCTS */
 typedef struct s_map
 {
 	float	**points;
@@ -94,31 +95,35 @@ typedef struct s_image_info
 }	t_image_info;
 
 # ifdef EXTRA
-
 typedef struct s_mlx_info
 {
+	t_image_info		*img;
+	t_tri_map			*maps;
+	pthread_t			*threads;
+	int					thread_count;
 	void				*mlx;
 	void				*win;
 	double				x_angle;
 	double				y_angle;
 	double				z_scale;
-	t_image_info		*img;
-	t_tri_map			*maps;
 	int					wireframe_toggle;
 	struct timeval		t1;
 	double				time;
 }	t_mlx_i;
+
+/* MT_DRAWING.C */
+void	mt_draw_from_z_buff(t_mlx_i i);
 # else
 
 typedef struct s_mlx_info
 {
+	t_image_info		*img;
+	t_tri_map			*maps;
 	void				*mlx;
 	void				*win;
 	double				x_angle;
 	double				y_angle;
 	double				z_scale;
-	t_image_info		*img;
-	t_tri_map			*maps;
 	int					wireframe_toggle;
 }	t_mlx_i;
 # endif
@@ -166,6 +171,7 @@ void	z_fill_tri(int tris[3][3], t_image_info img);
 /* DRAWING.C */
 void	draw_from_z_buff(t_image_info img);
 void	z_pass(t_tri_map map, t_image_info img);
+int		get_pixel_color(int z);
 
 /* DEPTHBUFFER.C */
 void	save_face_colors(t_tri_map map, t_image_info img);

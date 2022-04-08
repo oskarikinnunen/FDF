@@ -6,7 +6,7 @@
 /*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:09:57 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 13:56:16 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ void	read_mapnode(int fd, char *buf, int *result, t_map *map)
 	}
 	*result = *result * (1 - (negative_flag * 2));
 	map->z_extreme = ft_max(ft_abs(*result), map->z_extreme);
+	map->z_extreme = ft_max(map->z_extreme, 1); //TODO: test
+	//^ Should correspond to this:
+	/*if (i->maps->z_extreme == 0)
+	{
+		i->maps->z_extreme = 1;
+		i->maps[1].z_extreme = 1;
+	}*/
 }

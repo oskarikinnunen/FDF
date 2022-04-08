@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/07 12:47:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 14:55:23 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	loop(void *p)
 	animate_map(cpy, i->time);
 	preprocess_map(cpy, *i);
 	z_pass(cpy, img);
-	draw_from_z_buff(img);
+	mt_draw_from_z_buff(*i);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	mlx_do_sync(i->mlx);
 	return (1);
