@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:21:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:32:14 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 #  define KEY_ESC 65307
 # endif
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH"
-# define WSZ 180
+# define WSZ 720
 # define IMAGE_Y 50
 /* Max number of points the map can have */
 # define MAPSIZE_MAX 64000

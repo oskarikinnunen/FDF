@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 14:35:19 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:39:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_inside_image(int tri_int[3][3])
 	tri = 0;
 	while (tri < 3)
 	{
-		if (tri_int[tri][X] >= WSZ || tri_int[tri][Y] >= WSZ - IMAGE_Y ||
+		if (tri_int[tri][X] >= WSZ - 1 || tri_int[tri][Y] >= WSZ - IMAGE_Y - 1 ||
 			tri_int[tri][X] < 0 || tri_int[tri][Y] < 0)
 			return (0);
 		tri++;

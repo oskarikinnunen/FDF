@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:21:55 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:45:25 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	main(int argc, char **argv)
 	i.maps = (t_tri_map *)(&tmaps);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
-	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y);
+	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y); //TODO: wrong size
 	img.addr = mlx_get_data_addr(img.ptr, &(img.bpp),
 			&(img.size_line), &(img.endian));
 	i.img = &img;
 	stage_mlxi_values(&i);
-	mlx_clear_window(i.mlx, i.win);
+	//mlx_clear_window(i.mlx, i.win);
 	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, USAGE_MSG);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop_hook(i.mlx, loop, &i);

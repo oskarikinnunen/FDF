@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   z_drawing.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:34:20 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:52:12 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	z_draw_pixel(int offset, t_image_info img, int z)
 	int	depth;
 
 	depth = z >> 16;
+	if (offset >= WSZ * (WSZ - IMAGE_Y))
+		return ;
 	if (*(unsigned int *)(img.z_buffer + offset) >> 16 < (unsigned int)depth)
 		*(img.z_buffer + offset) = z;
 }
