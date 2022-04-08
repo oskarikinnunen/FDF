@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrices.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:53:43 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:33:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:14:51 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	scale_with_size_matrix(t_tri_map map, double z_scale)
 	float			scale_by;
 
 	scale_by = ft_max(map.dimensions[X] - 1, map.dimensions[Y] - 1);
-	scale_by = (WSZ / scale_by) * 0.80;
+	scale_by = (WSZ / scale_by) * 0.70;
 	scale[X][X] = scale_by;
 	scale[Y][Y] = scale_by;
 	scale[Z][Z] = z_scale;

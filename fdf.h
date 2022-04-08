@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 14:34:59 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:21:34 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 #  define KEY_ESC 65307
 # endif
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH"
-# define WSZ 720
+# define WSZ 180
 # define IMAGE_Y 50
 /* Max number of points the map can have */
 # define MAPSIZE_MAX 64000
@@ -95,11 +95,20 @@ typedef struct s_image_info
 }	t_image_info;
 
 # ifdef EXTRA
+
+typedef struct s_thread_arg
+{
+	t_image_info *img;
+	int	startPixel;
+	int	endPixel;
+}	t_thread_arg;
+
 typedef struct s_mlx_info
 {
 	t_image_info		*img;
 	t_tri_map			*maps;
 	pthread_t			*threads;
+	t_thread_arg		*t_args;
 	int					thread_count;
 	void				*mlx;
 	void				*win;

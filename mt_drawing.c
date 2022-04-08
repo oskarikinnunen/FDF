@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mt_drawing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 14:03:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 14:40:47 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 16:12:58 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@
 		i++;
 	}
 */
-
-typedef struct s_thread_arg
-{
-	t_image_info *img;
-	int	startPixel;
-	int	endPixel;
-}	t_thread_arg;
 
 #ifdef EXTRA
 
@@ -64,18 +57,15 @@ void	mt_draw_from_z_buff(t_mlx_i i)
 {
 	int	t_i;
 	int	image_length;
-	t_thread_arg arg[4];
 
-	
 	image_length = WSZ * (WSZ - IMAGE_Y);
 	t_i = 0;
 	while (t_i < i.thread_count)
 	{
-		arg[t_i].startPixel = t_i * (image_length / i.thread_count);
-		arg[t_i].endPixel = (t_i + 1) * (image_length / i.thread_count);
-		arg[t_i].img = i.img;
-		
-		pthread_create(&i.threads[t_i], NULL, thread_draw, (void *)&arg[t_i]);
+		i.t_args[t_i].startPixel = t_i * (image_length / i.thread_count);
+		i.t_args[t_i].endPixel = (t_i + 1) * (image_length / i.thread_count);
+		i.t_args[t_i].img = i.img;
+		pthread_create(&i.threads[t_i], NULL, thread_draw, (void *)&(i.t_args[t_i]));
 		t_i++;
 	}
 	t_i = 0;

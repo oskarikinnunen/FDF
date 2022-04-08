@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+         #
+#    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/08 14:22:41 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/08 16:20:07 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
