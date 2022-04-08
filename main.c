@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/07 16:40:02 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/08 13:41:57 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static	void	stage_mlxi_values(t_mlx_i *i);
 
 int	main(int argc, char **argv)
 {
-	t_mlx_i			;
+	t_mlx_i			i;
 	t_image_info	img;
 	t_tri_map		tmaps[2];
 
