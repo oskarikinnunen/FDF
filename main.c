@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:35:16 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/07 16:40:02 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static	void	stage_mlxi_values(t_mlx_i *i);
 
 int	main(int argc, char **argv)
 {
-	t_mlx_i			i;
+	t_mlx_i			;
 	t_image_info	img;
 	t_tri_map		tmaps[2];
 
@@ -32,12 +32,11 @@ int	main(int argc, char **argv)
 			&(img.size_line), &(img.endian));
 	i.img = &img;
 	stage_mlxi_values(&i);
+	mlx_clear_window(i.mlx, i.win);
 	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, USAGE_MSG);
-	mlx_do_key_autorepeaton(i.mlx);
-	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_key_hook(i.win, key_loop, &i);
+	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_loop(i.mlx);
-	return (0);
 }
 
 #ifdef EXTRA
