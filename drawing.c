@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 11:23:38 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:39:02 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:02:17 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	is_inside_image(int tri_int[3][3])
 	tri = 0;
 	while (tri < 3)
 	{
-		if (tri_int[tri][X] >= WSZ - 1 || tri_int[tri][Y] >= WSZ - IMAGE_Y - 1 ||
-			tri_int[tri][X] < 0 || tri_int[tri][Y] < 0)
+		if (tri_int[tri][X] >= WSZ - 1 || tri_int[tri][Y] >= WSZ - IMAGE_Y - 1
+			|| tri_int[tri][X] < 0 || tri_int[tri][Y] < 0)
 			return (0);
 		tri++;
 	}
@@ -75,7 +75,7 @@ void	draw_from_z_buff(t_image_info img)
 	}
 }
 
-void	z_pass(t_tri_map map, t_image_info img)
+void	z_pass(t_tri_map map, t_image_info img, _Bool wireframe)
 {
 	int				i;
 	int				tri_int[3][3];
@@ -91,7 +91,8 @@ void	z_pass(t_tri_map map, t_image_info img)
 		tri_int[2][Z] = img.depthlayer[i];
 		if (is_inside_image(tri_int))
 		{
-			z_fill_tri(tri_int, img);
+			if (!wireframe)
+				z_fill_tri(tri_int, img);
 			z_draw_line(tri_int[0], tri_int[1], img);
 			z_draw_line(tri_int[1], tri_int[2], img);
 			z_draw_line(tri_int[0], tri_int[2], img);

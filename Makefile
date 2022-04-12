@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/08 16:20:07 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/12 19:49:33 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g
+override CFLAGS+= -Ilibft -O2 -Wall -g #-Werror -Wextra -g
 NAME= FDF
 SRC = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
@@ -44,10 +44,17 @@ all	:
 	@echo "Compiling for platform: $(UNAME)."
 	$(MAKE) $(NAME)
 
+run: re all
+	./FDF input/subject/mars.fdf
 
-$(NAME)	:$(OBJ)
+
+$(NAME)	:$(OBJ) libmlx.dylib
 	make -C libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB) $(MLXFLAGS) -I. -I/libft
+
+libmlx.dylib:
+	make -C mlx/OS_X re
+	mv mlx/OS_X/libmlx.dylib libmlx.dylib
 
 extra	:
 	$(MAKE) fclean
@@ -55,9 +62,12 @@ extra	:
 
 clean	:
 	make -C libft clean
+	make -C mlx/OS_X clean
+	make -C mlx/LINUX clean
 	rm -f $(OBJ) *~ core *.core
 
 fclean	: clean
+	rm -f libmlx.dylib
 	rm -f $(NAME)
 
 re	: fclean all

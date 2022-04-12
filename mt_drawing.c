@@ -6,11 +6,12 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 14:03:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:12:58 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:11:13 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "fdf_errors.h"
 
 /*
 
@@ -32,15 +33,15 @@
 
 #ifdef EXTRA
 
-static void *thread_draw(void *arg)
+static void	*thread_draw(void *arg)
 {
 	t_thread_arg	t_arg;
 	int				i;
 	unsigned int	faceheight;
 
 	t_arg = *(t_thread_arg *)arg;
-	i = t_arg.startPixel;
-	while (i < t_arg.endPixel)
+	i = t_arg.startpixel;
+	while (i < t_arg.endpixel)
 	{
 		faceheight = (unsigned int)(t_arg.img->z_buffer[i] & 0xFFFF);
 		if (faceheight > 0)
@@ -62,10 +63,12 @@ void	mt_draw_from_z_buff(t_mlx_i i)
 	t_i = 0;
 	while (t_i < i.thread_count)
 	{
-		i.t_args[t_i].startPixel = t_i * (image_length / i.thread_count);
-		i.t_args[t_i].endPixel = (t_i + 1) * (image_length / i.thread_count);
+		i.t_args[t_i].startpixel = t_i * (image_length / i.thread_count);
+		i.t_args[t_i].endpixel = (t_i + 1) * (image_length / i.thread_count);
 		i.t_args[t_i].img = i.img;
-		pthread_create(&i.threads[t_i], NULL, thread_draw, (void *)&(i.t_args[t_i]));
+		if (pthread_create(&i.threads[t_i], NULL, thread_draw,
+			(void *)&(i.t_args[t_i])) != 0)
+			error_exit("pthread create fail (mt_draw_from_z_buff)");
 		t_i++;
 	}
 	t_i = 0;

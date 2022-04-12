@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 19:13:50 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 14:55:23 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:08:22 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	loop(void *p)
 	get_time(i);
 	animate_map(cpy, i->time);
 	preprocess_map(cpy, *i);
-	z_pass(cpy, img);
+	z_pass(cpy, img, i->wireframe_toggle);
 	mt_draw_from_z_buff(*i);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	mlx_do_sync(i->mlx);
@@ -59,7 +59,7 @@ int	loop(void *p)
 	cpy = i->maps[1];
 	cpy_map(*i->maps, cpy);
 	preprocess_map(cpy, *i);
-	z_pass(cpy, img);
+	z_pass(cpy, img, i->wireframe_toggle);
 	draw_from_z_buff(img);
 	mlx_put_image_to_window(i->mlx, i->win, i->img->ptr, 0, IMAGE_Y);
 	mlx_do_sync(i->mlx);
@@ -84,5 +84,7 @@ int	key_loop(int keycode, void *p)
 			(127 / i->maps->z_extreme));
 	i->x_angle = ft_clamp(i->x_angle, -45, 45);
 	i->y_angle = ft_clamp(i->y_angle, 0, 40);
+	if (keycode == KEY_W)
+		i->wireframe_toggle = !i->wireframe_toggle;
 	return (1);
 }

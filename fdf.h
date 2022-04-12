@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:32:14 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 20:39:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@
 #  define ANIM_SCALE 0.04
 # endif
 
-/* REMOVE! */
-
-# include <stdio.h>
-# include <assert.h>
-
 /*	KEYCODES */
 # ifdef __APPLE__
 #  define KEY_LEFT 123
@@ -37,6 +32,7 @@
 #  define KEY_UP 126
 #  define KEY_Z 7
 #  define KEY_X 6
+#  define KEY_W 13
 #  define KEY_ESC 53
 # else
 /* ASSUMED LINUX */
@@ -48,13 +44,16 @@
 #  define KEY_X 120
 #  define KEY_ESC 65307
 # endif
-# define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH"
-# define WSZ 720
+# define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH, W = TOGGLE WIREFRAME"
+/* Needs to be a multiple of 2 in OS_X environment */
+# define WSZ 1280
 # define IMAGE_Y 50
 /* Max number of points the map can have */
 # define MAPSIZE_MAX 64000
 # define INT_MAX 2147483647
 # define PI 3.14159265359
+# define TRUE 1
+# define FALSE 1
 # define X 0
 # define Y 1
 # define Z 2
@@ -98,9 +97,9 @@ typedef struct s_image_info
 
 typedef struct s_thread_arg
 {
-	t_image_info *img;
-	int	startPixel;
-	int	endPixel;
+	t_image_info	*img;
+	int				startpixel;
+	int				endpixel;
 }	t_thread_arg;
 
 typedef struct s_mlx_info
@@ -115,7 +114,7 @@ typedef struct s_mlx_info
 	double				x_angle;
 	double				y_angle;
 	double				z_scale;
-	int					wireframe_toggle;
+	_Bool				wireframe_toggle;
 	struct timeval		t1;
 	double				time;
 }	t_mlx_i;
@@ -133,7 +132,7 @@ typedef struct s_mlx_info
 	double				x_angle;
 	double				y_angle;
 	double				z_scale;
-	int					wireframe_toggle;
+	_Bool				wireframe_toggle;
 }	t_mlx_i;
 # endif
 
@@ -153,7 +152,7 @@ void	v3listadd(float **v3s, float *add, int len);
 
 /*	FILE_MAPPING.C */
 void	read_inputmap(char *filename, t_tri_map *map);
-void	read_mapnode(int fd, char *buf, int *result, t_map *map);
+int		read_mapnode(int fd, char *buf, int *result, t_map *map);
 
 /* BRESENHAM.C */
 void	populate_bresenham(t_bresenham *b, int *from, int *to);
@@ -179,7 +178,7 @@ void	z_fill_tri(int tris[3][3], t_image_info img);
 
 /* DRAWING.C */
 void	draw_from_z_buff(t_image_info img);
-void	z_pass(t_tri_map map, t_image_info img);
+void	z_pass(t_tri_map map, t_image_info img, _Bool wireframe);
 int		get_pixel_color(int z);
 
 /* DEPTHBUFFER.C */

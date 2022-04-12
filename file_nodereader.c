@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_nodereader.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 13:56:16 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 20:30:26 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,22 @@
 
 	
 */
-
-//void	nodereader(int fd, char *buf)
-
-// make new read_mapnode, takes map, fd and cur read char(or '-' sign) as params
-void	read_mapnode(int fd, char *buf, int *result, t_map *map)
+int	read_mapnode(int fd, char *buf, int *result, t_map *map)
 {
-	int	negative_flag;
+	_Bool	negative_flag;
+	int		i;
 
 	negative_flag = (*buf == '-');
+	i = 1;
 	if (negative_flag)
-		(void)!read(fd, buf, 1);
-	while (ft_isdigit(*buf))
+		i = read(fd, buf, 1);
+	while (i && ft_isdigit(*buf))
 	{
 		*result = (ft_isdigit(*buf)) * ((*result * 10) + (*buf - '0'));
-		if (read(fd, buf, 1) <= 0)
-			break ;
+		i = read(fd, buf, 1);
 	}
 	*result = *result * (1 - (negative_flag * 2));
 	map->z_extreme = ft_max(ft_abs(*result), map->z_extreme);
 	map->z_extreme = ft_max(map->z_extreme, 1); //TODO: test
-	//^ Should correspond to this:
-	/*if (i->maps->z_extreme == 0)
-	{
-		i->maps->z_extreme = 1;
-		i->maps[1].z_extreme = 1;
-	}*/
+	return (i);
 }

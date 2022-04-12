@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_mapping.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: okinnune <eino.oskari.kinnunen@gmail.co    +#+  +:+       +#+        */
+/*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/06 19:23:56 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 20:52:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,15 @@ static signed int	*get_mapdata(t_map *map, int fd)
 		error_exit("Str malloc failed (get_mapdata).");
 	ft_bzero(buf, 2);
 	i = 0;
-	while (read(fd, buf, 1) == 1 && i < MAPSIZE_MAX)
+	while (read(fd, buf, 1) == 1 && i < MAPSIZE_MAX) //TODO: doesn't check last line width
 	{
 		if (ft_isdigit(*buf) || *buf == '-')
-			read_mapnode(fd, (char *)buf, &(str[i]), map);
-		if (*buf == '\n' || *buf == '\t' || *buf == ' ')
-			map->width += (i++, (map->width == 0 && *buf == '\n') * i);
+		{
+			if (!read_mapnode(fd, (char *)buf, &(str[i]), map))
+				break;
+			if (*buf == '\n' || *buf == '\t' || *buf == ' ')
+				map->width += (i++, (map->width == 0 && *buf == '\n') * i);
+		}
 		else
 			error_exit("Invalid character (get_mapdata)");
 		if (*buf == '\n' && map->width != 0 && i % map->width != 0)
@@ -88,6 +91,8 @@ void	read_inputmap(char *filename, t_tri_map *trimap)
 	fd = file_open(filename);
 	ft_bzero(&map, sizeof(t_map));
 	data = get_mapdata(&map, fd);
+	if (map.width <= 0 || map.length < 1)
+		error_exit("Invalid map length");
 	map.points = ft_memalloc((map.length + 1) * sizeof(float *));
 	ft_bzero(cr, sizeof(int) * 3);
 	while (cr[Z] <= map.length)

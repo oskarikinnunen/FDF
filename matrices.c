@@ -6,13 +6,11 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 04:53:43 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:14:51 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 18:00:11 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-//TODO: no pointer needed?
 
 void	mul_tri_map(float matrix[3][3], t_tri_map map)
 {
@@ -28,6 +26,7 @@ void	mul_tri_map(float matrix[3][3], t_tri_map map)
 	}
 }
 
+/* Makes a guestimation of the scale, probably not very accurate */
 void	scale_with_size_matrix(t_tri_map map, double z_scale)
 {
 	static float	scale[3][3] = {
@@ -37,8 +36,8 @@ void	scale_with_size_matrix(t_tri_map map, double z_scale)
 	};
 	float			scale_by;
 
-	scale_by = ft_max(map.dimensions[X] - 1, map.dimensions[Y] - 1);
-	scale_by = (WSZ / scale_by) * 0.70;
+	scale_by = (map.dimensions[X] + map.dimensions[Y]) / 2;
+	scale_by = (WSZ / scale_by) * 0.62;
 	scale[X][X] = scale_by;
 	scale[Y][Y] = scale_by;
 	scale[Z][Z] = z_scale;

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:45:25 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/12 20:50:45 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,35 +23,56 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (-1);
+	ft_bzero(&i, sizeof(t_mlx_i));
 	read_inputmap(argv[1], tmaps);
 	i.maps = (t_tri_map *)(&tmaps);
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
-	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y); //TODO: wrong size
+	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y);
 	img.addr = mlx_get_data_addr(img.ptr, &(img.bpp),
 			&(img.size_line), &(img.endian));
 	i.img = &img;
 	stage_mlxi_values(&i);
-	//mlx_clear_window(i.mlx, i.win);
+	mlx_clear_window(i.mlx, i.win);
 	mlx_string_put(i.mlx, i.win, 5, IMAGE_Y / 2, INT_MAX, USAGE_MSG);
 	mlx_key_hook(i.win, key_loop, &i);
 	mlx_loop_hook(i.mlx, loop, &i);
 	mlx_loop(i.mlx);
 }
 
+
+/*
+	This is needed since mlx_new_image clamps sizeline to a multiple of 256,
+	which makes my assumption of:
+		'sizeline == WSZ * img.bpp / 8'
+	wrong in some cases, which in turn can make this program segfault
+	when accessing the img.addr memory in z_drawing.c with that wrong assumption.
+*/
+static int	mlx_freakout(t_mlx_i *i)
+{
+	if (i->img->size_line != WSZ * (i->img->bpp / 8))
+		return (1);
+	return (0);
+}
+
 #ifdef EXTRA
+
 static void	stage_threads(t_mlx_i *i)
 {
 	i->thread_count = (int)sysconf(_SC_NPROCESSORS_ONLN);
 	if (i->thread_count > 0)
 	{
 		i->threads = (pthread_t *)malloc(i->thread_count * sizeof(pthread_t));
-		i->t_args = (t_thread_arg *)malloc(i->thread_count * sizeof(t_thread_arg));
+		i->t_args = (t_thread_arg *)malloc
+			(i->thread_count * sizeof(t_thread_arg));
 	}
 }
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
+	ft_putstr("Successfully opened file \n");
+	if (mlx_freakout(i))
+		error_exit("MLX allocated wrong size, make sure WSZ is n^2");
 	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
 	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
 	i->x_angle = 30;
@@ -65,25 +86,28 @@ static void	stage_mlxi_values(t_mlx_i *i)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	if (i->maps->tri_count <= 0)
 		error_exit("Invalid amount of triangles (stage_mlxi_values)");
-	if (WSZ < 180)
+	if (WSZ < 256)
 		error_exit("WSZ too small (stage_mlxi_values)");
 }
 #else
 
 static void	stage_mlxi_values(t_mlx_i *i)
 {
-	printf("TRICOUNT: %i \n", i->maps->tri_count);
+	ft_putstr("Successfully opened file \n");
+	if (mlx_freakout(i)) //t
+		error_exit("MLX allocated wrong size, make sure WSZ is n^2");
 	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
 	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
-	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL) //t
 		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;
 	i->y_angle = 40;
-	if (i->maps->z_extreme == 0)
-	{
-		i->maps->z_extreme = 1;
-		i->maps[1].z_extreme = 1;
-	}
 	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL) //t
+		error_exit("Malloc failed (stage_mlxi_values)");
+	if (i->maps->tri_count <= 0)
+		error_exit("Invalid amount of triangles (stage_mlxi_values)");
+	if (WSZ < 256)
+		error_exit("WSZ too small (stage_mlxi_values)");
 }
 #endif
