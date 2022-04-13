@@ -31,9 +31,11 @@ OBJ = $(SRC:.c=.o)
 UNAME= $(shell uname)
 ifeq ($(UNAME), Darwin)
 MLXFLAGS = libmlx.dylib
+MLIB =  libmlx.dylib
 else ifeq ($(UNAME), Linux)
 override CFLAGS += -Imlx/Linux
 MLXFLAGS =  -Imlx/Linux/ -I/usr/include -I/usr/lib/ mlx/Linux/libmlx.a -lm -lX11 -lXext
+MLIB = mlx/Linux/libmlx.a
 else
 warning:
 	@echo "Platform $(UNAME) not supported by FDF."
@@ -48,13 +50,16 @@ run: re all
 	./FDF input/subject/mars.fdf
 
 
-$(NAME)	:$(OBJ) libmlx.dylib
+$(NAME)	:$(OBJ) $(MLIB)
 	make -C libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB) $(MLXFLAGS) -I. -I/libft
 
 libmlx.dylib:
 	make -C mlx/OS_X re
 	mv mlx/OS_X/libmlx.dylib libmlx.dylib
+
+mlx/Linux/libmlx.a:
+	make -C mlx/Linux re
 
 extra	:
 	$(MAKE) fclean
@@ -63,7 +68,7 @@ extra	:
 clean	:
 	make -C libft clean
 	make -C mlx/OS_X clean
-	make -C mlx/LINUX clean
+	make -C mlx/Linux clean
 	rm -f $(OBJ) *~ core *.core
 
 fclean	: clean
