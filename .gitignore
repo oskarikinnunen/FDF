@@ -5,3 +5,6 @@
 callgrind.out*
 mlx-test*
 FDF.dSYM
+mlx/OS_X/*.o
+mlx/OS_X/*.swiftdoc
+mlx/OS_X/*.swiftmodule

@@ -6,29 +6,13 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/12 20:52:32 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/13 21:38:24 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "fdf_errors.h"
 
-/*static void	increase_mapsize(int **str)
-{
-	char	*new;
-	int		strlen;
-
-	strlen = ft_digitcount(*)
-	new = ft_memalloc(strlen * 2 * sizeof(signed int));
-	if (new == NULL)
-		error_exit("Str malloc failed (increase_mapsize)");
-	ft_memcpy(new, *str, strlen * sizeof(signed int));
-	free(*str);
-	str = &new;
-}*/
-
-/*if (i >= MAPSIZE_MAX)
-			error_exit("Map length exceeds MAPSIZE_MAX (get_mapdata)");*/
 static signed int	*get_mapdata(t_map *map, int fd)
 {
 	int				i;
@@ -46,8 +30,11 @@ static signed int	*get_mapdata(t_map *map, int fd)
 		{
 			if (!read_mapnode(fd, (char *)buf, &(str[i]), map))
 				break;
-			if (*buf == '\n' || *buf == '\t' || *buf == ' ')
+			if (*buf == '\n' || *buf == '\t' || *buf == ' ') {
 				map->width += (i++, (map->width == 0 && *buf == '\n') * i);
+				printf("tracked map width %i \n", map->width);
+			}
+			
 		}
 		else
 			error_exit("Invalid character (get_mapdata)");

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/12 20:39:08 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/13 21:30:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 #  include <pthread.h>
 #  define ANIM_SCALE 0.04
 # endif
+
+/*TODO: REMOVE! */
+#include <stdio.h>
 
 /*	KEYCODES */
 # ifdef __APPLE__
