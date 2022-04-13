@@ -6,40 +6,43 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/13 21:38:24 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/13 22:30:50 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "fdf_errors.h"
 
+//static void ft_read(int *res, )
+
+//TODO: FIX NORMINETTE
 static signed int	*get_mapdata(t_map *map, int fd)
 {
 	int				i;
 	unsigned char	buf[2];
 	signed int		*str;
+	int				res;
 
 	str = (signed int *)ft_memalloc(MAPSIZE_MAX * sizeof(signed int));
 	if (str == NULL)
 		error_exit("Str malloc failed (get_mapdata).");
 	ft_bzero(buf, 2);
 	i = 0;
-	while (read(fd, buf, 1) == 1 && i < MAPSIZE_MAX) //TODO: doesn't check last line width
+	while ((res = read(fd, buf, 1)) == 1 && i < MAPSIZE_MAX)
 	{
-		if (ft_isdigit(*buf) || *buf == '-')
+		if ((ft_isdigit(*buf) || *buf == '-') && read_mapnode(fd, buf, &str[i], map))
 		{
-			if (!read_mapnode(fd, (char *)buf, &(str[i]), map))
-				break;
-			if (*buf == '\n' || *buf == '\t' || *buf == ' ') {
-				map->width += (i++, (map->width == 0 && *buf == '\n') * i);
-				printf("tracked map width %i \n", map->width);
+			i++;
+			if (*buf == '\n')
+			{
+				if (map->width == 0)
+					map->width = i;
+				else if (i % map->width != 0)
+					error_exit("Invalid map shape (get_mapdata)");
 			}
-			
 		}
-		else
-			error_exit("Invalid character (get_mapdata)");
-		if (*buf == '\n' && map->width != 0 && i % map->width != 0)
-			error_exit("Invalid map shape (get_mapdata)");
+		if (*buf != '\n' && *buf != '\t' && *buf != ' ')
+			error_exit("Invalid character in map (get_mapdata)");
 	}
 	map->length = i;
 	return (str);
