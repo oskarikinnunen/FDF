@@ -45,6 +45,7 @@
 #  define KEY_UP 65362
 #  define KEY_Z 122
 #  define KEY_X 120
+#  define KEY_W 119
 #  define KEY_ESC 65307
 # endif
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH, W = TOGGLE WIREFRAME"
