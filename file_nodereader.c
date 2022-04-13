@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/12 20:30:26 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/14 02:39:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	read_mapnode(int fd, char *buf, int *result, t_map *map)
 	i = 1;
 	if (negative_flag)
 		i = read(fd, buf, 1);
+	if (i <= 0)
+		error_exit("'-' at the end of file");
 	while (i && ft_isdigit(*buf))
 	{
 		*result = (ft_isdigit(*buf)) * ((*result * 10) + (*buf - '0'));
