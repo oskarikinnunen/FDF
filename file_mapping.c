@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/13 22:30:50 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/14 02:03:54 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static signed int	*get_mapdata(t_map *map, int fd)
 	i = 0;
 	while ((res = read(fd, buf, 1)) == 1 && i < MAPSIZE_MAX)
 	{
-		if ((ft_isdigit(*buf) || *buf == '-') && read_mapnode(fd, buf, &str[i], map))
+		if ((ft_isdigit(*buf) || *buf == '-') && read_mapnode(fd, buf, &str[i], map) >= 0)
 		{
 			i++;
 			if (*buf == '\n')
@@ -41,7 +41,7 @@ static signed int	*get_mapdata(t_map *map, int fd)
 					error_exit("Invalid map shape (get_mapdata)");
 			}
 		}
-		if (*buf != '\n' && *buf != '\t' && *buf != ' ')
+		else if (*buf != '\t' && *buf != ' ')
 			error_exit("Invalid character in map (get_mapdata)");
 	}
 	map->length = i;
