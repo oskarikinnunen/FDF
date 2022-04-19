@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/19 14:10:54 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:51:00 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	main(int argc, char **argv)
 	i.mlx = mlx_init();
 	i.win = mlx_new_window(i.mlx, WSZ, WSZ, "new_window");
 	img.ptr = mlx_new_image(i.mlx, WSZ, WSZ - IMAGE_Y);
-	img.addr = mlx_get_data_addr(img.ptr, &(img.bpp),
-			&(img.size_line), &(img.endian));
+	img.addr = mlx_get_data_addr(img.ptr, (int *)&(img.bpp),
+			(int *)&(img.size_line), &(img.endian));
 	i.img = &img;
 	stage_mlxi_values(&i);
 	mlx_clear_window(i.mlx, i.win);
@@ -98,7 +98,8 @@ static void	stage_mlxi_values(t_mlx_i *i)
 	if (mlx_freakout(i))
 		error_exit("MLX allocated wrong size, make sure WSZ is n^2");
 	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
-	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
+	i->img->depthlayer = (int *)ft_memalloc((unsigned int)i->maps->tri_count
+			* sizeof(int));
 	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;

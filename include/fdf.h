@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/13 21:30:32 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:27:40 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 #  include <pthread.h>
 #  define ANIM_SCALE 0.04
 # endif
-
-/*TODO: REMOVE! */
-#include <stdio.h>
 
 /*	KEYCODES */
 # ifdef __APPLE__
@@ -48,7 +45,8 @@
 #  define KEY_W 119
 #  define KEY_ESC 65307
 # endif
-# define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH, W = TOGGLE WIREFRAME"
+# define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH, \
+W = TOGGLE WIREFRAME"
 /* Needs to be a multiple of 2 in OS_X environment */
 # define WSZ 1280
 # define IMAGE_Y 50

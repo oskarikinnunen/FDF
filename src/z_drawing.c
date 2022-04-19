@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 12:38:17 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/08 16:52:12 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:22:32 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	z_fill_tri(int tris[3][3], t_image_info img)
 	z_draw_line(sorted[0], sorted[2], img);
 }
 
-static void	z_draw_pixel(int offset, t_image_info img, int z)
+static void	z_draw_pixel(unsigned int offset, t_image_info img, int z)
 {
 	int	depth;
 
@@ -63,7 +63,7 @@ static void	z_draw_pixel(int offset, t_image_info img, int z)
 void	z_draw_line(int *i1, int *i2, t_image_info img)
 {
 	t_bresenham		b;
-	int				offset;
+	unsigned int	offset;
 
 	populate_bresenham(&b, i1, i2);
 	while (b.local[X] != i2[X] || b.local[Y] != i2[Y])

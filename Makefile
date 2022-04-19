@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/19 14:11:30 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/19 17:25:51 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -Wconversion -g -Iinclude
+override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g -Iinclude #-Wconversion 
 NAME= fdf
 SRCFILES = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
 	map_operations.c matrices.c drawing.c mt_drawing.c \
-	loops.c errors.c file_nodereader.c \
+	loops.c errors.c \
 	trimap.c
 SRC= $(addprefix src/, $(SRCFILES))
 LIB = libft/libft.a
@@ -73,6 +73,7 @@ clean	:
 
 fclean	: clean
 	rm -f libmlx.dylib
+	rm -rf *.dSYM
 	rm -f $(NAME)
 
 re	: fclean all

@@ -6,39 +6,51 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/19 14:02:17 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:44:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "fdf_errors.h"
+#include <stdio.h>
+
+static int	split_len(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i] != 0)
+		i++;
+	return (i);
+}
 
 static void	get_mapdata(t_map *map, int fd, signed int *data)
 {
-	int				i[2];
-	char			buf[2];
+	char	*line;
+	char	**split;
+	int		i[2];
 
-	ft_bzero(buf, 2);
-	ft_bzero(i, 2);
-	i[1] = read(fd, buf, 1);
-	while (i[1] > 0 && *i < MAPSIZE_MAX)
+	ft_bzero(i, sizeof(int [2]));
+	while (ft_get_next_line(fd, &line) > 0)
 	{
-		if ((ft_isdigit(*buf) || *buf == '-'))
+		split = ft_strscrape(line, " \t");
+		if (map->width == 0)
+			map->width += (map->width == 0) * split_len(split);
+		else if (split_len(split) % map->width != 0 || map->width == 1)
+			error_exit("invalid map shape");
+		*i = 0;
+		while (split[*i] && i[1] < MAPSIZE_MAX)
 		{
-			i[1] = read_mapnode(fd, buf, &data[*i], map);
-			map->length = (*i)++;
-			while ((*buf == ' ' || *buf == '\t') && i[1] > 0)
-				i[1] = read(fd, buf, 1);
-			if (*buf == '\n')
-			{
-				map->width += (map->width == 0) * *i;
-				if (*i % map->width != 0 || map->width == 1)
-					error_exit("Invalid map shape (get_mapdata)");
-				i[1] = read(fd, buf, 1);
-			}
+			data[i[1]] = ft_clamp(ft_atoi(split[*i]), -128, 127);
+			free(split[*i]);
+			map->z_extreme = ft_max(map->z_extreme,
+					ft_clamp(ft_abs(data[i[1]]), 1, 127));
+			map->length = (i[1]++);
+			(*i)++;
 		}
-		else
-			error_exit("Invalid character in map (get_mapdata)");
+		free(split[*i]);
+		free(line);
+		free(split);
 	}
 }
 

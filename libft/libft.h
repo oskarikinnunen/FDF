@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:57:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/03/23 02:48:34 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 17:24:08 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "get_next_line.h"
 
 /* memory	*/
 void			*ft_memset(void *ptr, int value, size_t num);
@@ -50,6 +51,7 @@ char			*ft_strnew(size_t size);
 void			ft_strclr(char *s);
 void			ft_strfill(char *s, char c); /*extra*/
 char			**ft_strsplit(const char *s, char c);
+char			**ft_strscrape(const char*s, char *delims);
 char			*ft_strncpy(char *dest, const char *src, size_t num);
 void			ft_striter(char *s, void (*f)(char *));
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
@@ -89,7 +91,6 @@ int				ft_clamp(int val, int min, int max);
 int				ft_min(int i1, int i2);
 int				ft_max(int i1, int i2);
 float			ft_clampf(float val, float min, float max);
-
 
 /* lists */
 typedef struct s_list
