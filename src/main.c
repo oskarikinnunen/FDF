@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:55:54 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/13 20:59:47 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:10:54 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ int	main(int argc, char **argv)
 	mlx_loop(i.mlx);
 }
 
-
 /*
-	This is needed since mlx_new_image clamps sizeline to a multiple of 256,
+	This is needed since mlx_new_image forces 'size_line' to a multiple of 256,
 	which makes my assumption of:
 		'sizeline == WSZ * img.bpp / 8'
 	wrong in some cases, which in turn can make this program segfault
 	when accessing the img.addr memory in z_drawing.c with that wrong assumption.
+	(This behaviour only happens with the Metal implementation of mlx,
+		see: mlx_image.swift:26)
 */
 static int	mlx_freakout(t_mlx_i *i)
 {
@@ -94,16 +95,16 @@ static void	stage_mlxi_values(t_mlx_i *i)
 static void	stage_mlxi_values(t_mlx_i *i)
 {
 	ft_putstr("Successfully opened file \n");
-	if (mlx_freakout(i)) //t
+	if (mlx_freakout(i))
 		error_exit("MLX allocated wrong size, make sure WSZ is n^2");
 	i->img->z_buffer = (int *)ft_memalloc(WSZ * (WSZ - IMAGE_Y) * sizeof(int));
 	i->img->depthlayer = (int *)ft_memalloc(i->maps->tri_count * sizeof(int));
-	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL) //t
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	i->x_angle = 30;
 	i->y_angle = 40;
 	i->z_scale = 0.5 * (127 / i->maps->z_extreme);
-	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL) //t
+	if (i->img->depthlayer == NULL || i->img->z_buffer == NULL)
 		error_exit("Malloc failed (stage_mlxi_values)");
 	if (i->maps->tri_count <= 0)
 		error_exit("Invalid amount of triangles (stage_mlxi_values)");

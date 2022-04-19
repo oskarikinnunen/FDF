@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 17:57:56 by okinnune          #+#    #+#              #
-#    Updated: 2022/03/24 04:49:13 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/19 14:04:49 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ FILES= ft_abs.c ft_atoi.c ft_bzero.c ft_digitcount.c ft_isalnum.c ft_isalpha.c\
 	ft_ftoa.c ft_memdup.c ft_clamp.c ft_clampf.c ft_min_max.c
 FLAGS= -Wall -Wextra -Werror -O2 -c
 SRCS= $(addprefix src/, $(FILES))
-SRCS+=$(V_SRCS)
+#SRCS+=$(V_SRCS)
 OBJS= $(FILES:.c=.o)
 
 all: $(NAME)
@@ -38,20 +38,17 @@ $(NAME): $(SRCS) $(OBJS)
 $(OBJS):
 	gcc $(FLAGS) $(HEADER) $(SRCS) -I.
 
-$(V_OBJS):
-	gcc $(FLAGS) $(HEADER) $(V_SRCS) -I.
+#$(V_OBJS):
+#	gcc $(FLAGS) $(HEADER) $(V_SRCS) -I.
 
 ac: all clean
 
 clean:
 	rm -f $(OBJS)
-	rm -f $(V_OBJS)
 	rm -f *h.gch
 
 fclean:
 	rm -f $(OBJS)
-	rm -f $(V_OBJS)
 	rm -f $(NAME)
-	rm -f $(V_NAME)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/15 02:34:17 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:02:17 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,31 @@
 
 static void	get_mapdata(t_map *map, int fd, signed int *data)
 {
-	int				i;
+	int				i[2];
 	char			buf[2];
 
 	ft_bzero(buf, 2);
-	i = 0;
-	while (read(fd, buf, 1) > 0 && i < MAPSIZE_MAX)
+	ft_bzero(i, 2);
+	i[1] = read(fd, buf, 1);
+	while (i[1] > 0 && *i < MAPSIZE_MAX)
 	{
-		if ((ft_isdigit(*buf) || *buf == '-')
-			&& read_mapnode(fd, buf, &data[i], map) > 0)
+		if ((ft_isdigit(*buf) || *buf == '-'))
 		{
-			i++;
+			i[1] = read_mapnode(fd, buf, &data[*i], map);
+			map->length = (*i)++;
+			while ((*buf == ' ' || *buf == '\t') && i[1] > 0)
+				i[1] = read(fd, buf, 1);
 			if (*buf == '\n')
 			{
-				if (map->width == 0)
-					map->width = i;
-				if (i % map->width != 0 || map->width == 1)
+				map->width += (map->width == 0) * *i;
+				if (*i % map->width != 0 || map->width == 1)
 					error_exit("Invalid map shape (get_mapdata)");
+				i[1] = read(fd, buf, 1);
 			}
 		}
-		else if (*buf != '\t' && *buf != ' ')
+		else
 			error_exit("Invalid character in map (get_mapdata)");
 	}
-	map->length = i;
 }
 
 int	file_open(char *filename)

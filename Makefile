@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/15 02:47:56 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/19 14:11:30 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,14 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra #-g
+override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -Wconversion -g -Iinclude
 NAME= fdf
-SRC = main.c z_drawing.c vectors.c file_mapping.c \
+SRCFILES = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
 	map_operations.c matrices.c drawing.c mt_drawing.c \
 	loops.c errors.c file_nodereader.c \
 	trimap.c
+SRC= $(addprefix src/, $(SRCFILES))
 LIB = libft/libft.a
 OBJ = $(SRC:.c=.o)
 
@@ -46,9 +47,8 @@ all	:
 	@echo "Compiling for platform: $(UNAME)."
 	$(MAKE) $(NAME)
 
-run: re all
-	./$(NAME) input/subject/mars.fdf
-
+#run: re all
+#	./$(NAME) input/subject/mars.fdf
 
 $(NAME)	:$(OBJ) $(MLIB)
 	make -C libft

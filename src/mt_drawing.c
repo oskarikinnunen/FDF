@@ -6,30 +6,12 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 14:03:32 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/12 18:11:13 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:11:19 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "fdf_errors.h"
-
-/*
-
-	int				i;
-	unsigned int	faceheight;
-
-	i = 0;
-	while (i < (WSZ * (WSZ - IMAGE_Y)))
-	{
-		faceheight = (unsigned int)(img.z_buffer[i] & 0xFFFF);
-		if (faceheight > 0)
-		{
-			*(unsigned int *)(img.addr + (i * sizeof(int)))
-				= get_color(faceheight);
-		}
-		i++;
-	}
-*/
 
 #ifdef EXTRA
 
@@ -67,7 +49,7 @@ void	mt_draw_from_z_buff(t_mlx_i i)
 		i.t_args[t_i].endpixel = (t_i + 1) * (image_length / i.thread_count);
 		i.t_args[t_i].img = i.img;
 		if (pthread_create(&i.threads[t_i], NULL, thread_draw,
-			(void *)&(i.t_args[t_i])) != 0)
+				(void *)&(i.t_args[t_i])) != 0)
 			error_exit("pthread create fail (mt_draw_from_z_buff)");
 		t_i++;
 	}

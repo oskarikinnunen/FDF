@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 09:02:27 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/15 01:13:09 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/19 13:58:39 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	read_mapnode(int fd, char *buf, int *result, t_map *map)
 	}
 	*result = *result * (1 - (negative_flag * 2));
 	map->z_extreme = ft_max(ft_abs(*result), map->z_extreme);
-	map->z_extreme = ft_max(map->z_extreme, 1);
+	map->z_extreme = ft_clamp(map->z_extreme, 1, 127);
 	if (*result > 127 || *result < -128)
 		error_exit("invalid map height");
 	return (i);
