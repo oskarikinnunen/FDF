@@ -6,7 +6,7 @@
 #    By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/11 13:02:48 by okinnune          #+#    #+#              #
-#    Updated: 2022/04/20 12:35:00 by okinnune         ###   ########.fr        #
+#    Updated: 2022/04/21 14:35:38 by okinnune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 INC=/usr/local/lib
 INCLIB=$(INC)/../lib
 CC=gcc
-override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g -Iinclude #-Wconversion 
+override CFLAGS+= -Ilibft -O2 -Wall -Werror -Wextra -g -Iinclude #-fsanitize=address
 NAME= fdf
 SRCFILES = main.c z_drawing.c vectors.c file_mapping.c \
 	bresenham.c depthbuffer.c sorting.c \
@@ -44,8 +44,10 @@ warning:
 endif
 
 all	:
-	@echo "Compiling for platform: $(UNAME)."
-	$(MAKE) $(NAME)
+	@echo "\033[0;31m\
+	Compiling for platform: $(UNAME). \
+	\033[0m \n"
+	@$(MAKE) $(NAME)
 
 #run: re all
 #	./$(NAME) input/subject/mars.fdf
@@ -72,6 +74,7 @@ clean	:
 	rm -f $(OBJ) *~ core *.core
 
 fclean	: clean
+	make -C libft fclean
 	rm -f libmlx.dylib
 	rm -rf *.dSYM
 	rm -f $(NAME)

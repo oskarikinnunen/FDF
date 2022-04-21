@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 01:50:03 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/19 17:44:41 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/21 13:40:33 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 #include "fdf_errors.h"
 #include <stdio.h>
 
-static int	split_len(char **split)
+static int	splen(char **split)
 {
 	int	i;
 
 	i = 0;
+	if (split == NULL)
+		return (i);
 	while (split[i] != 0)
 		i++;
 	return (i);
@@ -34,9 +36,8 @@ static void	get_mapdata(t_map *map, int fd, signed int *data)
 	while (ft_get_next_line(fd, &line) > 0)
 	{
 		split = ft_strscrape(line, " \t");
-		if (map->width == 0)
-			map->width += (map->width == 0) * split_len(split);
-		else if (split_len(split) % map->width != 0 || map->width == 1)
+		map->width += (map->width == 0) * splen(split);
+		if (map->width != 0 && ((splen(split) % map->width) || map->width == 1))
 			error_exit("invalid map shape");
 		*i = 0;
 		while (split[*i] && i[1] < MAPSIZE_MAX)

@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 18:34:33 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/19 17:27:40 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/21 12:45:28 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@
 #  define KEY_W 119
 #  define KEY_ESC 65307
 # endif
+
 # define USAGE_MSG "ARROW KEYS = ROTATE VIEW, Z/X = INCREASE Z DEPTH, \
 W = TOGGLE WIREFRAME"
-/* Needs to be a multiple of 2 in OS_X environment */
+/* Needs to be a divisible of 256 in OS_X environment */
 # define WSZ 1280
 # define IMAGE_Y 50
 /* Max number of points the map can have */

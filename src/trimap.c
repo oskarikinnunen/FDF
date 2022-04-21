@@ -6,7 +6,7 @@
 /*   By: okinnune <okinnune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 20:28:19 by okinnune          #+#    #+#             */
-/*   Updated: 2022/04/13 21:37:23 by okinnune         ###   ########.fr       */
+/*   Updated: 2022/04/21 13:21:41 by okinnune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ static void	face_to_tri(float **v3, float ***tri, int width)
 
 static void	populate_simple_values(t_map *map, t_tri_map *trimap)
 {
+	ft_bzero(trimap, sizeof(t_tri_map [2]));
 	trimap->tri_count = (map->length - map->width
 			- ((map->length - map->width) / map->width)) * 2;
 	trimap->z_extreme = map->z_extreme;
 	trimap->dimensions[X] = map->width;
 	trimap->dimensions[Y] = map->length / map->width;
+	if (trimap->tri_count <= 0)
+		error_exit("Invalid amount of triangles");
 	ft_memcpy(&(trimap[1]), trimap, sizeof(t_tri_map));
 }
 
